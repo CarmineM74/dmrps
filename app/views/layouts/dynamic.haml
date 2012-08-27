@@ -15,6 +15,13 @@
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body(ng-controller='MainCtrl')
-    %div(ng-view)
+    %div.navbar.navbar-fixed-top
+      %div.navbar-inner
+        %a.brand(href='#')DM RPS
+        %ul.nav
+          %li.active
+            %a(href='/')Home
+
+    %div.container(ng-view)
 
 

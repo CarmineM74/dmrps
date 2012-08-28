@@ -4,6 +4,9 @@
       .when('/',
         {controller: MainCtrl, templateUrl: 'assets/main/index.html'}
       )
+      .when('/users',
+        {controller: UsersCtrl, templateUrl: 'assets/users/index.html'}
+      )
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{

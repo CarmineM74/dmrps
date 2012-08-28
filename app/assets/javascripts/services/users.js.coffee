@@ -6,7 +6,7 @@ class UsersSvc
   constructor: (@$rootScope,@$resource,@$log,@appConfig) ->
     @$log.log('Initializing Userss Service ...')
     @users = @$resource('http://:serverAddress:port/:path/:user_id'
-      ,{serverAddress: appConfig.serverAddress, port: appConfig.serverPort, path: 'users'}
+      ,{serverAddress: appConfig.serverAddr, port: appConfig.serverPort, path: 'users'}
       ,{index: {method: 'GET', isArray: true}
       ,create: {method: 'POST'}
       ,update: {method: 'PUT'}
@@ -38,6 +38,6 @@ class UsersSvc
   index: ->
     @$log.log('Fetching users from backend ...')
     @users.index(
-      (response) => @notify('Index:Success',response)
-     , (response) => @notify('dmUserSvc:Index:Failure',response)
+      (response) => @notify('Index:Success',response),
+      (response) => @notify('dmUserSvc:Index:Failure',response)
     )

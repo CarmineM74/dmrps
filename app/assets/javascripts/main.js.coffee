@@ -1,4 +1,4 @@
-@app = angular.module('dmrps',['ngResource','ui'])
+@app = angular.module('dmrps',['ngResource','ui','spinnerServices'])
   .config(['$routeProvider', ($routeProvider) ->
     $routeProvider
       .when('/',
@@ -10,7 +10,7 @@
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{
-    serverAddr: '192.168.1.95'
+    serverAddr: 'dm.dev'
     serverPort: ':3000'
   })
 
@@ -20,6 +20,9 @@ class @MainCtrl
     @$log.log('Bootstrapping application ...')
     @setupXhr()
     @$scope.waiting = false
+    @$scope.$on('Spinner:Show', => @$scope.waiting = true)
+    @$scope.$on('Spinner:Hide', => @$scope.waiting = false)
+
   
   setupXhr: ->
     @$log.log('setup HTTP default hedaers ...')

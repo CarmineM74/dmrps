@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_filter :find_user, :only => [:update, :destroy]
 
   def index
-    @users.all
+    @users = User.all
     respond_with(@users)
   end
 

@@ -29,8 +29,8 @@
         %ul.nav.pull-right
           %li
             %a
-              %img#spinner.img-rounded(src='assets/spinner.gif' ng-show='waiting')
-        %form.navbar-form.pull-right
+              %img#spinner(src='assets/spinner.gif')
+        %form.navbar-form.pull-right(ng-show='notLoggedIn')
           %input.input-small(type='text' placeholder='E-mail')
           %input.input-small(type='password' placeholder='Password')
           %button.btn(type='submit')Login

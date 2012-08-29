@@ -19,6 +19,7 @@ class @MainCtrl
   constructor: (@$scope,@$log,@$location,@$http) ->
     @$log.log('Bootstrapping application ...')
     @setupXhr()
+    @$scope.waiting = false
   
   setupXhr: ->
     @$log.log('setup HTTP default hedaers ...')

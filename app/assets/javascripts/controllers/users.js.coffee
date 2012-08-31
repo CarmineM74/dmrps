@@ -17,6 +17,18 @@ class @UsersCtrl
     @$scope.$on('dmUsersSvc:Destroy:Failure', @reqFailed)
     @$scope.deleteUser = angular.bind(this, @deleteUser)
 
+  validateUser: (user) ->
+    if !user.password? || (user.password.replace(/^\s+|\s+$/g,'') == '')
+      bootbox.alert('La password non può essere vuota')
+      return false
+    if user.password != user.password_confirmation
+      bootbox.alert('Le password inserite non coincidono')
+      return false
+    if !user.email? || (user.email.replace(/^\s+|\s+$/g,'') == '')
+      bootbox.alert("L'indirizzo email è obbligatorio")
+      return false
+    return true
+
   index: ->
     @$scope.users = @dmUsersSvc.index()
 
@@ -35,7 +47,8 @@ class @UsersCtrl
     @$scope.formSubmitCaption = 'Salva'
 
   saveUser: (user) ->
-    @dmUsersSvc.save(user)
+    if @validateUser(user) 
+      @dmUsersSvc.save(user)
 
   reqSuccess: =>
     alert('Operazione completata!')

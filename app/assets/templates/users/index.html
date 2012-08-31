@@ -39,23 +39,10 @@
 	</div>
         <div class='form-actions'>
           <button type='submit' class='btn' ng-click='saveUser(selectedUser)'>{{formSubmitCaption}}</button>
-          <button type='submit' class='btn' ng-click='deleteConfirmShow=true' ng-show='selectedUser.id'>Elimina</button>
+          <button type='submit' class='btn' ng-click="deleteUser(selectedUser)" ng-show='selectedUser.id'>Elimina</button>
         </div>
       </fieldset>
     </form>
   </div>
 </div>
 
-<div ui-modal class='fade' ng-model='deleteConfirmShow' id='deleteDialog'>
-  <div class='modal-header'>
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3>Cancellazione utente</h3>
-  </div>
-  <div class='modal-body'>
-    <p>Procedo alla cancellazione dell'utente selezionato?</p>
-  </div>
-  <div class='modal-footer'>
-    <button type='button' class='btn' ng-click='deleteUser(selectedUser)'>Si</button>
-    <button type='button' class='btn btn-primary' ng-click='deleteConfirmShow=false'>No</button>
-  </div>
-</div>

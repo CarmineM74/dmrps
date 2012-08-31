@@ -46,5 +46,8 @@ class @UsersCtrl
     alert(response)
 
   deleteUser: (user) ->
-    @$scope.deleteConfirmShow = false
-    @dmUsersSvc.destroy(user)
+    #@$scope.deleteConfirmShow = false
+    bootbox.confirm("Cancellazione utente?",(result) =>
+      if result
+        @dmUsersSvc.destroy(user)
+    )

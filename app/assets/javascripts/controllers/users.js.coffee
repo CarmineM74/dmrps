@@ -5,7 +5,6 @@ class @UsersCtrl
     @$scope.selectedUser = {}
     @$scope.formCaption = ''
     @$scope.formSubmitCaption = ''
-    @$scope.deleteConfimShow = false
 
     @$scope.$on('dmUsersSvc:Index:Failure',@indexFailed)
     @$scope.fetchAll = angular.bind(this, @index)
@@ -46,8 +45,7 @@ class @UsersCtrl
     alert(response)
 
   deleteUser: (user) ->
-    #@$scope.deleteConfirmShow = false
-    bootbox.confirm("Cancellazione utente?",(result) =>
+    bootbox.confirm("Proseguo con la cancellazione dell'utente?",(result) =>
       if result
         @dmUsersSvc.destroy(user)
     )

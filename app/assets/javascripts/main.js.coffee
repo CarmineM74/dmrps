@@ -10,7 +10,7 @@
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{
-    serverAddr: 'dm.dev'
+    serverAddr: '192.168.1.95'
     serverPort: ':3000'
   })
 
@@ -22,7 +22,6 @@ class @MainCtrl
     @$scope.waiting = false
     @$scope.$on('Spinner:Show', => @$scope.waiting = true)
     @$scope.$on('Spinner:Hide', => @$scope.waiting = false)
-
   
   setupXhr: ->
     @$log.log('setup HTTP default hedaers ...')

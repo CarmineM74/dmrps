@@ -3,6 +3,7 @@ angular.module('spinnerServices',[])
     $httpProvider.responseInterceptors.push('spinnerInterceptor')
     showSpinner = (data, headersGetter) ->
       angular.element('#spinner').show()
+      data
     $httpProvider.defaults.transformRequest.push(showSpinner)
   ])
   .factory('spinnerInterceptor',['$rootScope','$q','$log',($rootScope,$q,$log) ->

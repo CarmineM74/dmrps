@@ -36,7 +36,6 @@ class UsersSvc
       )  
 
   index: ->
-    @$log.log('Fetching users from backend ...')
     @users.index(
       (response) => @notify('Index:Success',response),
       (response) => @notify('Index:Failure',response)

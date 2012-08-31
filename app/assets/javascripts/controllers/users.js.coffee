@@ -43,3 +43,6 @@ class @UsersCtrl
 
   reqFailed: (response) =>
     alert(response)
+
+  deleteUser: (user) ->
+    @dmUsersSvc.destroy(user)

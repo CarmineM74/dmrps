@@ -10,7 +10,7 @@
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{
-    serverAddr: '192.168.1.95'
+    serverAddr: 'dm.dev'
     serverPort: ':3000'
   })
 

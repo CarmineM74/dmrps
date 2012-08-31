@@ -1,5 +1,5 @@
-<div>
-  <div class='span7'>
+<div class='row'>
+  <div class='span5'>
     <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
     <input class='btn' type='button' value='Nuovo utente' ng-click='newUser()' />
     <table class='table table-striped'>
@@ -15,10 +15,10 @@
       </tbody>
     </table>
   </div>
-  <div id='new-user' class='span5'>
+  <div id='new-user' class='span7'>
     <form class='form-horizontal' ng-show='formCaption'>
       <fieldset>
-        <legend ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='{{formTitle}}'>{{formCaption}}</legend>
+        <legend>{{formCaption}}</legend>
         <div class='control-group'>
           <label class='control-label' for='email'>E-Mail</label>
 	  <div class='controls'>
@@ -32,14 +32,14 @@
           </div>	
 	</div>
         <div class='control-group'>
-          <label class='control-label' for='password_confirm'>Password confirmation</label>
+          <label class='control-label' for='password_confirm'>Conferma password</label>
 	  <div class='controls'>
             <input id='password_confirm' class='input-xlarge' type='password' ng-model='selectedUser.password_confirmation'>
           </div>	
 	</div>
         <div class='form-actions'>
           <button type='submit' class='btn' ng-click='saveUser(selectedUser)'>{{formSubmitCaption}}</button>
-          <button type='submit' class='btn' ng-click='deleteUser(selectedUser)' ng-show='selectedUser.id'>Delete</button>
+          <button type='submit' class='btn' ng-click='deleteUser(selectedUser)' ng-show='selectedUser.id'>Elimina</button>
         </div>
       </fieldset>
     </form>

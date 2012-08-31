@@ -25,14 +25,14 @@ class UsersSvc
   save: (user) ->
     if user.id?
       user.$update({user_id: user.id},
-        (response) => @notify('Update:Success',response)
-        (response) => @notify('Update:Failure',response)
+        (response) => @notify('Save:Success',response)
+        (response) => @notify('Save:Failure',response)
       )
     else
       c = new @users(user)
       c.$save(
-        (response) => @notify('Create:Success',response), 
-        (response) => @notify('Create:Failure',response)
+        (response) => @notify('Save:Success',response), 
+        (response) => @notify('Save:Failure',response)
       )  
 
   index: ->

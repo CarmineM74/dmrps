@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   respond_to :json
+
   #before_filter :authentication_required
+  #before_filter :administrator_required
+
   before_filter :find_user, :only => [:update, :destroy]
 
   def index
@@ -13,12 +16,12 @@ class UsersController < ApplicationController
     if user.save
       respond_with(user)
     else
-      respond_with({error_msg: 'cannot create user', errors: user.errors}, status: 400, location: nil) 
+      respond_with({error_msg: 'cannot create user', errors: user.errors}, :status => 400, :location => nil) 
     end
   end
 
   def update
-    @user = User.update_attributes(params[:user])
+    @user.update_attributes(params[:user])
     respond_with(@user)
   end
 
@@ -28,8 +31,10 @@ class UsersController < ApplicationController
   end
 
 private
+
   def find_user
     @user = User.try(:find,params[:id])
     respond_with({error_msg: 'cannot find specified user'}, status: 400, location: nil)
   end
+
 end

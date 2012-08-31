@@ -26,9 +26,9 @@ class @MainCtrl
   
   setupXhr: ->
     @$log.log('setup HTTP default hedaers ...')
-    @$http.defaults.headers.common['Content-type'] = 'application/json'
-    @$http.defaults.headers.post['Content-type'] = 'application/json'
-    @$http.defaults.headers.put['Content-type'] = 'application/json'
+    @$http.defaults.headers.common['Content-Type'] = 'application/json'
+    @$http.defaults.headers.post['Content-Type'] = 'application/json'
+    @$http.defaults.headers.put['Content-Type'] = 'application/json'
     if token = $("meta[name='csrf-token']").attr('content')
       @$http.defaults.headers.post['X-CSRF-Token'] = token
       @$http.defaults.headers.put['X-CSRF-Token'] = token

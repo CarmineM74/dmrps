@@ -17,17 +17,20 @@ class @UsersCtrl
     @$scope.$on('dmUsersSvc:Destroy:Failure', @reqFailed)
     @$scope.deleteUser = angular.bind(this, @deleteUser)
 
-  validateUser: (user) ->
-    if !user.password? || (user.password.replace(/^\s+|\s+$/g,'') == '')
-      bootbox.alert('La password non può essere vuota')
-      return false
-    if user.password != user.password_confirmation
-      bootbox.alert('Le password inserite non coincidono')
-      return false
-    if !user.email? || (user.email.replace(/^\s+|\s+$/g,'') == '')
-      bootbox.alert("L'indirizzo email è obbligatorio")
-      return false
-    return true
+  clearValidationErrors: ->
+    angular.element('.control-group')
+      .removeClass('error')
+      .find('span.help-block')
+      .remove()
+
+  showValidationErrors: (errors) ->
+    bootbox.alert(errors.error_msg, =>
+      for k,v of errors.errors
+        angular.element('.control-group.'+k)
+          .addClass('error')
+          .find('input')
+          .after("<span class='help-block'>"+v+"</span>")
+    )
 
   index: ->
     @$scope.users = @dmUsersSvc.index()
@@ -47,15 +50,18 @@ class @UsersCtrl
     @$scope.formSubmitCaption = 'Salva'
 
   saveUser: (user) ->
-    if @validateUser(user) 
-      @dmUsersSvc.save(user)
+    @dmUsersSvc.save(user)
 
   reqSuccess: =>
+    @clearValidationErrors()
     alert('Operazione completata!')
     @index()
 
-  reqFailed: (response) =>
-    alert(response)
+  reqFailed: (event, args) =>
+    if args.error_type == 'validation'
+      @showValidationErrors(args)
+    else
+      bootbox.alert('Not validation: ' + args.error_msg)
 
   deleteUser: (user) ->
     bootbox.confirm("Proseguo con la cancellazione dell'utente?",(result) =>

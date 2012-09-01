@@ -18,7 +18,8 @@ class UsersController < ApplicationController
     if user.save
       respond_with(user)
     else
-      respond_with({error_msg: 'cannot create user', errors: user.errors}, :status => 400, :location => nil) 
+      error_type = (user.errors.empty? ? 'save' : 'validation')
+      respond_with({error_type: error_type, error_msg: 'cannot create user', errors: user.errors}, :status => 400, :location => nil) 
     end
   end
 

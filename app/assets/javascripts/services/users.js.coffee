@@ -14,6 +14,7 @@ class UsersSvc
     )
 
   notify: (name,args) ->
+    #@$log.log('Broadcasting : ' + name + ' with ' + JSON.stringify(args))
     @$rootScope.$broadcast('dmUsersSvc:'+name,args)
 
   destroy: (user) ->

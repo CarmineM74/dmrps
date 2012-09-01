@@ -28,4 +28,8 @@ class SpinnerInterceptor
   error: (response) =>
     @stopSpinner()
     @$log.log('HTTP Request ERROR: ' + JSON.stringify(response))
-    @$q.reject(response)
+    data = response.data
+    if data.error_type = 'validation'
+      @$q.reject(data)
+    else
+      @$q.reject(response)

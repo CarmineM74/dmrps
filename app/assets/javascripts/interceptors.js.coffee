@@ -16,7 +16,7 @@ class SpinnerInterceptor
     @$log.log('Instantiating SpinnerInterceptor ...')
 
   interceptor: (promise) =>
-    promise.then(@succes,@error)
+    promise.then(@success,@error)
 
   stopSpinner: =>
     angular.element('#spinner').hide()

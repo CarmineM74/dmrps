@@ -44,12 +44,14 @@ class @UsersCtrl
 
   selectUser: (user) ->
     @$scope.selectedUser = user
+    @$scope.selectedUser.password = ''
+    @$scope.selectedUser.password_confirmation = ''
     @$scope.formCaption = 'Modifica utente'
     @$scope.formSubmitCaption = 'Aggiorna dati'
     @$scope.showForm = true
 
   newUser: ->
-    @$scope.selectedUser = {}
+    @$scope.selectedUser = {email: '', password: '', password_confirmation: ''}
     @$scope.formCaption = 'Nuovo utente'
     @$scope.formSubmitCaption = 'Salva'
     @$scope.showForm = true
@@ -60,7 +62,7 @@ class @UsersCtrl
   reqSuccess: =>
     @clearValidationErrors()
     bootbox.alert('Operazione completata!')
-    @index()
+    @hideForm()
 
   reqFailed: (event, args) =>
     @clearValidationErrors()
@@ -70,6 +72,7 @@ class @UsersCtrl
     bootbox.confirm("Proseguo con la cancellazione dell'utente?",(result) =>
       if result
         @dmUsersSvc.destroy(user)
+        @hideForm()
     )
 
   hideForm: ->

@@ -15,10 +15,13 @@
       </tbody>
     </table>
   </div>
-  <div id='new-user' class='span7'>
+  <div id='new-user' class='span12'>
     <form class='form-horizontal' ng-show='showForm'>
       <fieldset>
         <legend>{{formCaption}}</legend>
+        <div class='alert alert-info' ng-show='selectedUser.id'>
+          La modifica dei dati utente avverra' previo inserimento della password e relativa conferma
+        </div>
         <div class='control-group email'>
           <label class='control-label' for='email'>E-Mail</label>
 	  <div class='controls'>

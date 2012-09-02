@@ -15,17 +15,13 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(params[:user])
-    if user.save
-      respond_with(user)
-    else
-      error_type = (user.errors.empty? ? 'save' : 'validation')
-      respond_with({error_type: error_type, error_msg: 'cannot create user', errors: user.errors}, :status => 400, :location => nil) 
-    end
+    user.save
+    respond_with(user)
   end
 
   def update
-    @user.update_attributes(params[:user])
-    respond_with(@user)
+     @user.update_attributes(params[:user])
+     respond_with(@user)
   end
 
   def destroy

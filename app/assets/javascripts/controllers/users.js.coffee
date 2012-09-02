@@ -5,6 +5,7 @@ class @UsersCtrl
     @$scope.selectedUser = {}
     @$scope.formCaption = ''
     @$scope.formSubmitCaption = ''
+    @$scope.showForm = false
 
     @$scope.$on('dmUsersSvc:Index:Failure',@indexFailed)
     @$scope.fetchAll = angular.bind(this, @index)
@@ -16,6 +17,7 @@ class @UsersCtrl
     @$scope.$on('dmUsersSvc:Destroy:Success', @reqSuccess)
     @$scope.$on('dmUsersSvc:Destroy:Failure', @reqFailed)
     @$scope.deleteUser = angular.bind(this, @deleteUser)
+    @$scope.hideForm = angular.bind(this, @hideForm)
 
   clearValidationErrors: ->
     angular.element('.control-group')
@@ -24,7 +26,7 @@ class @UsersCtrl
       .remove()
 
   showValidationErrors: (errors) ->
-    bootbox.alert(errors.error_msg, =>
+    bootbox.alert('Operazione fallita!', =>
       for k,v of errors.errors
         angular.element('.control-group.'+k)
           .addClass('error')
@@ -37,34 +39,39 @@ class @UsersCtrl
 
   indexFailed: (response) =>
     @$log.log('Error while retrieving Users#index')
-    alert('Cannot retrieve users index!')
+    bootbox.alert("Impossibile recuperare l'elenco degli utenti!")
 
   selectUser: (user) ->
     @$scope.selectedUser = user
     @$scope.formCaption = 'Modifica utente'
     @$scope.formSubmitCaption = 'Aggiorna dati'
+    @$scope.showForm = true
 
   newUser: ->
     @$scope.selectedUser = {}
     @$scope.formCaption = 'Nuovo utente'
     @$scope.formSubmitCaption = 'Salva'
+    @$scope.showForm = true
 
   saveUser: (user) ->
     @dmUsersSvc.save(user)
 
   reqSuccess: =>
     @clearValidationErrors()
-    alert('Operazione completata!')
+    bootbox.alert('Operazione completata!')
     @index()
 
   reqFailed: (event, args) =>
-    if args.error_type == 'validation'
-      @showValidationErrors(args)
-    else
-      bootbox.alert('Not validation: ' + args.error_msg)
+    @clearValidationErrors()
+    @showValidationErrors(args)
 
   deleteUser: (user) ->
     bootbox.confirm("Proseguo con la cancellazione dell'utente?",(result) =>
       if result
         @dmUsersSvc.destroy(user)
     )
+
+  hideForm: ->
+    @$scope.showForm = false
+    @clearValidationErrors()
+    @index()

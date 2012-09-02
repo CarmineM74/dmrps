@@ -22,6 +22,7 @@ class SpinnerInterceptor
     angular.element('#spinner').hide()
   
   success: (response) =>
+    @$log.log(response)
     @stopSpinner()
     response
 

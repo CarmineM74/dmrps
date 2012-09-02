@@ -1,5 +1,5 @@
 <div class='row'>
-  <div class='span5'>
+  <div class='span5' ng-hide='showForm'>
     <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
     <input class='btn' type='button' value='Nuovo utente' ng-click='newUser()' />
     <table class='table table-striped'>
@@ -16,7 +16,7 @@
     </table>
   </div>
   <div id='new-user' class='span7'>
-    <form class='form-horizontal' ng-show='formCaption'>
+    <form class='form-horizontal' ng-show='showForm'>
       <fieldset>
         <legend>{{formCaption}}</legend>
         <div class='control-group email'>
@@ -40,6 +40,7 @@
         <div class='form-actions'>
           <button type='submit' class='btn' ng-click='saveUser(selectedUser)'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="deleteUser(selectedUser)" ng-show='selectedUser.id'>Elimina</button>
+          <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>
       </fieldset>
     </form>

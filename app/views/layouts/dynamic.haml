@@ -28,13 +28,16 @@
               %li
                 %a(href='#/users')Gestione utenti
         %ul.nav.pull-right
+          %li(ng-show='currentUser()')
+            %button(type='button' class='btn')Logout
           %li
             %a
               %img#spinner(src='assets/spinner.gif')
-        %form.navbar-form.pull-right(ng-show='notLoggedIn')
-          %input.input-small(type='text' placeholder='E-mail')
-          %input.input-small(type='password' placeholder='Password')
-          %button.btn(type='submit')Login
+        %form.navbar-form.pull-right(ng-hide='currentUser()')
+          %input.input-small(type='text' placeholder='E-mail' ng-model='loginInfo.email')
+          %input.input-small(type='password' placeholder='Password' ng-model='loginInfo.password')
+          %button.btn(type='button' ng-click='login()')Login
+
     %div.container(ng-view)
 
 

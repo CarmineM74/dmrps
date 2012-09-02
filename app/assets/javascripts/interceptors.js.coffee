@@ -1,6 +1,9 @@
-angular.module('spinnerServices',[])
+angular.module('interceptorServices',[])
   .config(['$httpProvider',($httpProvider) ->
+    
     $httpProvider.responseInterceptors.push('spinnerInterceptor')
+    $httpProvider.responseInterceptors.push('authInterceptor')
+
     showSpinner = (data, headersGetter) ->
       angular.element('#spinner').show()
       data
@@ -10,6 +13,29 @@ angular.module('spinnerServices',[])
     i = new SpinnerInterceptor($rootScope,$q,$log)
     return i.interceptor
   ])
+  .factory('authInterceptor',['$rootScope','$q','$log',($rootScope,$q,$log) ->
+    i = new AuthInterceptor($rootScope,$q,$log)
+    return i.interceptor
+  ])
+
+class AuthInterceptor
+  constructor: (@$rootScope, @$q, @$log) ->
+    @$log.log('Instantiating AuthInterceptor ...')
+
+  interceptor: (promise) =>
+    promise.then(@succces,@error)
+
+  success: (response) =>
+    @$rootScope.$broadcast('Authentication::Success',response)
+    response
+
+  error: (response) =>
+    if response.status == 401
+      deferred = @$q.defer()
+      @$rootScope.$broadcast('Autentication::Failed',response)
+      return deferred.promise
+    else
+      @$q.reject(response)
 
 class SpinnerInterceptor
   constructor: (@$rootScope, @$q, @$log) ->

@@ -1,4 +1,4 @@
-@app = angular.module('dmrps',['ngResource','ui','spinnerServices'])
+@app = angular.module('dmrps',['ngResource','ui','interceptorServices'])
   .config(['$routeProvider', ($routeProvider) ->
     $routeProvider
       .when('/',
@@ -15,14 +15,27 @@
   })
 
 class @MainCtrl
-  @inject: ['$scope','$log','$location','$http']
-  constructor: (@$scope,@$log,@$location,@$http) ->
+  @inject: ['$scope','$log','$location','$http','dmSessionSvc']
+  constructor: (@$scope,@$log,@$location,@$http,@dmSessionSvc) ->
     @$log.log('Bootstrapping application ...')
     @setupXhr()
-    @$scope.waiting = false
-    @$scope.$on('Spinner:Show', => @$scope.waiting = true)
-    @$scope.$on('Spinner:Hide', => @$scope.waiting = false)
-  
+
+    @$scope.loginInfo = {email: '', password: ''}
+    @$scope.currentUser = angular.bind(this,@currentUser)
+    @$scope.login = angular.bind(this,@login)
+    @$scope.logout = angular.bind(this,@logout)
+    
+
+  login: ->
+    @$log.log('Attempting login ...')
+    @dmSessionSvc.login(@$scope.loginInfo)
+
+  currentUser: ->
+    if @dmSessionSvc.currentUser?
+      @dmSessioSvc.currentUser
+    else
+      false
+
   setupXhr: ->
     @$log.log('setup HTTP default hedaers ...')
     @$http.defaults.headers.common['Content-Type'] = 'application/json'

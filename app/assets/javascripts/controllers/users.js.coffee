@@ -26,7 +26,8 @@ class @UsersCtrl
       .remove()
 
   showValidationErrors: (errors) ->
-    bootbox.alert('Operazione fallita!', =>
+    error_msg = if errors.error_msg? then errors.error_msg else 'Operazione fallita!'
+    bootbox.alert(error_msg, =>
       for k,v of errors.errors
         angular.element('.control-group.'+k)
           .addClass('error')

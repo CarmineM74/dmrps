@@ -10,18 +10,16 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-    respond_with(@users)
   end
 
   def create
-    user = User.new(params[:user])
-    user.save
-    respond_with(user)
+    @user = User.create(params[:user])
+    respond_with(@user, :responder => RablResponder) 
   end
 
   def update
      @user.update_attributes(params[:user])
-     respond_with(@user)
+     respond_with(@user, :responder => RablResponder)
   end
 
   def destroy
@@ -36,7 +34,7 @@ private
   end
 
   def user_not_found
-    respond_with({error_msg: 'cannot find specified user'}, status: 400, location: nil)
+    respond_with({error_msg: 'cannot find specified user'}, status: 404, location: nil)
   end
 
 end

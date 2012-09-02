@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'thin'
 gem 'prawn', :git => "https://github.com/prawnpdf/prawn.git"
 gem 'bcrypt-ruby'
+gem 'rabl'
 
 # Gems used only for assets and not required
 # in production environments by default.

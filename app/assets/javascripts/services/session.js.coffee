@@ -5,7 +5,7 @@
 class SessionSvc
   constructor: (@$rootScope,$resource,@$log,@$location,@appConfig) ->
     @$log.log('Initializing Session Service ...')
-    @current_user = undefined
+    @currentUser = undefined
     @sessions = $resource('http://:serverAddr:port/:path/:user_id'
       ,{serverAddr: appConfig.serverAddr, port: appConfig.serverPort, path: 'sessions'}
       ,{create: {method: 'POST'}
@@ -18,28 +18,28 @@ class SessionSvc
 
   authenticatedOrRedirect: (path) ->
     @$log.log('Checking authentication ...')
-    if @current_user?
+    if @currentUser?
       return true
     else
       @$log.log('Not authenticated. Redirecting to: ' + path)
       @$location.path(path)
       return false
 
-  authenticationFailed: (response) =>
-    @current_user = undefined
-    @notify('Logout:Success',response)
+  authenticationFailed: (event, args) =>
+    @currentUser = undefined
+    @notify('Logout:Success',args)
 
   logout: ->
-    user.$destroy({user_id: @current_user.id},
+    user.$destroy({user_id: @currentUser.id},
       (response) => @notify('Logout:Success',response),
       (response) => @notify('Logout:Failed',response)
     )
-    @current_user = undefined
+    @currentUser = undefined
 
   login: (user) ->
     @$log.log('Login with ' + JSON.stringify(user))
-    if @current_user?
-      @notify('Login:Success',@current_user)
+    if @currentUser?
+      @notify('Login:Success',@currentUser)
     else
       @sessions.create({email: user.email, password: user.password},
          (response) => @loginSuccessful(response), 
@@ -47,11 +47,11 @@ class SessionSvc
       )
 
   loginSuccessful : (response) ->
-    @$log.log('Login successful: ' + JSON.stringify(response))
-    @current_user = response
-    @notify('Login:Success',@current_user)
+    @currentUser = response.user
+    @$log.log('Login successful: ' + JSON.stringify(@currentUser))
+    @notify('Login:Success',@currentUser)
 
   loginFailed : (response) ->
     @$log.log('Login failed: ' + JSON.stringify(response))
-    @current_user = undefined
+    @currentUser = undefined
     @notify('Login:Failed',response)

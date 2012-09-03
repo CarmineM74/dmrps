@@ -24,20 +24,29 @@ class @MainCtrl
     @$scope.currentUser = angular.bind(this,@currentUser)
     @$scope.login = angular.bind(this,@login)
     @$scope.logout = angular.bind(this,@logout)
-    
+    @$scope.$on('dmSessionSvc:Login:Success',@loginSuccessful)
+    @$scope.$on('dmSessionSvc:Login:Failed',@loginFailed)
 
   login: ->
-    @$log.log('Attempting login ...')
+    @$log.log('Main: Attempting login ...')
     @dmSessionSvc.login(@$scope.loginInfo)
+
+  loginSuccessful: (event, args) =>
+    @$log.log('Main: Login successful ' + JSON.stringify(args))
+
+  loginFailed: (event, args) =>
+    @$log.log('Main: Login failed')
 
   currentUser: ->
     if @dmSessionSvc.currentUser?
-      @dmSessioSvc.currentUser
+      @$log.log('Main: Currently logged in as ' + @dmSessionSvc.currentUser.email)
+      @dmSessionSvc.currentUser
     else
+      @$log.log('Main: Not logged in')
       false
 
   setupXhr: ->
-    @$log.log('setup HTTP default hedaers ...')
+    @$log.log('Main: setup HTTP default hedaers ...')
     @$http.defaults.headers.common['Content-Type'] = 'application/json'
     @$http.defaults.headers.post['Content-Type'] = 'application/json'
     @$http.defaults.headers.put['Content-Type'] = 'application/json'

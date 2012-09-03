@@ -8,12 +8,12 @@ class SessionsController < ApplicationController
       session[:user_id] = @user.id
     end
     @status = @user ? :ok : :unauthorized
-    respond_with(@user, :responder => RablResponder, :status => @status)
+    respond_with(@user, :status => @status)
   end
 
   def destroy
     session[:user_id] = nil
-    respond_with(true, :responder => RablResponder)
+    respond_with(true)
   end
 
 end

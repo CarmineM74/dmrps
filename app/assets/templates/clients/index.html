@@ -1,0 +1,60 @@
+<div class='row'>
+  <div class='span12' ng-hide='showForm'>
+    <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
+    <input class='btn' type='button' value='Nuovo cliente' ng-click='newClient()' />
+    <table class='table table-striped table-bordered table-hover'>
+      <thead>
+        <tr>
+	        <th>Ragione sociale</th>
+          <th>P. IVA</th>
+          <th>Codice Fiscale</th>
+        </tr>
+      </thead>
+      <tbody>
+	      <tr ng-repeat='client in clients' ng-click='selectClient(client)'>
+	        <td>{{client.ragione_sociale}}</td>
+	        <td>{{client.partita_iva}}</td>
+	        <td>{{client.codice_fiscale}}</td>
+	      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div id='new-client' class='span12'>
+    <form class='form-horizontal' ng-show='showForm'>
+      <fieldset>
+        <legend>{{formCaption}}</legend>
+        <div class='control-group ragione_sociale'>
+          <label class='control-label' for='ragione_sociale'>Ragione sociale</label>
+	        <div class='controls'>
+            <input id='ragione_sociale' class='span10' type='text' ng-model='selectedClient.ragione_sociale' required>
+          </div>	
+	      </div>
+        <div class='control-group controls-row indirizzo'>
+          <label class='control-label' for='indirizzo'>Indirizzo</label>
+	        <div class='controls'>
+            <input id='indirizzo' class='span3' type='text' ng-model='selectedClient.indirizzo'>
+            <input id='citta' class='span2' type='text' ng-model='selectedClient.citta'>
+            <input id='cap' class='span1' type='text' ng-model='selectedClient.cap'>
+            <input id='provincia' class='span1' type='text' ng-model='selectedClient.provincia'>
+          </div>	
+	      </div>
+        <div class='control-group controls-row partita_iva'>
+          <label class='control-label' for='partita_iva'>Partita IVA</label>
+	        <div class='controls'>
+            <input id='partita_iva' class='span3' type='text' ng-model='selectedClient.partita_iva'>
+          </div>	
+          <label class='control-label' for='codice_fiscale'>Codice fiscale</label>
+	        <div class='controls'>
+            <input id='codice_fiscale' class='span3' type='text' ng-model='selectedClient.codice_fiscale'>
+          </div>	
+	      </div>
+        <div class='form-actions'>
+          <button type='submit' class='btn' ng-click='saveClient(selectedClient)'>{{formSubmitCaption}}</button>
+          <button type='submit' class='btn' ng-click="deleteClient(selectedClient)" ng-show='selectedclient.id'>Elimina</button>
+          <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+

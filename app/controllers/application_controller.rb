@@ -9,4 +9,11 @@ private
     render('layouts/dynamic') if request.format == Mime::HTML
   end
 
+protected
+  
+  def responder
+    RablResponder
+  end
+
+
 end

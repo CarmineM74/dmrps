@@ -7,5 +7,7 @@ class RablResponder < ActionController::Responder
       controller.response.status = :created
     end
     default_render 
+  rescue ActionView::MissingTemplate => e
+    api_behavior(e)
   end
 end

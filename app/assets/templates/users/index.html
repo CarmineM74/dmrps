@@ -1,17 +1,17 @@
 <div class='row'>
-  <div class='span5' ng-hide='showForm'>
+  <div class='span12' ng-hide='showForm'>
     <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
     <input class='btn' type='button' value='Nuovo utente' ng-click='newUser()' />
-    <table class='table table-striped'>
+    <table class='table table-striped table-bordered table-hover'>
       <thead>
         <tr>
-	  <th>E-Mail</th>
+	        <th>E-Mail</th>
         </tr>
       </thead>
       <tbody>
-	<tr ng-repeat='user in users' ng-click='selectUser(user)'>
-	  <td>{{user.email}}</td>
-	</tr>
+	      <tr ng-repeat='user in users' ng-click='selectUser(user)'>
+	        <td>{{user.email}}</td>
+	      </tr>
       </tbody>
     </table>
   </div>
@@ -24,22 +24,22 @@
         </div>
         <div class='control-group email'>
           <label class='control-label' for='email'>E-Mail</label>
-	  <div class='controls'>
+	        <div class='controls'>
             <input id='email' class='input-xlarge' type='text' ng-model='selectedUser.email' required>
           </div>	
-	</div>
+	      </div>
         <div class='control-group password'>
           <label class='control-label' for='password'>Password</label>
-	  <div class='controls'>
+	        <div class='controls'>
             <input id='password' class='input-xlarge' type='password' ng-model='selectedUser.password' required>
           </div>	
-	</div>
+	      </div>
         <div class='control-group password_confirmation'>
           <label class='control-label' for='password_confirm'>Conferma password</label>
-	  <div class='controls'>
+	        <div class='controls'>
             <input id='password_confirm' class='input-xlarge' type='password' ng-model='selectedUser.password_confirmation' required>
           </div>	
-	</div>
+	      </div>
         <div class='form-actions'>
           <button type='submit' class='btn' ng-click='saveUser(selectedUser)'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="deleteUser(selectedUser)" ng-show='selectedUser.id'>Elimina</button>

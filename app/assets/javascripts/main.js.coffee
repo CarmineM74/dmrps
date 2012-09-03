@@ -10,7 +10,8 @@
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{
-    serverAddr: 'dm.dev'
+    #serverAddr: 'dm.dev'
+    serverAddr: '192.168.1.95'
     serverPort: ':3000'
   })
 
@@ -26,27 +27,41 @@ class @MainCtrl
     @$scope.logout = angular.bind(this,@logout)
     @$scope.$on('dmSessionSvc:Login:Success',@loginSuccessful)
     @$scope.$on('dmSessionSvc:Login:Failed',@loginFailed)
+    @$scope.$on('dmSessionSvc:Logout:Success',@logoutSuccessful)
+    @$scope.$on('dmSessionSvc:Logout:Failed',@logoutFailed)
 
   login: ->
-    @$log.log('Main: Attempting login ...')
+    @$log.log('[Main] Attempting login ...')
     @dmSessionSvc.login(@$scope.loginInfo)
 
   loginSuccessful: (event, args) =>
-    @$log.log('Main: Login successful ' + JSON.stringify(args))
+    @$log.log('[Main] Login successful ' + JSON.stringify(args))
 
   loginFailed: (event, args) =>
-    @$log.log('Main: Login failed')
+    @$log.log('[Main] Login failed')
+    bootbox.alert(args.error_msg)
+
+  logout: ->
+    @$log.log('[Main] Logout ...')
+    @dmSessionSvc.logout()
+
+  logoutSuccessful: (event, args) =>
+    @$log.log('[Main] Logout successful')
+
+  logoutFailed: (event, args) =>
+    @$log.log('[Main] Logout failed: ' + JSON.stringify(args))
+    bootbox.alert('Errore durante il logout!')
 
   currentUser: ->
     if @dmSessionSvc.currentUser?
-      @$log.log('Main: Currently logged in as ' + @dmSessionSvc.currentUser.email)
+      @$log.log('[Main] Currently logged in as ' + @dmSessionSvc.currentUser.email)
       @dmSessionSvc.currentUser
     else
-      @$log.log('Main: Not logged in')
+      @$log.log('[Main] Not logged in')
       false
 
   setupXhr: ->
-    @$log.log('Main: setup HTTP default hedaers ...')
+    @$log.log('[Main] setup HTTP default hedaers ...')
     @$http.defaults.headers.common['Content-Type'] = 'application/json'
     @$http.defaults.headers.post['Content-Type'] = 'application/json'
     @$http.defaults.headers.put['Content-Type'] = 'application/json'

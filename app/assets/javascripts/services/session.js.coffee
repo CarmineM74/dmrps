@@ -11,7 +11,7 @@ class SessionSvc
       ,{create: {method: 'POST'}
       ,destroy: {method: 'DELETE'}}
     )
-    @$rootScope.$on('Authentication:Failed', @authenticationFailed)
+    @$rootScope.$on('Authentication:Failed', @loginFailed)
 
   notify: (name, args) ->
     @$rootScope.$broadcast('dmSessionSvc:'+name,args)
@@ -25,12 +25,8 @@ class SessionSvc
       @$location.path(path)
       return false
 
-  authenticationFailed: (event, args) =>
-    @currentUser = undefined
-    @notify('Logout:Success',args)
-
   logout: ->
-    user.$destroy({user_id: @currentUser.id},
+    @sessions.destroy({user_id: @currentUser.id},
       (response) => @notify('Logout:Success',response),
       (response) => @notify('Logout:Failed',response)
     )
@@ -42,16 +38,15 @@ class SessionSvc
       @notify('Login:Success',@currentUser)
     else
       @sessions.create({email: user.email, password: user.password},
-         (response) => @loginSuccessful(response), 
-         (response) => @loginFailed(response)
+         (response) => @loginSuccessful(response) 
       )
 
   loginSuccessful : (response) ->
     @currentUser = response.user
-    @$log.log('Login successful: ' + JSON.stringify(@currentUser))
+    @$log.log('[SessionSVC] Login successful: ' + JSON.stringify(@currentUser))
     @notify('Login:Success',@currentUser)
 
-  loginFailed : (response) ->
-    @$log.log('Login failed: ' + JSON.stringify(response))
+  loginFailed : (event, args) =>
+    @$log.log('[SessionSVC] Login failed: ' + JSON.stringify(args.data))
     @currentUser = undefined
-    @notify('Login:Failed',response)
+    @notify('Login:Failed',args.data)

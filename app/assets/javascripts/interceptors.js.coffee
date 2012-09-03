@@ -26,13 +26,13 @@ class AuthInterceptor
     promise.then(@succces,@error)
 
   success: (response) =>
-    @$rootScope.$broadcast('Authentication::Success',response)
     response
 
   error: (response) =>
     if response.status == 401
+      @$log.log('[AuthInterceptor] Authentication failed: ' + JSON.stringify(response))
       deferred = @$q.defer()
-      @$rootScope.$broadcast('Autentication::Failed',response)
+      @$rootScope.$broadcast('Authentication:Failed',response)
       return deferred.promise
     else
       @$q.reject(response)
@@ -54,9 +54,5 @@ class SpinnerInterceptor
 
   error: (response) =>
     @stopSpinner()
-    @$log.log('HTTP Request ERROR: ' + JSON.stringify(response))
-    data = response.data
-    if data.error_type = 'validation'
-      @$q.reject(data)
-    else
-      @$q.reject(response)
+    @$log.log('[SpinnerInterceptor] HTTP Request ERROR: ' + JSON.stringify(response))
+    @$q.reject(response)

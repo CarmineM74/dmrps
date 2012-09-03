@@ -11,9 +11,8 @@ private
 
 protected
   
-  def responder
+  def self.responder
     RablResponder
   end
-
 
 end

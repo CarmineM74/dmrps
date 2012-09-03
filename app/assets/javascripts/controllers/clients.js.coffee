@@ -26,6 +26,8 @@ class @ClientsCtrl
       .remove()
 
   showValidationErrors: (errors) ->
+    #@$log.log(JSON.stringify(errors))
+    errors = errors.data
     error_msg = if errors.error_msg? then errors.error_msg else 'Operazione fallita!'
     bootbox.alert(error_msg, =>
       for k,v of errors.errors

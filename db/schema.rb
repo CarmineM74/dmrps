@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120902183052) do
+ActiveRecord::Schema.define(:version => 20120903155014) do
+
+  create_table "clients", :force => true do |t|
+    t.string   "ragione_sociale", :null => false
+    t.string   "indirizzo"
+    t.string   "cap"
+    t.string   "citta"
+    t.string   "provincia"
+    t.string   "partita_iva",     :null => false
+    t.string   "codice_fiscale"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false

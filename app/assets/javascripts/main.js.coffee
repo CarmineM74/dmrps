@@ -1,4 +1,4 @@
-@app = angular.module('dmrps',['ngResource','ui','interceptorServices'])
+@app = angular.module('dmrps',['ngResource','ui','interceptorServices','directivesService'])
   .config(['$routeProvider', ($routeProvider) ->
     $routeProvider
       .when('/',
@@ -13,8 +13,8 @@
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{
-    #serverAddr: 'dm.dev'
-    serverAddr: '192.168.1.95'
+    serverAddr: 'dm.dev'
+    #serverAddr: '192.168.1.95'
     serverPort: ':3000'
   })
 

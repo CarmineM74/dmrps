@@ -16,7 +16,7 @@
     </table>
   </div>
   <div id='new-user' class='span12'>
-    <form name='userForm' class='customForm' ng-show='showForm'>
+    <form name='userForm' class='customForm' ng-show='showForm' show-validation-errors errors='errors'>
       <fieldset>
         <legend>{{formCaption}}</legend>
         <div class='alert alert-info' ng-show='selectedUser.id'>
@@ -25,15 +25,15 @@
         <div class='control-group email'>
           <label >E-Mail</label>
           <input id='email' class='span5' type='text' ng-model='selectedUser.email' required>
-	</div>
+	      </div>
         <div class='control-group password'>
           <label >Password</label>
           <input id='password' class='span5' type='password' ng-model='selectedUser.password' required>
-	</div>
+	      </div>
         <div class='control-group password_confirmation'>
           <label>Conferma password</label>
           <input id='password_confirm' class='span5' type='password' ng-model='selectedUser.password_confirmation' required>
-	</div>
+	      </div>
         <div class='form-actions'>
           <button type='submit' class='btn' ng-click='saveUser(selectedUser)'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="deleteUser(selectedUser)" ng-show='selectedUser.id'>Elimina</button>

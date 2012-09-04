@@ -1,6 +1,7 @@
 class @UsersCtrl
   @inject: ['$scope','$log','dmUsersSvc']
   constructor: (@$scope, @$log, @dmUsersSvc) ->
+    @$scope.errors = []
     @$scope.users = []
     @$scope.selectedUser = {}
     @$scope.originalUser = undefined
@@ -21,6 +22,7 @@ class @UsersCtrl
     @$scope.hideForm = angular.bind(this, @hideForm)
 
   clearValidationErrors: ->
+    return
     angular.element('.control-group')
       .removeClass('error')
       .find('span.help-block')
@@ -28,6 +30,10 @@ class @UsersCtrl
 
   showValidationErrors: (errors) ->
     errors = errors.data
+    @$scope.errors = errors
+  
+    return
+
     error_msg = if errors.error_msg? then errors.error_msg else 'Operazione fallita!'
     bootbox.alert(error_msg, =>
       for k,v of errors.errors

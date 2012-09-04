@@ -3,6 +3,7 @@ class @UsersCtrl
   constructor: (@$scope, @$log, @dmUsersSvc) ->
     @$scope.users = []
     @$scope.selectedUser = {}
+    @$scope.originalUser = undefined
     @$scope.formCaption = ''
     @$scope.formSubmitCaption = ''
     @$scope.showForm = false
@@ -11,10 +12,10 @@ class @UsersCtrl
     @$scope.fetchAll = angular.bind(this, @index)
     @$scope.selectUser = angular.bind(this, @selectUser)
     @$scope.newUser = angular.bind(this, @newUser)
-    @$scope.$on('dmUsersSvc:Save:Success',@reqSuccess)
+    @$scope.$on('dmUsersSvc:Save:Success',@saveSuccess)
     @$scope.$on('dmUsersSvc:Save:Failure',@reqFailed)
     @$scope.saveUser = angular.bind(this, @saveUser)
-    @$scope.$on('dmUsersSvc:Destroy:Success', @reqSuccess)
+    @$scope.$on('dmUsersSvc:Destroy:Success', @deleteSuccess)
     @$scope.$on('dmUsersSvc:Destroy:Failure', @reqFailed)
     @$scope.deleteUser = angular.bind(this, @deleteUser)
     @$scope.hideForm = angular.bind(this, @hideForm)
@@ -44,6 +45,7 @@ class @UsersCtrl
     bootbox.alert("Impossibile recuperare l'elenco degli utenti!")
 
   selectUser: (user) ->
+    @$scope.originalUser = angular.copy(user)
     @$scope.selectedUser = user
     @$scope.selectedUser.password = ''
     @$scope.selectedUser.password_confirmation = ''
@@ -52,6 +54,7 @@ class @UsersCtrl
     @$scope.showForm = true
 
   newUser: ->
+    @$scope.originalUser = undefined
     @$scope.selectedUser = {email: '', password: '', password_confirmation: ''}
     @$scope.formCaption = 'Nuovo utente'
     @$scope.formSubmitCaption = 'Salva'
@@ -60,8 +63,12 @@ class @UsersCtrl
   saveUser: (user) ->
     @dmUsersSvc.save(user)
 
+  saveSuccess: (event, args) =>
+    @$scope.originalUser = angular.copy(@$selectedUser)
+    @hideForm()
+    bootbox.alert('Dati salvati con successo!')
+
   reqSuccess: =>
-    @clearValidationErrors()
     bootbox.alert('Operazione completata!')
     @hideForm()
 
@@ -75,8 +82,17 @@ class @UsersCtrl
         @dmUsersSvc.destroy(user)
         @hideForm()
     )
+  
+  deleteSuccess: =>
+    @$scope.originalUser = undefined
+    @$scope.selectedUser = undefined
+    bootbox.alert('Utente rimosso con successo!')
+    @hideForm()
 
   hideForm: ->
+    if !@$scope.originalUser?
+      if !angular.equals(@$scope.originalUser,@$scope.selectedUser)
+        @$scope.selectedUser = angular.copy(@$scope.originalUser)
     @$scope.showForm = false
     @clearValidationErrors()
     @index()

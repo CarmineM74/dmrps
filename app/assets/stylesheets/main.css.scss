@@ -4,3 +4,13 @@
 body {
   padding-top: 40px;
 }
+
+.custom-form .same-row {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+}
+
+.custom-form .new-row {
+ clear: both;
+}

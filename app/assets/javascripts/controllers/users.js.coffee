@@ -21,27 +21,8 @@ class @UsersCtrl
     @$scope.deleteUser = angular.bind(this, @deleteUser)
     @$scope.hideForm = angular.bind(this, @hideForm)
 
-  clearValidationErrors: ->
-    return
-    angular.element('.control-group')
-      .removeClass('error')
-      .find('span.help-block')
-      .remove()
-
   showValidationErrors: (errors) ->
-    errors = errors.data
-    @$scope.errors = errors
-  
-    return
-
-    error_msg = if errors.error_msg? then errors.error_msg else 'Operazione fallita!'
-    bootbox.alert(error_msg, =>
-      for k,v of errors.errors
-        angular.element('.control-group.'+k)
-          .addClass('error')
-          .find('input')
-          .after("<span class='help-block'>"+v+"</span>")
-    )
+    @$scope.errors = errors.data
 
   index: ->
     @$scope.users = @dmUsersSvc.index()
@@ -79,7 +60,6 @@ class @UsersCtrl
     @hideForm()
 
   reqFailed: (event, args) =>
-    @clearValidationErrors()
     @showValidationErrors(args)
 
   deleteUser: (user) ->
@@ -100,5 +80,4 @@ class @UsersCtrl
       if !angular.equals(@$scope.originalUser,@$scope.selectedUser)
         @$scope.selectedUser = angular.copy(@$scope.originalUser)
     @$scope.showForm = false
-    @clearValidationErrors()
     @index()

@@ -21,8 +21,20 @@ class @ClientsCtrl
     @$scope.deleteClient = angular.bind(this, @deleteClient)
     @$scope.hideForm = angular.bind(this, @hideForm)
 
+    @$scope.isDirty = angular.bind(this, @isDirty)
+
+    @index()
+
   showValidationErrors: (errors) ->
     @$scope.errors = errors.data
+
+  isDirty: ->
+    #@$log.log('Original: ' + JSON.stringify(@$scope.originalClient))
+    #@$log.log('Selected: ' + JSON.stringify(@$scope.selectedClient))
+    if angular.equals(@$scope.originalClient,@$scope.selectedClient)
+      false
+    else
+      true
 
   index: ->
     @$scope.clients = @dmClientsSvc.index()
@@ -50,7 +62,7 @@ class @ClientsCtrl
 
   saveSuccess: (events, args) =>
     @$scope.errors = []
-    @$scope.originalUser = angular.copy(@$scope.selectedUser)
+    @$scope.originalClient = angular.copy(@$scope.selectedClient)
     @hideForm()
     bootbox.alert('Dati salvati con successo!')
 

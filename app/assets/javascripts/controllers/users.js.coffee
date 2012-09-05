@@ -21,8 +21,20 @@ class @UsersCtrl
     @$scope.deleteUser = angular.bind(this, @deleteUser)
     @$scope.hideForm = angular.bind(this, @hideForm)
 
+    @$scope.isDirty = angular.bind(this, @isDirty)
+
+    @index()
+
   showValidationErrors: (errors) ->
     @$scope.errors = errors.data
+
+  isDirty: ->
+    #@$log.log('Original: ' + JSON.stringify(@$scope.originalUser))
+    #@$log.log('Selected: ' + JSON.stringify(@$scope.selectedUser))
+    if angular.equals(@$scope.originalUser,@$scope.selectedUser)
+      false
+    else
+      true
 
   index: ->
     @$scope.users = @dmUsersSvc.index()
@@ -32,10 +44,10 @@ class @UsersCtrl
     bootbox.alert("Impossibile recuperare l'elenco degli utenti!")
 
   selectUser: (user) ->
-    @$scope.originalUser = angular.copy(user)
     @$scope.selectedUser = user
     @$scope.selectedUser.password = ''
     @$scope.selectedUser.password_confirmation = ''
+    @$scope.originalUser = angular.copy(user)
     @$scope.formCaption = 'Modifica utente'
     @$scope.formSubmitCaption = 'Aggiorna dati'
     @$scope.showForm = true

@@ -1,7 +1,10 @@
+</br>
 <div class='row'>
   <div class='span12' ng-hide='showForm'>
-    <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
-    <input class='btn' type='button' value='Nuovo utente' ng-click='newUser()' />
+    <form class='form-search'>
+      <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
+      <input class='btn' type='button' value='Nuovo utente' ng-click='newUser()' />
+    </form>
     <table class='table table-striped table-bordered table-hover'>
       <thead>
         <tr>
@@ -35,7 +38,7 @@
           <input id='password_confirm' class='span5' type='password' ng-model='selectedUser.password_confirmation' required>
 	      </div>
         <div class='form-actions'>
-          <button type='submit' class='btn' ng-click='saveUser(selectedUser)'>{{formSubmitCaption}}</button>
+          <button type='submit' class='btn' ng-click='saveUser(selectedUser)' ng-disabled='!isDirty()'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="deleteUser(selectedUser)" ng-show='selectedUser.id'>Elimina</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>

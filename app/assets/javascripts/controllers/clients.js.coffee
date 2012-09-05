@@ -1,6 +1,7 @@
 class @ClientsCtrl
   @inject: ['$scope','$log','dmClientsSvc']
   constructor: (@$scope, @$log, @dmClientsSvc) ->
+    @$scope.errors = []
     @$scope.clients = []
     @$scope.selectedClient = {}
     @$scope.originalClient = undefined
@@ -20,22 +21,8 @@ class @ClientsCtrl
     @$scope.deleteClient = angular.bind(this, @deleteClient)
     @$scope.hideForm = angular.bind(this, @hideForm)
 
-  clearValidationErrors: ->
-    angular.element('.control-group')
-      .removeClass('error')
-      .find('span.help-block')
-      .remove()
-
   showValidationErrors: (errors) ->
-    errors = errors.data
-    error_msg = if errors.error_msg? then errors.error_msg else 'Operazione fallita!'
-    bootbox.alert(error_msg, =>
-      for k,v of errors.errors
-        angular.element('.control-group.'+k)
-          .addClass('error')
-          .find('input')
-          .after("<span class='help-block'>"+v+"</span>")
-    )
+    @$scope.errors = errors.data
 
   index: ->
     @$scope.clients = @dmClientsSvc.index()
@@ -62,16 +49,17 @@ class @ClientsCtrl
     @dmClientsSvc.save(client)
 
   saveSuccess: (events, args) =>
+    @$scope.errors = []
     @$scope.originalUser = angular.copy(@$scope.selectedUser)
     @hideForm()
     bootbox.alert('Dati salvati con successo!')
 
   reqSuccess: =>
+    @$scope.errors = []
     bootbox.alert('Operazione completata!')
     @hideForm()
 
   reqFailed: (event, args) =>
-    @clearValidationErrors()
     @showValidationErrors(args)
 
   deleteClient: (client) ->
@@ -82,6 +70,7 @@ class @ClientsCtrl
     )
   
   deleteSuccess: =>
+    @$scope.errors = []
     @$scope.originalClient = undefined
     @$scope.selectedClient = undefined
     bootbox.alert('Cliente rimosso con successo!')
@@ -92,5 +81,4 @@ class @ClientsCtrl
       if !angular.equals(@$scope.originalClient, @$scope.selectedClient)
         @$scope.selectedClient = angular.copy(@$scope.originalClient)
     @$scope.showForm = false
-    @clearValidationErrors()
     @index()

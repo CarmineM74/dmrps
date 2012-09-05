@@ -20,38 +20,37 @@
     </table>
   </div>
   <div id='new-client' class='span12'>
-    <form name='clientForm' class='custom-form' ng-show='showForm'>
+    <form name='clientForm' class='custom-form' ng-show='showForm' show-validation-errors errors='errors'>
       <fieldset>
         <legend>{{formCaption}}</legend>
-	<div class='control-group ragione_sociale'>
-	  <label>Ragione sociale</label>
-	  <input id='ragione_sociale' class='span10' type='text' ng-model='selectedClient.ragione_sociale' required>
+	      <div class='control-group ragione_sociale'>
+	        <label>Ragione sociale</label>
+	        <input id='ragione_sociale' class='span10' type='text' ng-model='selectedClient.ragione_sociale' required>
         </div>
-	<div class='same-row control-group indirizzo'>
-	  <label>Indirizzo</label>
+	      <div class='same-row control-group indirizzo'>
+	        <label>Indirizzo</label>
           <input id='indirizzo' class='span3' type='text' ng-model='selectedClient.indirizzo'>
-	</div>
-	<div class='same-row control-group citta'>
-	  <label>Citta'</label>
+	      </div>
+	      <div class='same-row control-group citta'>
+	        <label>Citta'</label>
           <input id='citta' class='span2' type='text' ng-model='selectedClient.citta'>
-	</div>
-	<div class='same-row control-group cap'>
-	  <label>CAP</label>
+	      </div>
+	      <div class='same-row control-group cap'>
+	        <label>CAP</label>
           <input id='cap' class='span1' type='text' ng-model='selectedClient.cap'>
-	</div>
-	<div class='same-row control-group provincia'>
-	  <label>Provincia</label>
+	      </div>
+	      <div class='same-row control-group provincia'>
+	        <label>Provincia</label>
           <input id='provincia' class='span1' type='text' ng-model='selectedClient.provincia'>
-	</div>
-	<div class='new-row same-row control-group partita_iva'>
-	  <label>Partita IVA</label>
+	      </div>
+	      <div class='new-row same-row control-group partita_iva'>
+	        <label>Partita IVA</label>
           <input id='partita_iva' class='span3' type='text' ng-model='selectedClient.partita_iva'>
-	</div>
-	<div class='same-row control-group codice_fiscale'>
-	  <label>Codice Fiscale</label>
+	      </div>
+	      <div class='same-row control-group codice_fiscale'>
+	        <label>Codice Fiscale</label>
           <input id='codice_fiscale' class='span3' type='text' ng-model='selectedClient.codice_fiscale'>
-	</div>
-	
+	      </div>
         <div class='form-actions new-row'>
           <button type='submit' class='btn' ng-click='saveClient(selectedClient)'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="deleteClient(selectedClient)" ng-show='selectedclient.id'>Elimina</button>

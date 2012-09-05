@@ -51,11 +51,13 @@ class @UsersCtrl
     @dmUsersSvc.save(user)
 
   saveSuccess: (event, args) =>
+    @$scope.errors = []
     @$scope.originalUser = angular.copy(@$selectedUser)
     @hideForm()
     bootbox.alert('Dati salvati con successo!')
 
   reqSuccess: =>
+    @$scope.errors = []
     bootbox.alert('Operazione completata!')
     @hideForm()
 
@@ -70,6 +72,7 @@ class @UsersCtrl
     )
   
   deleteSuccess: =>
+    @$scope.errors = []
     @$scope.originalUser = undefined
     @$scope.selectedUser = undefined
     bootbox.alert('Utente rimosso con successo!')

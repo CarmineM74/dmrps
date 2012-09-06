@@ -4,4 +4,6 @@ class Client < ActiveRecord::Base
   validates_uniqueness_of :ragione_sociale, :partita_iva, :on => :create
   validates_presence_of :partita_iva, :if => Proc.new { |c| c.codice_fiscale.nil? || c.codice_fiscale.empty? }
 
+  has_many :locations, :invers_of => :customer
+
 end

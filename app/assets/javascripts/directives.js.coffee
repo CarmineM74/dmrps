@@ -18,3 +18,22 @@ angular.module('directivesService',[])
     }
     return d
   )
+  .directive('toUppercase', ->
+    d = {
+      restrict: 'A'
+      require: 'ngModel'
+      link: (scope, element, attrs, ctrl) ->
+        cur_value = element.val().toUpperCase()
+
+        element.bind('blur', ->
+          scope.$apply( -> ctrl.$setViewValue(element.val().toUpperCase()))
+          ctrl.$render()
+        )
+
+        ctrl.$render = -> 
+          element.val(ctrl.$viewValue)
+
+        ctrl.$setViewValue(cur_value)
+    }
+    return d
+  )

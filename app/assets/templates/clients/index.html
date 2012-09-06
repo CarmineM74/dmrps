@@ -5,7 +5,7 @@
       <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
       <input class='btn' type='button' value='Nuovo cliente' ng-click='newClient()' />
       <div class='input-append offset1'>
-        <input type='text' class='span3 search-query' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title="La ricerca verra' effettuata sui campi:</br><ul><li>Codice cliente</li><li>Ragione sociale</li><li>Partita IVA</li><li>Codice fiscale</li></ul>">
+        <input type='text' class='span3 search-query' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title="La ricerca verra' effettuata sui campi:</br><ul class='unstyled'><li>Codice cliente</li><li>Ragione sociale</li></ul>">
         <button type='submit' class='btn'>Applica filtro</button>
       </div>
     </form>
@@ -14,16 +14,20 @@
         <tr>
           <th>Codice cliente</th>
           <th>Ragione sociale</th>
-          <th>P. IVA</th>
-          <th>Codice Fiscale</th>
+          <th>Azioni</th>
         </tr>
       </thead>
       <tbody>
-	      <tr ng-repeat='client in clients' ng-click='selectClient(client)'>
-	        <td class='span1'>{{client.id}}</td>
+	      <tr ng-repeat='client in clients'>
+	        <td class='span1 clients-id'>{{client.id}}</td>
 	        <td>{{client.ragione_sociale}}</td>
-	        <td>{{client.partita_iva}}</td>
-	        <td>{{client.codice_fiscale}}</td>
+          <td class='span1'>
+            <div class='btn-group'>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Modifica cliente' ng-click='selectClient(client)'><img src='assets/computer_edit.png'></a>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Rimuovi cliente' ng-click="deleteClient(client)"><img src='assets/computer_delete.png'></a>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Elenco sedi' ng-href='#/locations/{{client.id}}'><img src='assets/brick.png'></a>
+            </div>
+          </td>
 	      </tr>
       </tbody>
     </table>
@@ -32,10 +36,10 @@
     <form name='clientForm' class='custom-form' ng-show='showForm' show-validation-errors errors='errors'>
       <fieldset>
         <legend>{{formCaption}}</legend>
-              <div class='same-row id'>
-		<label>Codice cliente</label>
-		<span class='span1 uneditable-input' type='text' ng-show='selectedClient.id'>{{selectedClient.id}}</span>
-              </div>
+        <div class='same-row id' ng-show='selectedClient.id'>
+		      <label>Codice cliente</label>
+		      <span class='span1 uneditable-input' type='text'>{{selectedClient.id}}</span>
+        </div>
 	      <div class='same-row control-group ragione_sociale'>
 	        <label>Ragione sociale</label>
 	        <input id='ragione_sociale' class='span10' type='text' ng-model='selectedClient.ragione_sociale' required>
@@ -54,7 +58,7 @@
 	      </div>
 	      <div class='same-row control-group provincia'>
 	        <label>Provincia</label>
-                <input id='provincia' class='span1' type='text' ng-model='selectedClient.provincia' to-uppercase>
+          <input id='provincia' class='span1' type='text' ng-model='selectedClient.provincia' to-uppercase>
 	      </div>
 	      <div class='new-row same-row control-group partita_iva'>
 	        <label>Partita IVA</label>
@@ -66,7 +70,6 @@
 	      </div>
         <div class='form-actions new-row'>
           <button type='submit' class='btn' ng-click='saveClient(selectedClient)' ng-disabled='!isDirty()'>{{formSubmitCaption}}</button>
-          <button type='submit' class='btn' ng-click="deleteClient(selectedClient)" ng-show='selectedClient.id'>Elimina</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>
       </fieldset>

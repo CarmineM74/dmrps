@@ -9,11 +9,17 @@
       <thead>
         <tr>
 	        <th>E-Mail</th>
+	        <th>Azioni</th>
         </tr>
       </thead>
       <tbody>
-	      <tr ng-repeat='user in users' ng-click='selectUser(user)'>
-	        <td>{{user.email}}</td>
+	      <tr ng-repeat='user in users'>
+          <td>{{user.email}}</td>
+          <td class='span1'>
+            <div class='btn-group'>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Modifica utente' ng-click='selectUser(user)'><img src='assets/user_edit.png'></a>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Rimuovi utente' ng-click='deleteUser(user)'><img src='assets/user_delete.png'></a>
+          </td>
 	      </tr>
       </tbody>
     </table>
@@ -39,7 +45,6 @@
 	      </div>
         <div class='form-actions'>
           <button type='submit' class='btn' ng-click='saveUser(selectedUser)' ng-disabled='!isDirty()'>{{formSubmitCaption}}</button>
-          <button type='submit' class='btn' ng-click="deleteUser(selectedUser)" ng-show='selectedUser.id'>Elimina</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>
       </fieldset>

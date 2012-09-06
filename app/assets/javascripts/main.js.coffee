@@ -10,6 +10,9 @@
       .when('/clients',
         {controller: ClientsCtrl, templateUrl: 'assets/clients/index.html'}
       )
+      .when('/locations/:client_id',
+        {controller: ClientsCtrl, templateUrl: 'assets/locations/index.html'}
+      )
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{

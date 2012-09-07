@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  respond_to :json
   layout nil
+  protect_from_forgery
   before_filter :intercept_html_requests
+  rescue_from ActiveRecord::RecordNotFound, :with => :resource_not_found
 
 private
 
@@ -14,5 +16,9 @@ protected
   def self.responder
     RablResponder
   end
+
+   def resource_not_found
+     respond_with({error_msg: 'cannot find requested resource'}, status: 404, location: nil)
+   end
 
 end

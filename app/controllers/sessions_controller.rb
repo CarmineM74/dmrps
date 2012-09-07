@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-  respond_to :json
 
   def create
     u = User.find_by_email(params[:email])

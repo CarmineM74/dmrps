@@ -1,10 +1,9 @@
 class LocationsController < ApplicationController
-  respond_to :json
   before_filter :find_client
-  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
   def index
     @locations = @client.locations
+    respond_with(@locations)
   end
 
   def create
@@ -27,11 +26,8 @@ class LocationsController < ApplicationController
 protected
   
   def find_client
+    logger.info("Current client id: #{params[:client_id]}")
     @client = Client.find(params[:client_id])
-  end
-
-  def record_not_found(error)
-    respond_with({error_msg: 'resource not found'}, status: 404, location: nil)
   end
 
 end

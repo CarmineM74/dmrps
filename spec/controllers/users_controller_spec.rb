@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe UsersController do
+  render_views
 
   describe 'GET index' do
     it 'fetches all the users from the database' do
@@ -26,9 +27,16 @@ describe UsersController do
           do_post
         }.to change(User,:count).by(1)
       end
-      
-      it 'replies with the user just created'
 
+      it 'responds with status 201 (created)' do
+        do_post
+        response.status.should eq(201)
+      end
+
+      it 'renders create.rabl' do
+        do_post
+        response.should render_template :create
+      end
     end
 
     context 'with invalid parameters' do
@@ -39,20 +47,62 @@ describe UsersController do
         }.should_not change(User,:count)
       end
 
-      it 'replies with an error explaining what prevented user creation'
-
+      it 'replies with status == :unprocessable_entity (422)' do
+        @user.email = ''
+        do_post
+        response.status.should eq(422)
+      end
     end
   end
 
   describe 'PUT update' do
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+    end
+
+    def do_put(attrs)
+      put :update, :id => @user.id, :user => attrs, :format => 'json'
+    end
+
+    it 'finds the requested user' do
+      do_put(FactoryGirl.attributes_for(:user))
+      assigns(:user).should eq(@user)
+    end
+
     context 'with valid parameters' do
-      it "updates user's details"
-      it "replies with updated user's details"
+      it "replies with status :ok (200)" do
+        do_put(FactoryGirl.attributes_for(:user))
+        response.status.should eq(200)
+      end
+
+      it "updates user's details" do
+        do_put(FactoryGirl.attributes_for(:user, email: 'updated@me.com'))
+        @user.reload
+        @user.email.should eq('updated@me.com')
+      end
     end
 
     context 'with invalid parameters' do
+      describe 'replies with status :unprocessable_entity (422)' do
+        after(:each) do
+          response.status.should eq(422)
+        end
+
+        it "when email is empty" do
+          do_put(FactoryGirl.attributes_for(:user, email: ''))
+        end
+
+        it "when email is already existing" do
+          user2 = FactoryGirl.create(:user, email: 'iamme@me.com')
+          do_put(FactoryGirl.attributes_for(:user, email: 'iamme@me.com'))
+        end
+
+        it "when password is empty" do
+          do_put(FactoryGirl.attributes_for(:user, password: ''))
+        end
+      end
+
       it "doesn't update user's details"
-      it "replies with an error explaining why the user wasn't updated"
     end
   end
 
@@ -63,7 +113,7 @@ describe UsersController do
     end
 
     context 'when user could not be found' do
-      it "replies with status :not_found and an error message"
+      it "replies with status :not_found"
     end
   end
 

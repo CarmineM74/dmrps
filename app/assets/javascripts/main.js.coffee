@@ -16,9 +16,10 @@
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{
-    #serverAddr: 'dm.dev'
-    serverAddr: '192.168.1.95'
+    serverAddr: 'dm.dev'
+    #serverAddr: '192.168.1.95'
     serverPort: ':3000'
+    api_ver: 'v1'
   })
 
 class @MainCtrl

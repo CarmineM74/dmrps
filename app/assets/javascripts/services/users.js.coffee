@@ -5,8 +5,13 @@
 class UsersSvc
   constructor: (@$rootScope,@$resource,@$log,@appConfig) ->
     @$log.log('Initializing Users Service ...')
-    @users = @$resource('http://:serverAddress:port/:path/:user_id'
-      ,{serverAddress: appConfig.serverAddr, port: appConfig.serverPort, path: 'users'}
+    @users = @$resource('http://:addr:port/api/:api_ver/:path/:user_id'
+      ,{
+        addr: appConfig.serverAddr
+        port: appConfig.serverPort
+        api_ver: appConfig.api_ver
+        path: 'users'
+      }
       ,{index: {method: 'GET', isArray: true}
       ,create: {method: 'POST'}
       ,update: {method: 'PUT'}

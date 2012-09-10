@@ -18,7 +18,7 @@ protected
   end
 
    def resource_not_found
-     respond_with({error_msg: 'cannot find requested resource'}, status: 404, location: nil)
+     render 'api/v1/errors/not_found', status: 404
    end
 
 end

@@ -6,8 +6,13 @@ class SessionSvc
   constructor: (@$rootScope,$resource,@$log,@$location,@appConfig) ->
     @$log.log('Initializing Session Service ...')
     @currentUser = undefined
-    @sessions = $resource('http://:serverAddr:port/:path/:user_id'
-      ,{serverAddr: appConfig.serverAddr, port: appConfig.serverPort, path: 'sessions'}
+    @sessions = $resource('http://:addr:port/api/:api_ver/:path/:user_id'
+      ,{
+        addr: appConfig.serverAddr
+        port: appConfig.serverPort
+        api_ver: appConfig.api_ver
+        path: 'sessions'
+      }
       ,{create: {method: 'POST'}
       ,destroy: {method: 'DELETE'}}
     )

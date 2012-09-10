@@ -5,8 +5,13 @@
 class ClientsSvc
   constructor: (@$rootScope,@$resource,@$log,@appConfig) ->
     @$log.log('Initializing Clients Service ...')
-    @clients = @$resource('http://:serverAddress:port/:path/:client_id'
-      ,{serverAddress: appConfig.serverAddr, port: appConfig.serverPort, path: 'clients'}
+    @clients = @$resource('http://:addr:port/api/:api_ver/:path/:client_id'
+      ,{
+        addr: appConfig.serverAddr
+        port: appConfig.serverPort
+        api_ver: appConfig.api_ver
+        path: 'clients'
+      }
       ,{index: {method: 'GET', isArray: true}
       ,create: {method: 'POST'}
       ,update: {method: 'PUT'}

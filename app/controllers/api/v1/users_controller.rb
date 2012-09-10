@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class Api::V1::UsersController < ApplicationController
   #before_filter :authentication_required
   #before_filter :administrator_required
 

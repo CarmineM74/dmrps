@@ -27,11 +27,13 @@ end
 group :development, :test do
   gem 'rspec-rails', '> 2.0.0'
   gem 'factory_girl_rails'
+  gem 'rack-test'
 end
 
 group :test do
   gem 'faker'
   gem 'guard-rspec'
+  gem 'rack-test'
 end
 
 gem 'jquery-rails'

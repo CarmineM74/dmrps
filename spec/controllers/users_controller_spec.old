@@ -1,14 +1,17 @@
 require 'spec_helper'
 
-describe UsersController do
-  render_views
+describe "/users.json", :type => :api do
+  #render_views
+
+  let(:url) { "/users.json" }
 
   describe 'GET index' do
     it 'fetches all the users from the database' do
       @user = FactoryGirl.create(:user)
-      User.should_receive(:all) { [@user] }
-      get :index, :format => 'json'
-      assigns(:users).should eq([@user])
+      get url
+      users = User.all.to_json
+      last_response.body.should eql(users)
+      last_response.status.should eql(200)
     end
   end
 
@@ -100,20 +103,52 @@ describe UsersController do
         it "when password is empty" do
           do_put(FactoryGirl.attributes_for(:user, password: ''))
         end
+
+        it "doesn't update user's details" do
+          do_put(FactoryGirl.attributes_for(:user, email: ''))
+          @user.reload
+          @user.email.should_not eq('')
+        end
       end
 
-      it "doesn't update user's details"
     end
   end
 
   describe 'DELETE destroy' do
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+    end
+
+    def do_delete
+      delete :destroy, id: @user.id, format: 'json'
+    end
+
+    it "finds requested user" do
+      do_delete
+      assigns(:user).should eq(@user)
+    end
+
     context 'when user has been found' do
-      it "deletes user from database"
-      it "replies with status :ok"
+      it "deletes user from database" do
+        expect {
+          do_delete
+        }.to change(User, :count).by(-1)
+        expect {
+          User.find(@user.id)
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "replies with status :ok" do
+        do_delete
+        response.status.should eq(204)
+      end
     end
 
     context 'when user could not be found' do
-      it "replies with status :not_found"
+      it "replies with status :not_found" do
+        delete :destroy, id: 200, format: 'json'
+        response.status.should eq(404)
+      end
     end
   end
 

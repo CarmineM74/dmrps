@@ -18,7 +18,7 @@ class Api::V1::ClientsController < ApplicationController
 
   def destroy
     @client.destroy
-    respond_with(@client)
+    respond_with({})
   end
 
 private

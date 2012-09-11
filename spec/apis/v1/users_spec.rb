@@ -8,6 +8,10 @@ describe "/api/v1/users.json", :type => :api do
       get url+".json"
       users = JSON.parse(User.all.to_json(:only => [:id, :email]))
       JSON.parse(last_response.body).should eql(users)
+    end
+
+    it 'replies with status == :ok (200)' do
+      get url+".json"
       last_response.status.should eql(200)
     end
   end

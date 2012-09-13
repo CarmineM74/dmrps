@@ -1,4 +1,4 @@
-class LocationsController < ApplicationController
+class Api::V1::LocationsController < ApplicationController
   before_filter :find_client
 
   def index
@@ -7,8 +7,11 @@ class LocationsController < ApplicationController
   end
 
   def create
-    @location = @client.locations.create(params[:location])
-    respond_with(@location)
+#    @location = @client.locations.create(params[:location])
+    #@location = Location.new(params[:location])
+    #@location.client = @client
+    #@location.save
+    respond_with({})
   end
 
   def update
@@ -20,13 +23,12 @@ class LocationsController < ApplicationController
   def destroy
     @location = @client.locations.find(params[:id])
     @client.locations.delete(@location)
-    respond_with(@location)
+    respond_with({})
   end
 
 protected
   
   def find_client
-    logger.info("Current client id: #{params[:client_id]}")
     @client = Client.find(params[:client_id])
   end
 

@@ -16,7 +16,7 @@ end
 describe "/api/v1/clients/:client_id/locations.json", :type => :api do
   let(:client) { FactoryGirl.create(:client) }
   let(:url) { "/api/v1/locations" }
-  
+
   describe 'Locations index' do
     it_behaves_like "requires a client"
 
@@ -30,7 +30,7 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
         body = JSON.parse(last_response.body)
         body.should eq([])
       end
-      
+
       it "returns an array with client's locations" do
         location = FactoryGirl.create(:location)
         client.locations << location
@@ -53,7 +53,7 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
       post url+".json", client_id: client.id, location: @post_params
     end
 
-    context "with valid parameters for location" do
+    context "with valid parameter" do
       it "creates a new location for a given client" do
         do_verb
         client.reload
@@ -76,7 +76,7 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
       end
     end
 
-    context "with invalid parameters for location" do
+    context "with invalid parameters" do
       it "doesn't create a location" do
         location.descrizione = ''
         expect {
@@ -96,7 +96,6 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
         body = JSON.parse(last_response.body)
         body.should include('errors')
       end
-
     end
 
   end

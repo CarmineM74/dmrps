@@ -1,6 +1,7 @@
 class Location < ActiveRecord::Base
   attr_accessible :cap, :citta, :descrizione, :indirizzo, :provincia
-  validates_presence_of :descrizione, :indirizzo, :cap, :citta, :provincia
+  validates :descrizione, :indirizzo, :cap, :citta, :provincia, presence: true
+  validates :descrizione, uniqueness: { scope: :client_id }
 
   belongs_to :client, :inverse_of => :locations
 

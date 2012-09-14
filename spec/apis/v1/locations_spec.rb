@@ -58,14 +58,45 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
         do_verb
         client.reload
         l = client.locations.find_by_descrizione(location.descrizione)
-        l = JSON.parse(l.to_json(except: [:id, :client_id, :created_at, :updated_at]))
-        l.should eq(@post_params)
+        l.should_not be_nil
       end
-      it "replies with status == :created (201)"
-      it "replies with location's details"
+
+      it "replies with status == :created (201)" do
+        do_verb
+        last_response.status.should eq(201)
+      end
+
+      it "replies with location's details" do
+        do_verb
+        body = JSON.parse(last_response.body)
+        body["id"].should_not be_nil
+        [:descrizione,:indirizzo,:cap,:citta,:provincia].each do |a|
+          @post_params[a].should eq(body[a])
+        end
+      end
     end
 
     context "with invalid parameters for location" do
+      it "doesn't create a location" do
+        location.descrizione = ''
+        expect {
+          do_verb
+        }.to_not change(client.locations,:size)
+      end
+
+      it "replies with status == :unprocessable_entity (422)" do
+        location.descrizione = ''
+        do_verb
+        last_response.status.should eq(422)
+      end
+
+      it "response's body contains errors" do
+        location.descrizione = ''
+        do_verb
+        body = JSON.parse(last_response.body)
+        body.should include('errors')
+      end
+
     end
 
   end

@@ -13,9 +13,9 @@ shared_examples_for "requires a client" do
   end
 end
 
-describe "/api/v1/locations.json", :type => :api do
-  let(:url) { "/api/v1/locations" }
+describe "/api/v1/clients/:client_id/locations.json", :type => :api do
   let(:client) { FactoryGirl.create(:client) }
+  let(:url) { "/api/v1/locations" }
   
   describe 'Locations index' do
     it_behaves_like "requires a client"
@@ -49,11 +49,20 @@ describe "/api/v1/locations.json", :type => :api do
     let(:location) { FactoryGirl.build(:location) }
 
     def do_verb
-      post_params = JSON.parse(location.to_json(except: [:client_id, :created_at, :updated_at]))
-      post url+".json", client_id: client.id, location: post_params
+      @post_params = JSON.parse(location.to_json(except: [:id, :client_id, :created_at, :updated_at]))
+      post url+".json", client_id: client.id, location: @post_params
     end
 
     context "with valid parameters for location" do
+      it "creates a new location for a given client" do
+        do_verb
+        client.reload
+        l = client.locations.find_by_descrizione(location.descrizione)
+        l = JSON.parse(l.to_json(except: [:id, :client_id, :created_at, :updated_at]))
+        l.should eq(@post_params)
+      end
+      it "replies with status == :created (201)"
+      it "replies with location's details"
     end
 
     context "with invalid parameters for location" do

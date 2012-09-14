@@ -7,11 +7,8 @@ class Api::V1::LocationsController < ApplicationController
   end
 
   def create
-#    @location = @client.locations.create(params[:location])
-    #@location = Location.new(params[:location])
-    #@location.client = @client
-    #@location.save
-    respond_with({})
+    @location = @client.locations.create(params[:location])
+    respond_with(@location)
   end
 
   def update

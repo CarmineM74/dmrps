@@ -101,6 +101,74 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
   end
 
   describe 'Updating a location' do
+    it_behaves_like "requires a client"
+
+    let(:location_attrs) { FactoryGirl.build(:location).attributes.except('id','client_id','created_at','updated_at') }
+    let!(:location) { client.locations.create(location_attrs) }
+    let(:put_url) { "#{url}/#{location.id}.json" }
+
+    def do_verb
+      put put_url, client_id: client.id, location: location_attrs
+    end
+
+    context "when the location doesn't exists" do
+      it "fails with status == :not_found (404)" do
+        location.id = 200
+        do_verb
+        last_response.status.should eq(404)
+      end
+
+      it "fails with error == 'resource not found'" do
+        location.id = 200
+        do_verb
+        body = JSON.parse(last_response.body)
+        body.should include('error_msg')
+        body['error_msg'].should eq('resource not found')
+      end
+    end
+
+    context "with valid parameters" do
+      before(:each) { location_attrs["descrizione"] = 'updated' }
+
+      it "updates location's details" do
+        do_verb
+        location.reload
+        location.descrizione.should eq('updated')
+      end
+
+      it "replies with status == :ok (200)" do
+        do_verb
+        last_response.status.should eq(200)
+      end
+
+      it "response body contains no errors" do
+        do_verb
+        body = JSON.parse(last_response.body)
+        body.should_not include('errors')
+      end
+    end
+
+    context "with invalid parameters" do
+      before { location_attrs["descrizione"] = '' }
+
+      it "doesn't update location's details" do
+        do_verb
+        location.reload
+        location.descrizione.should_not eq('')
+      end
+
+      it "fails with status == :unprocessable_entity (422)" do
+        do_verb
+        last_response.status.should eq(422)
+      end
+
+      it "response body contains errors" do
+        do_verb
+        body = JSON.parse(last_response.body)
+        body.should include('errors')
+      end
+
+    end
   end
 
   describe 'Deleting a location' do

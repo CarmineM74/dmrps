@@ -1,16 +1,16 @@
-@app.factory('dmClientsSvc',['$rootScope','$resource','$log','appConfig',($rootScope,$resource,$log,appConfig) ->
-	new ClientsSvc($rootScope,$resource,$log,appConfig) 
+@app.factory('dmLocationsSvc',['$rootScope','$resource','$log','appConfig', ($rootScope,$resource,$log,appConfig) ->
+	new LocationsSvc($rootScope,$resource,$log,appConfig) 
 ])
 
-class ClientsSvc
+class LocationsSvc
   constructor: (@$rootScope,@$resource,@$log,@appConfig) ->
-    @$log.log('Initializing Clients Service ...')
-    @clients = @$resource('http://:addr:port/api/:api_ver/:path/:client_id'
+    @$log.log('Initializing Locations Service ...')
+    @locations = @$resource('http://:addr:port/api/:api_ver/:path/:location_id'
       ,{
         addr: appConfig.serverAddr
         port: appConfig.serverPort
         api_ver: appConfig.api_ver
-        path: 'clients'
+        path: 'locations'
       }
       ,{index: {method: 'GET', isArray: true}
       ,create: {method: 'POST'}
@@ -19,9 +19,9 @@ class ClientsSvc
     )
 
   notify: (name,args) ->
-    @$rootScope.$broadcast('dmClientsSvc:'+name,args)
+    @$rootScope.$broadcast('dmLocationsSvc:'+name,args)
 
-  destroy: (client) ->
+  destroy: (location) ->
     client.$destroy({client_id: client.id},
       (response) => @notify('Destroy:Success',response),
       (response) => @notify('Destroy:Failure',response)
@@ -34,14 +34,14 @@ class ClientsSvc
         (response) => @notify('Save:Failure',response)
       )
     else
-      c = new @clients(client)
+      c = new @locations(client)
       c.$save(
         (response) => @notify('Save:Success',response), 
         (response) => @notify('Save:Failure',response)
       )  
 
-  index: ->
-    @clients.index(
+  index: (client_id) ->
+    @locations.index({client_id: client_id}
       (response) => @notify('Index:Success',response),
       (response) => @notify('Index:Failure',response)
     )

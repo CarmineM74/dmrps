@@ -1,6 +1,6 @@
 class @LocationsCtrl
-  @inject: ['$scope','$log','dmClientsSvc']
-  constructor: (@$scope, @$log, @dmClientsSvc) ->
+  @inject: ['$scope','$log','$routeParams','dmLocationsvc']
+  constructor: (@$scope, @$log, @$routeParams, @dmLocationsSvc) ->
     @$scope.errors = []
     @$scope.locations = []
     @$scope.selectedLocation = {}
@@ -9,16 +9,16 @@ class @LocationsCtrl
     @$scope.formSubmitCaption = ''
     @$scope.showForm = false
 
-    @$scope.$on('dmClientsSvc:Index:Failure',@indexFailed)
+    @$scope.$on('dmLocationsSvc:Index:Failure',@indexFailed)
     @$scope.fetchAll = angular.bind(this, @index)
-    @$scope.selectClient = angular.bind(this, @selectClient)
-    @$scope.newClient = angular.bind(this, @newClient)
-    @$scope.$on('dmClientsSvc:Save:Success',@saveSuccess)
-    @$scope.$on('dmClientsSvc:Save:Failure',@reqFailed)
-    @$scope.saveClient = angular.bind(this, @saveClient)
-    @$scope.$on('dmClientsSvc:Destroy:Success', @deleteSuccess)
-    @$scope.$on('dmClientsSvc:Destroy:Failure', @reqFailed)
-    @$scope.deleteClient = angular.bind(this, @deleteClient)
+    @$scope.selectLocation = angular.bind(this, @selectLocation)
+    @$scope.newLocation = angular.bind(this, @newLocation)
+    @$scope.$on('dmLocationsSvc:Save:Success',@saveSuccess)
+    @$scope.$on('dmLocationsSvc:Save:Failure',@reqFailed)
+    @$scope.saveLocation = angular.bind(this, @saveLocation)
+    @$scope.$on('dmLocationsSvc:Destroy:Success', @deleteSuccess)
+    @$scope.$on('dmLocationsSvc:Destroy:Failure', @reqFailed)
+    @$scope.deleteLocation = angular.bind(this, @deleteLocation)
     @$scope.hideForm = angular.bind(this, @hideForm)
 
     @$scope.isDirty = angular.bind(this, @isDirty)
@@ -37,28 +37,28 @@ class @LocationsCtrl
       true
 
   index: ->
-    @$scope.clients = @dmClientsSvc.index()
+    @$scope.locations = @dmLocationsSvc.index(@$routeParams.client_id)
 
   indexFailed: (response) =>
-    @$log.log('Error while retrieving Clients#index')
+    @$log.log('Error while retrieving Locations#index')
     bootbox.alert("Impossibile recuperare l'elenco delle sedi per il cliente!")
 
-  selectClient: (client) ->
-    @$scope.originalLocation = angular.copy(client)
-    @$scope.selectedLocation = client
-    @$scope.formCaption = 'Modifica cliente'
+  selectLocation: (location) ->
+    @$scope.originalLocation = angular.copy(location)
+    @$scope.selectedLocation = location
+    @$scope.formCaption = 'Modifica sede'
     @$scope.formSubmitCaption = 'Aggiorna dati'
     @$scope.showForm = true
 
-  newClient: ->
+  newLocation: ->
     @$scope.originalLocation = undefined
     @$scope.selectedLocation = {}
-    @$scope.formCaption = 'Nuovo cliente'
+    @$scope.formCaption = 'Nuova sede'
     @$scope.formSubmitCaption = 'Salva'
     @$scope.showForm = true
 
-  saveClient: (client) ->
-    @dmClientsSvc.save(client)
+  saveLocation: (location) ->
+    @dmLocationsSvc.save(location)
 
   saveSuccess: (events, args) =>
     @$scope.errors = []
@@ -74,10 +74,10 @@ class @LocationsCtrl
   reqFailed: (event, args) =>
     @showValidationErrors(args)
 
-  deleteClient: (client) ->
-    bootbox.confirm("Proseguo con la cancellazione del cliente?",(result) =>
+  deleteLocation: (location) ->
+    bootbox.confirm("Proseguo con la cancellazione della sede?",(result) =>
       if result
-        @dmClientsSvc.destroy(client)
+        @dmLocationsSvc.destroy(location)
         @hideForm()
     )
   

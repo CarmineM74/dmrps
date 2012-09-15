@@ -172,6 +172,52 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
   end
 
   describe 'Deleting a location' do
+    it_behaves_like "requires a client"
+
+    let(:location_attrs) { FactoryGirl.build(:location).attributes.except('id','client_id','created_at','updated_at') }
+    let!(:location) { client.locations.create(location_attrs) }
+    let(:delete_url) { "#{url}/#{location.id}.json" }
+
+    def do_verb
+      delete delete_url, client_id: client.id
+    end
+
+    context "when location doesn't exists" do
+      it "replies with status == :not_found (404)" do
+        location.id = 200
+        do_verb
+        last_response.status.should eq(404)
+      end
+
+      it "response body contains error_msg == 'resource not found'" do
+        location.id = 200
+        do_verb
+        body = JSON.parse(last_response.body)
+        body.should include('error_msg')
+        body['error_msg'].should eq('resource not found')
+      end
+    end
+
+    context "when location exists" do
+      it "location gets deleted from database" do
+        expect {
+          do_verb
+        }.to change(Location,:count).by(-1)
+      end
+
+      it "location doesn't appear among client's" do
+        do_verb
+        expect {
+          client.locations.find(location.id)
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "replies with status == :no_content (204)" do
+        do_verb
+        last_response.status.should eq(204)
+      end
+    end
+
   end
 
 end

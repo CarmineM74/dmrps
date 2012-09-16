@@ -93,4 +93,5 @@ class @ClientsCtrl
       if !angular.equals(@$scope.originalClient, @$scope.selectedClient)
         @$scope.selectedClient = angular.copy(@$scope.originalClient)
     @$scope.showForm = false
+    @$scope.errors = []
     @index()

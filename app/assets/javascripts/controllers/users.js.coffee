@@ -95,4 +95,5 @@ class @UsersCtrl
       if !angular.equals(@$scope.originalUser,@$scope.selectedUser)
         @$scope.selectedUser = angular.copy(@$scope.originalUser)
     @$scope.showForm = false
+    @$scope.errors = []
     @index()

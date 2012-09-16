@@ -69,7 +69,7 @@
           <input id='codice_fiscale' class='span3' type='text' ng-model='selectedClient.codice_fiscale'>
 	      </div>
         <div class='form-actions new-row'>
-          <button type='submit' class='btn' ng-click='saveClient(selectedClient)' ng-disabled='!isDirty()'>{{formSubmitCaption}}</button>
+          <button type='submit' class='btn' ng-click='saveClient(selectedClient)' ng-disabled='!isDirty() || !clienForm.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>
       </fieldset>

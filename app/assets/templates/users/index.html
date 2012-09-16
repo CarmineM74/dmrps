@@ -44,7 +44,7 @@
           <input id='password_confirm' class='span5' type='password' ng-model='selectedUser.password_confirmation' required>
 	      </div>
         <div class='form-actions'>
-          <button type='submit' class='btn' ng-click='saveUser(selectedUser)' ng-disabled='!isDirty()'>{{formSubmitCaption}}</button>
+          <button type='submit' class='btn' ng-click='saveUser(selectedUser)' ng-disabled='!isDirty() || !userFrom.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>
       </fieldset>

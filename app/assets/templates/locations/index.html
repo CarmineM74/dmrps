@@ -56,7 +56,7 @@
           <input id='provincia' class='span1' type='text' ng-model='selectedLocation.provincia' to-uppercase>
 	      </div>
         <div class='form-actions new-row'>
-          <button type='submit' class='btn' ng-click='saveLocation(selectedLocation)' ng-disabled='!isDirty()'>{{formSubmitCaption}}</button>
+          <button type='submit' class='btn' ng-click='saveLocation(selectedLocation)' ng-disabled='!isDirty() || !locationForm.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>
       </fieldset>

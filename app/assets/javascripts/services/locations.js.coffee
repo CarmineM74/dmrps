@@ -27,15 +27,17 @@ class LocationsSvc
       (response) => @notify('Destroy:Failure',response)
     )
 
-  save: (client) ->
-    if client.id?
-      client.$update({client_id: client.id},
+  save: (location,client_id) ->
+    @$log.log("Location details: " + JSON.stringify(location))
+    @$log.log("Saving location for client id: " + client_id)
+    if location.client_id?
+      location.$update({location_id: location.id, client_id: client_id},
         (response) => @notify('Save:Success',response)
         (response) => @notify('Save:Failure',response)
       )
     else
-      c = new @locations(client)
-      c.$save(
+      c = new @locations(location)
+      c.$save({client_id: client_id},
         (response) => @notify('Save:Success',response), 
         (response) => @notify('Save:Failure',response)
       )  

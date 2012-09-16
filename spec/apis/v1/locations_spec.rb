@@ -37,7 +37,10 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
         client.save
         do_verb
         body = JSON.parse(last_response.body)
-        body.should eq([JSON.parse(location.to_json(except: [:client_id,:created_at,:updated_at]))])
+        location_params = location.attributes.except('created_at','updated_at')
+        [:id,:client_id,:descrizione,:indirizzo,:citta,:cap,:provincia].each do |attr|
+          location_params[attr].should eq(body[0][attr])
+        end
       end
     end
 
@@ -70,7 +73,7 @@ describe "/api/v1/clients/:client_id/locations.json", :type => :api do
         do_verb
         body = JSON.parse(last_response.body)
         body["id"].should_not be_nil
-        [:descrizione,:indirizzo,:cap,:citta,:provincia].each do |a|
+        [:client_id, :descrizione,:indirizzo,:cap,:citta,:provincia].each do |a|
           @post_params[a].should eq(body[a])
         end
       end

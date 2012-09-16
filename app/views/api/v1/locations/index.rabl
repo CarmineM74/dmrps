@@ -1,2 +1,2 @@
 collection @locations
-attributes :id, :descrizione, :indirizzo, :cap, :citta, :provincia
+attributes :id, :client_id, :descrizione, :indirizzo, :cap, :citta, :provincia, :created_at, :updated_at

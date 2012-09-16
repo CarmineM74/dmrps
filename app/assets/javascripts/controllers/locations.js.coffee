@@ -58,7 +58,7 @@ class @LocationsCtrl
     @$scope.showForm = true
 
   saveLocation: (location) ->
-    @dmLocationsSvc.save(location)
+    @dmLocationsSvc.save(location,@$routeParams.client_id)
 
   saveSuccess: (events, args) =>
     @$scope.errors = []
@@ -93,4 +93,5 @@ class @LocationsCtrl
       if !angular.equals(@$scope.originalLocation, @$scope.selectedLocation)
         @$scope.selectedLocation = angular.copy(@$scope.originalLocation)
     @$scope.showForm = false
+    @$scope.errors = []
     @index()

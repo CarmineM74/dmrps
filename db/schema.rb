@@ -11,32 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120920163932) do
+ActiveRecord::Schema.define(:version => 20120920174336) do
 
   create_table "clients", :force => true do |t|
-    t.string   "ragione_sociale", :null => false
+    t.string   "ragione_sociale",                                                                   :null => false
     t.string   "indirizzo"
     t.string   "cap"
     t.string   "citta"
     t.string   "provincia"
-    t.string   "partita_iva",     :null => false
+    t.string   "partita_iva",                                                                       :null => false
     t.string   "codice_fiscale"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                                                                        :null => false
+    t.datetime "updated_at",                                                                        :null => false
+    t.string   "tipo_contratto",                                 :default => "Orario",              :null => false
+    t.decimal  "costo",           :precision => 10, :scale => 2, :default => 0.0,                   :null => false
+    t.datetime "inizio",                                         :default => '2012-09-20 00:00:00', :null => false
+    t.datetime "fine",                                           :default => '2013-09-20 17:50:21', :null => false
   end
-
-  create_table "contracts", :force => true do |t|
-    t.integer  "client_id"
-    t.string   "descrizione",                                                          :null => false
-    t.string   "tipo",                                       :default => "Orario",     :null => false
-    t.decimal  "costo",       :precision => 10, :scale => 2, :default => 0.0,          :null => false
-    t.date     "inizio",                                     :default => '2012-09-20', :null => false
-    t.date     "fine",                                       :default => '2013-09-20', :null => false
-    t.datetime "created_at",                                                           :null => false
-    t.datetime "updated_at",                                                           :null => false
-  end
-
-  add_index "contracts", ["client_id"], :name => "index_contracts_on_client_id"
 
   create_table "locations", :force => true do |t|
     t.integer  "client_id"

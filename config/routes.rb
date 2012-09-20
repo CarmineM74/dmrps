@@ -4,7 +4,9 @@ Dmrps::Application.routes.draw do
     namespace :v1 do
       resources :sessions
       resources :users
-      resources :clients
+      resources :clients do
+        resources :contracts
+      end
       resources :locations
     end
   end

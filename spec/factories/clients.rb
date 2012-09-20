@@ -7,7 +7,11 @@ FactoryGirl.define do
     f.citta { 'Nowhereland' }
     f.cap { '01000' }
     f.provincia { 'ZZ' }
-    f.partita_iva '1234567890'
-    f.codice_fiscale ''
+    f.partita_iva { '1234567890' }
+    f.codice_fiscale {''}
+    f.tipo_contratto {'Orario'}
+    f.costo {10.0}
+    f.inizio {Date.today}
+    f.fine {1.years.since}
   end
 end

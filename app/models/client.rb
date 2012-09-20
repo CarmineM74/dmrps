@@ -6,5 +6,5 @@ class Client < ActiveRecord::Base
   validates :codice_fiscale, uniqueness: true, if: Proc.new { |c| !c.codice_fiscale.nil? }
 
   has_many :locations, :inverse_of => :client, dependent: :delete_all
-
+  has_one :contract, :invers_of => :client, dependent: :delete_all
 end

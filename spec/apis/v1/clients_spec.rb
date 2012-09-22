@@ -56,35 +56,10 @@ describe "/api/v1/clients.json", :type => :api do
     end
 
     context 'with invalid parameters' do
-      it 'fails when ragione_sociale is empty' do
+      it 'fails with errors in response body'  do
         client.ragione_sociale = ''
         do_post
-        @body['errors'].should include('ragione_sociale')
-      end
-
-      it 'fails when ragione_sociale already exists' do
-        client2 = FactoryGirl.create(:client,ragione_sociale: client.ragione_sociale)
-        do_post
-        @body['errors'].should include('ragione_sociale')
-      end
-      
-      it 'fails when both partita_iva and codice_fiscale are empty' do
-        client.partita_iva = ''
-        client.codice_fiscale = ''
-        do_post
-        @body['errors'].should include('partita_iva')
-      end
-      
-      it 'fails when partita_iva already exists' do
-        client2 = FactoryGirl.create(:client, partita_iva: client.partita_iva)
-        do_post
-        @body['errors'].should include('partita_iva')
-      end
-
-      it 'fails when codice_fiscale already exists' do
-        client2 = FactoryGirl.create(:client, partita_iva: '122', codice_fiscale: client.codice_fiscale)
-        do_post
-        @body['errors'].should include('codice_fiscale')
+        @body['errors'].should_not be_nil
       end
 
       it 'fails with status == :unprocessable_entity (422)' do

@@ -9,6 +9,11 @@ class @ClientsCtrl
     @$scope.formSubmitCaption = ''
     @$scope.showForm = false
 
+    @$scope.tipi_contratto = [
+        {name: 'Orario', value: 'Orario'},
+        {name: 'Prestazione', value: 'Prestazione'}
+    ]
+
     @$scope.$on('dmClientsSvc:Index:Failure',@indexFailed)
     @$scope.fetchAll = angular.bind(this, @index)
     @$scope.selectClient = angular.bind(this, @selectClient)
@@ -29,14 +34,20 @@ class @ClientsCtrl
     @$scope.errors = errors.data
 
   isDirty: ->
-    #@$log.log('Original: ' + JSON.stringify(@$scope.originalClient))
-    #@$log.log('Selected: ' + JSON.stringify(@$scope.selectedClient))
+    unless @$scope.originalClient?
+        return false
+    @$log.log('Original: ' + JSON.stringify(@$scope.originalClient))
+    @$log.log('Selected: ' + JSON.stringify(@$scope.selectedClient))
     if angular.equals(@$scope.originalClient,@$scope.selectedClient)
+      @$log.log('NOT DIRTY')
       false
     else
+      @$log.log('IS DIRTY')
       true
 
   index: ->
+    @$scope.selectedClient = {}
+    @$scope.originalClient = undefined
     @$scope.clients = @dmClientsSvc.index()
 
   indexFailed: (response) =>

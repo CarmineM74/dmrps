@@ -112,6 +112,7 @@ describe "/api/v1/clients.json", :type => :api do
         do_update
         @body['errors'].should be_nil
       end
+
     end
 
     context 'with invalid parameters' do

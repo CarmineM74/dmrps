@@ -45,11 +45,11 @@
             </div>
             <div class='new-row same-row control-group inizio'>
                 <label>Inizio contratto</label>
-                <input id='inizio' ng-model="selectedClient.inizio" ui-date="{dateFormat: 'dd/mm/yy', changeYear: true, changeMonth: true, gotoCurrent: true}">
+                <input id='inizio' type='text' ng-model="selectedClient.inizio" ui-date="{dateFormat: 'dd/mm/yy'}">
             </div>
             <div class='same-row control-group fine'>
-                <label>Fine contratto {{selectedClient.fine}}</label>
-                <input id='fine' ng-model="selectedClient.fine" ui-date="{dateFormat: 'dd/mm/yy'}">
+                <label>Fine contratto</label>
+                <input id='fine' type='text' ng-model="selectedClient.fine" ui-date="{dateFormat: 'dd/mm/yy'}">
             </div>
         <div class='form-actions new-row'>
           <button type='submit' class='btn' ng-click='saveClient(selectedClient)' ng-disabled='!isDirty() || !clientForm.$valid'>{{formSubmitCaption}}</button>

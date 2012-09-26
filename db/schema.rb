@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(:version => 20120920174336) do
     t.datetime "updated_at",                                                                        :null => false
     t.string   "tipo_contratto",                                 :default => "Orario",              :null => false
     t.decimal  "costo",           :precision => 10, :scale => 2, :default => 0.0,                   :null => false
-    t.datetime "inizio",                                         :default => '2012-09-20 00:00:00', :null => false
-    t.datetime "fine",                                           :default => '2013-09-20 17:50:21', :null => false
+    t.datetime "inizio",                                         :default => '2012-09-26 00:00:00', :null => false
+    t.datetime "fine",                                           :default => '2013-09-26 10:18:37', :null => false
   end
 
   create_table "locations", :force => true do |t|

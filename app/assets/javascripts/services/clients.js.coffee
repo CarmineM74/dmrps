@@ -41,7 +41,13 @@ class ClientsSvc
       )  
 
   index: ->
-    @clients.index(
-      (response) => @notify('Index:Success',response),
-      (response) => @notify('Index:Failure',response)
+    cs = @clients.index(
+      (response) => 
+        response = response.map (c) ->
+          c.inizio = new Date(c.inizio)
+          c.fine = new Date(c.fine)
+          c
+        @notify('Index:Success',response)
+      ,(response) => @notify('Index:Failure',response)
     )
+

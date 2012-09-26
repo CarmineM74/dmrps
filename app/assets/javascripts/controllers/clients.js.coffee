@@ -39,10 +39,8 @@ class @ClientsCtrl
     @$log.log('Original: ' + JSON.stringify(@$scope.originalClient))
     @$log.log('Selected: ' + JSON.stringify(@$scope.selectedClient))
     if angular.equals(@$scope.originalClient,@$scope.selectedClient)
-      @$log.log('NOT DIRTY')
       false
     else
-      @$log.log('IS DIRTY')
       true
 
   index: ->

@@ -35,7 +35,7 @@ class @ClientsCtrl
 
   isDirty: ->
     unless @$scope.originalClient?
-        return false
+        return true
     @$log.log('Original: ' + JSON.stringify(@$scope.originalClient))
     @$log.log('Selected: ' + JSON.stringify(@$scope.selectedClient))
     if angular.equals(@$scope.originalClient,@$scope.selectedClient)

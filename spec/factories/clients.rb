@@ -13,5 +13,7 @@ FactoryGirl.define do
     f.costo {10.0}
     f.inizio {Date.today}
     f.fine {1.years.since}
+    f.diritto_di_chiamata { true }
+    f.costo_diritto_chiamata { 20.0 }
   end
 end

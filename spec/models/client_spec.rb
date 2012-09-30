@@ -30,6 +30,15 @@ describe Client do
     it "when inizio > fine" do
       FactoryGirl.build(:client, inizio: 1.days.since, fine: Date.today).should_not be_valid
     end
+
+    it "without costo_diritto_chiamata when diritto_di_chiamata is true" do
+      FactoryGirl.build(:client, costo_diritto_chiamata: nil).should_not be_valid
+    end
+
+    it "when costo_diritto_chiamata is < 0" do
+      FactoryGirl.build(:client, costo_diritto_chiamata: -1.0)
+    end
+
   end
 end
 

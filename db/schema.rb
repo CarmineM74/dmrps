@@ -13,8 +13,23 @@
 
 ActiveRecord::Schema.define(:version => 20120930164610) do
 
-# Could not dump table "clients" because of following StandardError
-#   Unknown type 'bool' for column 'diritto_di_chiamata'
+  create_table "clients", :force => true do |t|
+    t.string   "ragione_sociale",                                                                          :null => false
+    t.string   "indirizzo"
+    t.string   "cap"
+    t.string   "citta"
+    t.string   "provincia"
+    t.string   "partita_iva",                                                                              :null => false
+    t.string   "codice_fiscale"
+    t.datetime "created_at",                                                                               :null => false
+    t.datetime "updated_at",                                                                               :null => false
+    t.string   "tipo_contratto",                                        :default => "Orario",              :null => false
+    t.decimal  "costo",                  :precision => 10, :scale => 2, :default => 0.0,                   :null => false
+    t.datetime "inizio",                                                :default => '2012-09-30 00:00:00', :null => false
+    t.datetime "fine",                                                  :default => '2013-09-30 17:30:48', :null => false
+    t.boolean  "diritto_di_chiamata",                                   :default => false,                 :null => false
+    t.decimal  "costo_diritto_chiamata", :precision => 10, :scale => 2, :default => 0.0,                   :null => false
+  end
 
   create_table "locations", :force => true do |t|
     t.integer  "client_id"
@@ -32,8 +47,8 @@ ActiveRecord::Schema.define(:version => 20120930164610) do
     t.integer  "user_id"
     t.date     "data_inoltro_richiesta"
     t.date     "data_intervento"
-    t.datetime "inizio",                                                  :default => '2012-09-30 16:39:31', :null => false
-    t.datetime "fine",                                                    :default => '2012-09-30 17:39:31', :null => false
+    t.datetime "inizio",                                                  :default => '2012-09-30 17:30:48', :null => false
+    t.datetime "fine",                                                    :default => '2012-09-30 18:30:48', :null => false
     t.string   "email"
     t.string   "contatto"
     t.text     "descrizione_anomalie"

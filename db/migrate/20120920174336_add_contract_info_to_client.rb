@@ -7,11 +7,7 @@ class AddContractInfoToClient < ActiveRecord::Migration
 
     Client.reset_column_information
     say_with_time "Updating clients' contract info..." do
-      Client.all.each do |c|
-        c.tipo_contratto = 'Orario'
-        c.costo = 0
-        c.save
-      end
+      Client.update_all(tipo_contratto: 'Orario', costo: 0)
     end
   end
 end

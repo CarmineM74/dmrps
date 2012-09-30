@@ -11,23 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120920174336) do
+ActiveRecord::Schema.define(:version => 20120930163207) do
 
-  create_table "clients", :force => true do |t|
-    t.string   "ragione_sociale",                                                                   :null => false
-    t.string   "indirizzo"
-    t.string   "cap"
-    t.string   "citta"
-    t.string   "provincia"
-    t.string   "partita_iva",                                                                       :null => false
-    t.string   "codice_fiscale"
-    t.datetime "created_at",                                                                        :null => false
-    t.datetime "updated_at",                                                                        :null => false
-    t.string   "tipo_contratto",                                 :default => "Orario",              :null => false
-    t.decimal  "costo",           :precision => 10, :scale => 2, :default => 0.0,                   :null => false
-    t.datetime "inizio",                                         :default => '2012-09-26 00:00:00', :null => false
-    t.datetime "fine",                                           :default => '2013-09-26 10:18:37', :null => false
-  end
+# Could not dump table "clients" because of following StandardError
+#   Unknown type 'bool' for column 'diritto_di_chiamata'
 
   create_table "locations", :force => true do |t|
     t.integer  "client_id"
@@ -38,6 +25,28 @@ ActiveRecord::Schema.define(:version => 20120920174336) do
     t.string   "provincia"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "rps", :force => true do |t|
+    t.integer  "location_id"
+    t.integer  "user_id"
+    t.date     "data_inoltro_richiesta"
+    t.date     "data_intervento"
+    t.datetime "inizio",                                                  :default => '2012-09-30 16:39:31', :null => false
+    t.datetime "fine",                                                    :default => '2012-09-30 17:39:31', :null => false
+    t.string   "email"
+    t.string   "contatto"
+    t.text     "descrizione_anomalie"
+    t.text     "descrizione_intervento"
+    t.decimal  "ore_lavorate_cliente",     :precision => 10, :scale => 2, :default => 0.0
+    t.decimal  "ore_lavorate_laboratorio", :precision => 10, :scale => 2, :default => 0.0
+    t.decimal  "ore_lavorate_remoto",      :precision => 10, :scale => 2, :default => 0.0
+    t.text     "appunti"
+    t.boolean  "lavoro_copmletato",                                       :default => false,                 :null => false
+    t.string   "note"
+    t.boolean  "diritto_di_chiamata",                                     :default => false,                 :null => false
+    t.datetime "created_at",                                                                                 :null => false
+    t.datetime "updated_at",                                                                                 :null => false
   end
 
   create_table "sessions", :force => true do |t|

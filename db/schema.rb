@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120930163207) do
+ActiveRecord::Schema.define(:version => 20120930164610) do
 
 # Could not dump table "clients" because of following StandardError
 #   Unknown type 'bool' for column 'diritto_di_chiamata'

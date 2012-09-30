@@ -51,6 +51,14 @@
                 <label>Fine contratto</label>
                 <input id='fine' type='text' ng-model="selectedClient.fine" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}">
             </div>
+            <div class='new-row same-row control-group diritto_di_chiamata'>
+                <label>Diritto di chiamata</label>
+                <input id='diritto_di_chiamata' type="CHECKBOX" ng-model="selectedClient.diritto_di_chiamata">
+            </div>
+            <div class='same-row control-group costo_diritto_chiamata'>
+                <label>Costo diritto di chiamata</label>
+                <input id="costo_diritto_chiamata" class='span2' type='text' ng-model='selectedClient.costo_diritto_chiamata'>
+            </div>
         <div class='form-actions new-row'>
           <button type='submit' class='btn' ng-click='saveClient(selectedClient)' ng-disabled='!isDirty() || !clientForm.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>

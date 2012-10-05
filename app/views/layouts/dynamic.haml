@@ -30,6 +30,15 @@
                 %a(href='#/users')Gestione utenti
               %li
                 %a(href='#/clients')Gestione clienti
+          %li.dropdown
+            %a.dropdown-toggle(href='#' data-toggle='dropdown')
+              Interventi
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                %a(href='#/rpses/edit')Nuovo intervento
+              %li
+                %a(href='#/rpses')Elenco interventi
         %ul.nav.pull-right
           %li(ng-show='currentUser()')
             %button(type='button' class='btn' ng-click='logout()')Logout

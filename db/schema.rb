@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120930164610) do
+ActiveRecord::Schema.define(:version => 20121005094434) do
 
   create_table "clients", :force => true do |t|
     t.string   "ragione_sociale",                                                                          :null => false
@@ -25,30 +25,18 @@ ActiveRecord::Schema.define(:version => 20120930164610) do
     t.datetime "updated_at",                                                                               :null => false
     t.string   "tipo_contratto",                                        :default => "Orario",              :null => false
     t.decimal  "costo",                  :precision => 10, :scale => 2, :default => 0.0,                   :null => false
-    t.datetime "inizio",                                                :default => '2012-09-30 00:00:00', :null => false
-    t.datetime "fine",                                                  :default => '2013-09-30 17:30:48', :null => false
+    t.datetime "inizio",                                                :default => '2012-09-26 00:00:00', :null => false
+    t.datetime "fine",                                                  :default => '2013-09-26 10:18:37', :null => false
     t.boolean  "diritto_di_chiamata",                                   :default => false,                 :null => false
     t.decimal  "costo_diritto_chiamata", :precision => 10, :scale => 2, :default => 0.0,                   :null => false
   end
 
-  create_table "locations", :force => true do |t|
-    t.integer  "client_id"
-    t.string   "descrizione"
-    t.string   "indirizzo"
-    t.string   "cap"
-    t.string   "citta"
-    t.string   "provincia"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "rps", :force => true do |t|
-    t.integer  "location_id"
+  create_table "interventions", :force => true do |t|
     t.integer  "user_id"
     t.date     "data_inoltro_richiesta"
     t.date     "data_intervento"
-    t.datetime "inizio",                                                  :default => '2012-09-30 17:30:48', :null => false
-    t.datetime "fine",                                                    :default => '2012-09-30 18:30:48', :null => false
+    t.datetime "inizio",                                                  :default => '2012-10-05 13:48:17', :null => false
+    t.datetime "fine",                                                    :default => '2012-10-05 14:48:17', :null => false
     t.string   "email"
     t.string   "contatto"
     t.text     "descrizione_anomalie"
@@ -62,6 +50,22 @@ ActiveRecord::Schema.define(:version => 20120930164610) do
     t.boolean  "diritto_di_chiamata",                                     :default => false,                 :null => false
     t.datetime "created_at",                                                                                 :null => false
     t.datetime "updated_at",                                                                                 :null => false
+  end
+
+  create_table "interventions_locations", :force => true do |t|
+    t.integer "location_id"
+    t.integer "intervention_id"
+  end
+
+  create_table "locations", :force => true do |t|
+    t.integer  "client_id"
+    t.string   "descrizione"
+    t.string   "indirizzo"
+    t.string   "cap"
+    t.string   "citta"
+    t.string   "provincia"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "sessions", :force => true do |t|

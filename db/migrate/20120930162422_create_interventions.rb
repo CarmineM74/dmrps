@@ -1,7 +1,6 @@
-class CreateRps < ActiveRecord::Migration
+class CreateInterventions < ActiveRecord::Migration
   def change
-    create_table :rps do |t|
-      t.references :location
+    create_table :interventions do |t|
       t.references :user
       t.date :data_inoltro_richiesta
       t.date :data_intervento

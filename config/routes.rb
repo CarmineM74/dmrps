@@ -6,6 +6,7 @@ Dmrps::Application.routes.draw do
       resources :users
       resources :clients
       resources :locations
+      resources :interventions
     end
   end
 

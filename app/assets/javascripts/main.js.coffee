@@ -13,11 +13,17 @@
       .when('/locations/:client_id',
         {controller: LocationsCtrl, templateUrl: 'assets/locations/index.html'}
       )
+      .when('/interventions',
+        {controller: InterventionsCtrl, templateUrl: 'assets/interventions/index.html'}
+      )
+      .when('/interventionss/edit/:intervention_id',
+        {controller: InterventionsCtrl, templateUrl: 'assets/interveniterventions/edit.html'}
+      )
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{
-    serverAddr: 'dm.dev'
-    #serverAddr: '192.168.1.95'
+    #serverAddr: 'dm.dev'
+    serverAddr: '192.168.1.95'
     serverPort: ':3000'
     api_ver: 'v1'
   })

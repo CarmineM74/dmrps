@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :intervention do
     user
     after(:build) do |intervention, evaluator|
-      FactoryGirl.create_list(:location,1,intervention: intervention)
+      FactoryGirl.create_list(:location,1,interventions: [intervention])
     end
     data_inoltro_richiesta { Date.today }
     data_intervento { Date.today }

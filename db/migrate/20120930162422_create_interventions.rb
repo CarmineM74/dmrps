@@ -14,7 +14,7 @@ class CreateInterventions < ActiveRecord::Migration
       t.decimal :ore_lavorate_laboratorio, precision: 10, scale: 2, default: 0.0
       t.decimal :ore_lavorate_remoto, precision: 10, scale: 2, default: 0.0
       t.text :appunti
-      t.boolean :lavoro_copmletato, null: false, default: false
+      t.boolean :lavoro_completato, null: false, default: false
       t.string :note
       t.boolean :diritto_di_chiamata, null: false, default: false
       t.timestamps

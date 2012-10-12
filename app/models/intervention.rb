@@ -13,9 +13,9 @@ class Intervention < ActiveRecord::Base
 
   validates :descrizione_anomalie, presence: true
   validates :descrizione_intervento, presence: true
-  validates :ore_lavorate_cliente, presence: true, numericality: true
-  validates :ore_lavorate_laboratorio, presence: true, numericality: true
-  validates :ore_lavorate_remoto, presence: true, numericality: true
+  validates :ore_lavorate_cliente, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :ore_lavorate_laboratorio, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :ore_lavorate_remoto, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   validates :lavoro_completato, presence: true
   validates :diritto_di_chiamata, presence: true

@@ -22,8 +22,13 @@ class Intervention < ActiveRecord::Base
 
   belongs_to :user
   has_and_belongs_to_many :locations
+  validate :locations, :sede_assegnata
 
 private
+
+  def sede_assegnata
+    errors.add(:locations,"must have an assigned location") if locations.size != 1
+  end
 
   def data_inoltro_LE_data_intervento
     errors.add(:data_inoltro_richiesta,"can't be greater than Data intervento") if data_inoltro_richiesta > data_intervento

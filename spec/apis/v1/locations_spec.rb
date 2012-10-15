@@ -13,7 +13,7 @@ shared_examples_for "requires a client" do
   end
 end
 
-describe "/api/v1/clients/:client_id/locations.json", :type => :api do
+describe "/api/v1/locations.json", :type => :api do
   let(:client) { FactoryGirl.create(:client) }
   let(:url) { "/api/v1/locations" }
 

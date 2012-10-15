@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Intervention do
   it "has a valid factory" do
-    @intervention = FactoryGirl.create(:intervention)
+    @intervention = FactoryGirl.create(:intervention, user: FactoryGirl.create(:user))
     @intervention.should be_valid
   end
 
@@ -17,6 +17,10 @@ describe Intervention do
 
     it "without a location" do
       @intervention.locations = []
+    end
+
+    it "without a user" do
+      @intervention.user = nil
     end
 
     it "when Data Inoltro Richiesta is > Data Intervento" do

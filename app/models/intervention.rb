@@ -1,5 +1,10 @@
 class Intervention < ActiveRecord::Base
 
+  attr_accessible :appunti, :contatto, :data_inoltro_richiesta, :data_intervento,
+                  :descrizione_anomalie, :descrizione_intervento, :diritto_di_chiamata,
+                  :email, :fine, :inizio, :lavoro_completato, :note, :ore_lavorate_cliente,
+                  :ore_lavorate_laboratorio, :ore_lavorate_remoto, :user_id, :location_ids
+
   validates :data_inoltro_richiesta, presence: true
   validate :data_inoltro_richiesta, :data_inoltro_LE_data_intervento
   validates :data_intervento, presence: true
@@ -21,10 +26,16 @@ class Intervention < ActiveRecord::Base
   validates :diritto_di_chiamata, presence: true
 
   belongs_to :user
+  validate :user, :utente_assegnato
+
   has_and_belongs_to_many :locations
   validate :locations, :sede_assegnata
 
 private
+
+  def utente_assegnato
+    errors.add(:user,"must have an assigned user") if user.nil?
+  end
 
   def sede_assegnata
     errors.add(:locations,"must have an assigned location") if locations.size != 1

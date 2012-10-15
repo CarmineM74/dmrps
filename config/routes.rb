@@ -6,7 +6,10 @@ Dmrps::Application.routes.draw do
       resources :users
       resources :clients
       resources :locations
-      resources :interventions
+      resources :interventions do
+        get 'by_client/:client_id', on: :collection, action: 'by_client'
+        get 'by_user/:user_id', on: :collection, action: 'by_user'
+      end
     end
   end
 

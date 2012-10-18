@@ -2,66 +2,68 @@ class @InterventionsCtrl
   @inject: ['$scope','$log','dmInterventionsSvc']
   constructor: (@$scope, @$log, @dmInterventionsSvc) ->
     @$scope.errors = []
-    @$scope.rpses = []
+    @$scope.interventions = []
     @$scope.selectedIntervention = {}
     @$scope.originalIntervention = undefined
 
-    @$scope.$on('dmClientsSvc:Index:Failure',@indexFailed)
+    @$scope.$on('dmInterventionsSvc:Index:Failure',@indexFailed)
     @$scope.fetchAll = angular.bind(this, @index)
-    @$scope.selectClient = angular.bind(this, @selectClient)
-    @$scope.newClient = angular.bind(this, @newClient)
-    @$scope.$on('dmClientsSvc:Save:Success',@saveSuccess)
-    @$scope.$on('dmClientsSvc:Save:Failure',@reqFailed)
-    @$scope.saveClient = angular.bind(this, @saveClient)
-    @$scope.$on('dmClientsSvc:Destroy:Success', @deleteSuccess)
-    @$scope.$on('dmClientsSvc:Destroy:Failure', @reqFailed)
-    @$scope.deleteClient = angular.bind(this, @deleteClient)
+    @$scope.selectIntervention = angular.bind(this, @selectIntervention)
+    @$scope.newIntervention = angular.bind(this, @newIntervention)
+    @$scope.$on('dmInterventionsSvc:Save:Success',@saveSuccess)
+    @$scope.$on('dmInterventionsSvc:Save:Failure',@reqFailed)
+    @$scope.saveIntervention = angular.bind(this, @saveIntervention)
+    @$scope.$on('dmInterventionsSvc:Destroy:Success', @deleteSuccess)
+    @$scope.$on('dmInterventionsSvc:Destroy:Failure', @reqFailed)
+    @$scope.deleteIntervention = angular.bind(this, @deleteIntervention)
     @$scope.hideForm = angular.bind(this, @hideForm)
 
     @$scope.isDirty = angular.bind(this, @isDirty)
+
+    @index()
 
   showValidationErrors: (errors) ->
     @$scope.errors = errors.data
 
   isDirty: ->
-    unless @$scope.originalClient?
+    unless @$scope.originalIntervention?
         return true
-    @$log.log('Original: ' + JSON.stringify(@$scope.originalClient))
-    @$log.log('Selected: ' + JSON.stringify(@$scope.selectedClient))
-    if angular.equals(@$scope.originalClient,@$scope.selectedClient)
+    @$log.log('Original: ' + JSON.stringify(@$scope.originalIntervention))
+    @$log.log('Selected: ' + JSON.stringify(@$scope.selectedIntervention))
+    if angular.equals(@$scope.originalIntervention,@$scope.selectedIntervention)
       false
     else
       true
 
   index: ->
-    @$scope.selectedClient = {}
-    @$scope.originalClient = undefined
-    @$scope.clients = @dmClientsSvc.index()
+    @$scope.selectedIntervention = {}
+    @$scope.originalIntervention = undefined
+    @$scope.interventions = @dmInterventionsSvc.index()
 
   indexFailed: (response) =>
-    @$log.log('Error while retrieving Clients#index')
-    bootbox.alert("Impossibile recuperare l'elenco dei clienti!")
+    @$log.log('Error while retrieving Interventions#index')
+    bootbox.alert("Impossibile recuperare l'elenco degli interventi!")
 
-  selectClient: (client) ->
-    @$scope.originalClient = angular.copy(client)
-    @$scope.selectedClient = client
-    @$scope.formCaption = 'Modifica cliente'
+  selectIntervention: (intervention) ->
+    @$scope.originalIntervention = angular.copy(intervention)
+    @$scope.selectedIntervention = intervention
+    @$scope.formCaption = 'Modifica intervento'
     @$scope.formSubmitCaption = 'Aggiorna dati'
     @$scope.showForm = true
 
-  newClient: ->
-    @$scope.originalClient = undefined
-    @$scope.selectedClient = {}
-    @$scope.formCaption = 'Nuovo cliente'
+  newIntervention: ->
+    @$scope.originalIntervention = undefined
+    @$scope.selectedIntervention = {}
+    @$scope.formCaption = 'Nuovo intervento'
     @$scope.formSubmitCaption = 'Salva'
     @$scope.showForm = true
 
-  saveClient: (client) ->
-    @dmClientsSvc.save(client)
+  saveIntervention: (intervention) ->
+    @dmInterventionsSvc.save(intervention)
 
   saveSuccess: (events, args) =>
     @$scope.errors = []
-    @$scope.originalClient = angular.copy(@$scope.selectedClient)
+    @$scope.originalIntervention = angular.copy(@$scope.selectedIntervention)
     @hideForm()
     bootbox.alert('Dati salvati con successo!')
 
@@ -73,24 +75,24 @@ class @InterventionsCtrl
   reqFailed: (event, args) =>
     @showValidationErrors(args)
 
-  deleteClient: (client) ->
-    bootbox.confirm("Proseguo con la cancellazione del cliente?",(result) =>
+  deleteIntervention: (intervention) ->
+    bootbox.confirm("Proseguo con la cancellazione del intervento?",(result) =>
       if result
-        @dmClientsSvc.destroy(client)
+        @dmInterventionsSvc.destroy(intervention)
         @hideForm()
     )
   
   deleteSuccess: =>
     @$scope.errors = []
-    @$scope.originalClient = undefined
-    @$scope.selectedClient = undefined
-    bootbox.alert('Cliente rimosso con successo!')
+    @$scope.originalIntervention = undefined
+    @$scope.selectedIntervention = undefined
+    bootbox.alert('Interventione rimosso con successo!')
     @hideform()
 
   hideForm: ->
-    if !@$scope.originalClient?
-      if !angular.equals(@$scope.originalClient, @$scope.selectedClient)
-        @$scope.selectedClient = angular.copy(@$scope.originalClient)
+    if !@$scope.originalIntervention?
+      if !angular.equals(@$scope.originalIntervention, @$scope.selectedIntervention)
+        @$scope.selectedIntervention = angular.copy(@$scope.originalIntervention)
     @$scope.showForm = false
     @$scope.errors = []
     @index()

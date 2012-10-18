@@ -42,7 +42,7 @@ class InterventionsSvc
 
   index: ->
     rs = @interventions.index(
-      (response) => @notify('Index:Success',response)
-      ,(response) => @notify('Index:Failure',response)
+      (response) => @notify('Index:Success',response),
+      (response) => @notify('Index:Failure',response)
     )
 

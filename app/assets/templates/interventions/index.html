@@ -1,0 +1,44 @@
+</br>
+<div class='row'>
+  <div class='span12' ng-hide='showForm'>
+    <form class='form-search'>
+      <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
+      <div class='input-append offset1'>
+        <input type='text' class='span3 search-query' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title="La ricerca verra' effettuata sui campi:</br><ul class='unstyled'><li>Cliente</li><li>Utente</li></ul>">
+        <button type='submit' class='btn'>Applica filtro</button>
+      </div>
+    </form>
+    <table class='table table-striped table-bordered table-hover'>
+      <thead>
+        <tr>
+          <th>Progressivo</th>
+          <th>Cliente</th>
+          <th>Utente</th>
+          <th>Data richiesta</th>
+          <th>Data intervento</th>
+          <th>Lavoro completato</th>
+          <th>Totale ore lavorate</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+	      <tr ng-repeat='intervention in interventions'>
+	        <td class='span1 intervention-id'>{{intervention.id}}</td>
+	        <td>{{intervention.client.ragione_sociale}}</td>
+            <td>{{intervention.user.email}}</td>
+            <td>{{intervention.data_inoltro_richiesta | date: 'dd/MM/yyyy'}}</td>
+            <td>{{intervention.data_intervento | date: 'dd/MM/yyyy'}}</td>
+            <td>{{intervention.lavoro_completato | checkmarkIcon}}</td>
+            <td>{{intervention.totale_ore_lavorate}}</td>
+          <td class='span1'>
+            <div class='btn-group'>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Modifica' ng-click='selectClient(client)'><img src='assets/computer_edit.png'></a>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Rimuovi' ng-click="deleteClient(client)"><img src='assets/computer_delete.png'></a>
+            </div>
+          </td>
+	      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

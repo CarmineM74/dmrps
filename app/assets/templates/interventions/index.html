@@ -11,7 +11,7 @@
     <table class='table table-striped table-bordered table-hover'>
       <thead>
         <tr>
-          <th>Progressivo</th>
+          <th>Progr.</th>
           <th>Cliente</th>
           <th>Utente</th>
           <th>Data richiesta</th>
@@ -24,7 +24,7 @@
       <tbody>
 	      <tr ng-repeat='intervention in interventions'>
 	        <td class='span1 intervention-id'>{{intervention.id}}</td>
-	        <td>{{intervention.client.ragione_sociale}}</td>
+	        <td class='span3'>{{intervention.client.ragione_sociale}}</td>
             <td>{{intervention.user.email}}</td>
             <td>{{intervention.data_inoltro_richiesta | date: 'dd/MM/yyyy'}}</td>
             <td>{{intervention.data_intervento | date: 'dd/MM/yyyy'}}</td>

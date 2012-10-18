@@ -1,6 +1,6 @@
 class @InterventionsCtrl
-  @inject: ['$scope','$log','dmInterventionsSvc']
-  constructor: (@$scope, @$log, @dmInterventionsSvc) ->
+  @inject: ['$scope','$log','dmInterventionsSvc','$routeParams']
+  constructor: (@$scope, @$log, @dmInterventionsSvc,@$routeParams) ->
     @$scope.errors = []
     @$scope.interventions = []
     @$scope.selectedIntervention = {}

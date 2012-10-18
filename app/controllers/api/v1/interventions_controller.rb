@@ -17,6 +17,9 @@ class Api::V1::InterventionsController < ApplicationController
   end
 
   def destroy
+    @intervention = Intervention.find(params[:id])
+    @intervention.delete
+    respond_with({})
   end
 
 protected

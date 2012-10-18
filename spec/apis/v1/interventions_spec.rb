@@ -135,6 +135,37 @@ describe "/api/v1/interventions.json", :type => :api do
   end
 
   describe "Deleting an intervention" do
+    let!(:intervention) { FactoryGirl.create(:intervention, user: FactoryGirl.create(:user)) }
+    let(:delete_url) { "#{url}/#{intervention.id}.json" } 
+
+    def do_verb
+      delete delete_url
+    end
+
+    it "it fails when intervention can't be found" do
+      intervention.id = 800
+      do_verb
+      last_response.status.should eq(404)
+    end
+
+    it "replies with error_msg = 'resource not found' when intervention can't be found" do
+      intervention.id = 800
+      do_verb
+      body = JSON.parse(last_response.body)
+      body["error_msg"].should eq('resource not found')
+    end
+
+    it "deletes intervention from the database when successful" do
+      expect {
+        do_verb
+      }.to change(Intervention,:count).by(-1)
+    end
+
+    it "replies with status == :no_content (204) when delete is successful" do
+      do_verb
+      last_response.status.should eq(204)
+    end
+
   end
 
 end

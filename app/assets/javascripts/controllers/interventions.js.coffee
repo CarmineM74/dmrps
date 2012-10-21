@@ -1,10 +1,17 @@
 class @InterventionsCtrl
-  @inject: ['$scope','$log','dmInterventionsSvc','$routeParams']
-  constructor: (@$scope, @$log, @dmInterventionsSvc,@$routeParams) ->
+  @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams']
+  constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams) ->
     @$scope.errors = []
     @$scope.interventions = []
+    @$scope.clients = []
+    @$scope.selectedClient = undefined
+    @$scope.locations = []
+    @$scope.selectedLocation = undefined
     @$scope.selectedIntervention = {}
     @$scope.originalIntervention = undefined
+
+    @$scope.$on('dmClientsSvc:Index:Failure',@clientsRetrievalFailed)
+    @$scope.$on('dmLocationsSvc:Index:Failure',@locationsRetrievalFailed)
 
     @$scope.$on('dmInterventionsSvc:Index:Failure',@indexFailed)
     @$scope.fetchAll = angular.bind(this, @index)
@@ -20,7 +27,18 @@ class @InterventionsCtrl
 
     @$scope.isDirty = angular.bind(this, @isDirty)
 
+    @$scope.clientChanged = angular.bind(this, @clientChanged)
+    @$scope.locationChanged = angular.bind(this, @locationChanged)
+
     @index()
+
+  clientsRetrievalFailed: (response) ->
+    @$log.log('Error retrieving clients list')
+    bootbox.alert("Si e' verificato un errore durante il recupero dell'elenco clienti!")
+
+  locationsRetrievalFailed: (response) ->
+    @$log.log('Error retrieving locations list')
+    bootbox.alert("Si e' verificato un errore durante il recupero dell'elenco sedi per il cliente selezionato!")
 
   showValidationErrors: (errors) ->
     @$scope.errors = errors.data
@@ -34,6 +52,15 @@ class @InterventionsCtrl
       false
     else
       true
+
+  clientChanged: ->
+    @$log.log("Client: " + @$scope.selectedClient.ragione_sociale)
+    #@$log.log("Fetching locations for " + @$scope.selectedClient.ragione_sociale)
+    #@$scope.locations = @dmLocationsSvc.index(@$scope.selectedClient.id)
+
+  locationChanged: ->
+    @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)
+    @$scope.selectedIntervention.location_id = @$scope.selectedLocation.id
 
   index: ->
     @$scope.selectedIntervention = {}
@@ -52,6 +79,7 @@ class @InterventionsCtrl
     @$scope.showForm = true
 
   newIntervention: ->
+    @$scope.clients = @dmClientsSvc.index()
     @$scope.originalIntervention = undefined
     @$scope.selectedIntervention = {}
     @$scope.formCaption = 'Nuovo intervento'

@@ -42,4 +42,12 @@
     </table>
   </div>
 </div>
+  <div class='row'>
+    <form name='intervention-form'>
+        <fieldset>
+            <legend>Test form</legend>
+            <select ng-change='clientChanged()' ng-model='selectedClient' ng-options='client as client.ragione_sociale for client in clients' required></select>
+        </fieldset>
+    </form>
+  </div>
 

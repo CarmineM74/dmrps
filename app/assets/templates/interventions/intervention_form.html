@@ -1,0 +1,29 @@
+  <div id='new-intervention' class='span12'>
+    <form name='interventionForm' class='custom-form' ng-show='showForm' show-validation-errors errors='errors'>
+      <fieldset>
+          <legend>{{formCaption}}</legend>
+        <div class='same-row id' ng-show='selectedIntervention.id'>
+		      <label>Progressivo intervento</label>
+		      <span class='span1 uneditable-input' type='text'>{{selectedIntervention.id}}</span>
+        </div>
+	    <div class='new-row same-row control-group cliente'>
+            <label>Cliente</label>
+            <select id='cliente' class="span6" ng-model='selectedClient' ng-change='clientChanged()' ng-options="client as client.ragione_sociale for client in clients" required></select>
+        </div>
+        <div ng-show='selectedClient.id'>
+	        <div class='new-row same-row control-group sede'>
+                <label>Sede dell'intervento</label>
+                <select id='sede' class="span6" ng-model='selectedLocation' ng-change='locationChanged()' ng-options="location as location.descrizione for location in locations" required></select>
+            </div>
+            <div ng-show='selectedLocation'>
+                <b>Sede selezionata!</b>
+            </div>
+        </div>
+        <div class='form-actions new-row'>
+          <button type='submit' class='btn' ng-click='saveIntervention(selectedIntervention)' ng-disabled='!isDirty() || !interventionForm.$valid'>{{formSubmitCaption}}</button>
+          <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+

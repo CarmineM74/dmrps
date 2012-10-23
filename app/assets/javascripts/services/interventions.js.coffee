@@ -13,6 +13,7 @@ class InterventionsSvc
         path: 'interventions'
       }
       ,{index: {method: 'GET', isArray: true}
+      ,get: {method: 'GET' }
       ,create: {method: 'POST'}
       ,update: {method: 'PUT'}
       ,destroy: {method: 'DELETE'}}
@@ -44,5 +45,11 @@ class InterventionsSvc
     rs = @interventions.index(
       (response) => @notify('Index:Success',response),
       (response) => @notify('Index:Failure',response)
+    )
+
+  get: (intervention_id) ->
+    i = @interventions.get({intervention_id},
+      (response) => @notify('Get:Success', response),
+      (response) => @notify('Get:Failure', response)
     )
 

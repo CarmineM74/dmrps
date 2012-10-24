@@ -5,6 +5,11 @@ class Api::V1::InterventionsController < ApplicationController
     respond_with(@interventions)
   end
 
+  def show
+    @intervention = Intervention.find(params[:id])
+    respond_with(@intervention)
+  end
+
   def create
     @intervention = Intervention.create(params[:intervention])
     respond_with(@intervention)

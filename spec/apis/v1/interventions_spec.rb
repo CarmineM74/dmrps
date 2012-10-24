@@ -32,7 +32,7 @@ describe "/api/v1/interventions.json", :type => :api do
         intervention = FactoryGirl.create(:intervention)
         do_verb
         @body.should_not be_empty
-        intervention_json = JSON.parse(intervention.to_json)
+        intervention_json = JSON.parse(intervention.to_json(include: [:user,:locations]))
         @body.first.should eql(intervention_json)
       end
     end
@@ -91,6 +91,40 @@ describe "/api/v1/interventions.json", :type => :api do
         last_response.status.should eq(404)
       end
 
+    end
+
+  end
+
+  describe "Fetching a single intervention" do
+    let(:intervention) { FactoryGirl.create(:intervention, user: FactoryGirl.create(:user)) }
+    let(:show_url) { "#{url}/#{intervention.id}.json" }
+    
+    def do_verb
+      get show_url
+    end
+
+    context "when intervention can't be found" do
+      it "fails with status == :not_found (404)" do
+        intervention.id = 800
+        do_verb
+        last_response.status.should eq(404)
+      end
+    end
+
+    context "when intervention can be found" do
+      it "succeeds with status == :ok (200)" do
+        do_verb
+        last_response.status.should eq(200)
+      end
+
+      it "replies with intervention's details" do
+        do_verb
+        puts last_response.body
+        body = JSON.parse(last_response.body)
+        body['location'].should_not be_empty
+        body['user'].should_not be_empty
+        body['client'].should_not be_empty
+      end
     end
 
   end

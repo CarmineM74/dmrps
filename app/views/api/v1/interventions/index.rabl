@@ -8,3 +8,7 @@ end
 child :user do
     attributes *User.column_names
 end
+
+node :location do |i|
+    partial('api/v1/locations/location', object: i.locations.first)
+end

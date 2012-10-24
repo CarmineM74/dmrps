@@ -7,5 +7,6 @@ FactoryGirl.define do
     f.citta { 'Nowhereland' }
     f.cap { '01000' }
     f.provincia { 'ZZ' }
+    client
   end
 end

@@ -32,8 +32,10 @@ describe "/api/v1/interventions.json", :type => :api do
         intervention = FactoryGirl.create(:intervention)
         do_verb
         @body.should_not be_empty
-        intervention_json = JSON.parse(intervention.to_json(include: [:user,:locations]))
-        @body.first.should eql(intervention_json)
+        i = @body.first
+        i['user'].should_not be_empty
+        i['client'].should_not be_empty
+        i['location'].should_not be_empty
       end
     end
   end

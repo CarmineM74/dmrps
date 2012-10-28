@@ -50,11 +50,11 @@
                 </div>
                 <div class='new-row same-row control-group inizio'>
                     <label>Inizio</label>
-                    <input id="inizio" type='input' ng-model='intervention.inizio'>
+                    <input id="inizio" type='input' ng-model='intervention.inizio' ui-jq='datetimepicker' ui-options='dateTimePickerOpts' value="{{intervention.inizio | date: 'dd/MM/yyyy HH:mm'}}">
                 </div>
                 <div class='same-row control-group fine'>
                     <label>Fine</label>
-                    <input id="fine" type='input' ng-model='intervention.fine'>
+                    <input id="fine" type='input' ng-model='intervention.fine' ui-jq='datetimepicker' ui-options='dateTimePickerOpts' value="{{intervention.fine | date: 'dd/MM/yyyy HH:mm'}}">
                 </div>
                 <div class='new-row same-row control-group ore_lavorate_cliente'>
                     <label>Ore lavorate presso il cliente</label>

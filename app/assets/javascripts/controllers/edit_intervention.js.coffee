@@ -2,6 +2,17 @@ class @EditInterventionCtrl
   @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location']
   constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location) ->
     @$scope.errors = []
+    @$scope.dateTimePickerOpts = {
+        changeYear: true
+        changeMonth: true
+        dateFormat: 'dd/mm/yy'
+        timeFormat: 'hh:mm'
+        hourGrid: 4
+        minuteGrid: 10
+        timeText: 'Orario'
+        hourText: 'HH'
+        minuteText: 'MM'
+    }
 
     @$scope.$on('dmClientsSvc:Index:Failure',@clientsRetrievalFailed)
     @$scope.$on('dmLocationsSvc:Index:Failure',@locationsRetrievalFailed)

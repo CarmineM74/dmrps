@@ -1,7 +1,7 @@
 object @intervention
 
 attributes :id,
-            :data_richiesta_intervento, :data_intervento,
+            :data_inoltro_richiesta, :data_intervento,
             :contatto, :appunti, :descrizione_anomalie, :descrizione_intervento,
             :diritto_di_chiamata, :email, :inizio, :fine, :note,
             :ore_lavorate_cliente, :ore_lavorate_remoto, :ore_lavorate_laboratorio,

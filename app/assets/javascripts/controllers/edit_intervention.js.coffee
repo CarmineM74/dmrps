@@ -2,15 +2,13 @@ class @EditInterventionCtrl
   @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location']
   constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location) ->
     @$scope.errors = []
-    @$scope.clients = []
-    @$scope.selectedClient = undefined
-    @$scope.locations = []
-    @$scope.selectedLocation = undefined
 
     @$scope.$on('dmClientsSvc:Index:Failure',@clientsRetrievalFailed)
     @$scope.$on('dmLocationsSvc:Index:Failure',@locationsRetrievalFailed)
+    @$scope.$on('dmLocationsSvc:Index:Success',@locationsRetrieved)
 
     @$scope.$on('dmInterventionsSvc:Get:Failure',@interventionRetrievalFailed) 
+    @$scope.$on('dmInterventionsSvc:Get:Success',@interventionRetrieved)
     @$scope.$on('dmInterventionsSvc:Save:Success',@saveSuccess)
     @$scope.$on('dmInterventionsSvc:Save:Failure',@reqFailed)
     @$scope.saveIntervention = angular.bind(this, @saveIntervention)
@@ -20,12 +18,27 @@ class @EditInterventionCtrl
     @$scope.clientChanged = angular.bind(this, @clientChanged)
     @$scope.locationChanged = angular.bind(this, @locationChanged)
 
-    if @$routeParams.intervention_id?
+    @$scope.clients = @dmClientsSvc.index()
+    @$scope.selectedClient = undefined
+    @$scope.locations = []
+    @$scope.selectedLocation = undefined
+
+    @$scope.editMode = @$routeParams.intervention_id?
+
+    if @$scope.editMode
+      @$scope.formCaption = "Modifica intervento"
+      @$scope.formSubmitCaption = "Aggiorna"
       @$scope.intervention = @dmInterventionsSvc.get(@$routeParams.intervention_id)
-      @$scope.originalIntervention = angular.copy(@$scope.intervention)
     else
+      @$scope.formCaption = "Nuovo intervento"
+      @$scope.formSubmitCaption = "Crea"
       @$scope.intervention = undefined
       @$scope.originalIntervention = undefined
+
+  interventionRetrieved: (evt, response) =>
+    @$scope.originalIntervention = angular.copy(@$scope.intervention)
+    @$scope.selectedClient = (c for c in @$scope.clients when c.id is @$scope.intervention.client.id)[0]
+    @clientChanged()
 
   interventionRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving intervention: ' + JSON.stringify(response))
@@ -36,9 +49,21 @@ class @EditInterventionCtrl
     @$log.log('Error retrieving clients list')
     bootbox.alert("Si e' verificato un errore durante il recupero dell'elenco clienti!")
 
+  locationsRetrieved: (evt, response) => 
+    if @$scope.editMode
+      @$scope.selectedLocation = (l for l in @$scope.locations when l.id is @$scope.intervention.location.id)[0]
+
   locationsRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving locations list')
     bootbox.alert("Si e' verificato un errore durante il recupero dell'elenco sedi per il cliente selezionato!")
+
+  clientChanged: ->
+    @$log.log("Fetching locations for " + @$scope.selectedClient.ragione_sociale)
+    @$scope.locations = @dmLocationsSvc.index(@$scope.selectedClient.id)
+
+  locationChanged: ->
+    @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)
+    @$scope.selectedIntervention.location_id = @$scope.selectedLocation.id
 
   showValidationErrors: (errors) ->
     @$scope.errors = errors.data
@@ -47,20 +72,11 @@ class @EditInterventionCtrl
     unless @$scope.originalIntervention?
         return true
     @$log.log('Original: ' + JSON.stringify(@$scope.originalIntervention))
-    @$log.log('Selected: ' + JSON.stringify(@$scope.selectedIntervention))
-    if angular.equals(@$scope.originalIntervention,@$scope.selectedIntervention)
+    @$log.log('Selected: ' + JSON.stringify(@$scope.intervention))
+    if angular.equals(@$scope.originalIntervention,@$scope.intervention)
       false
     else
       true
-
-  clientChanged: ->
-    @$log.log("Client: " + @$scope.selectedClient.ragione_sociale)
-    #@$log.log("Fetching locations for " + @$scope.selectedClient.ragione_sociale)
-    #@$scope.locations = @dmLocationsSvc.index(@$scope.selectedClient.id)
-
-  locationChanged: ->
-    @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)
-    @$scope.selectedIntervention.location_id = @$scope.selectedLocation.id
 
   saveIntervention: (intervention) ->
     @dmInterventionsSvc.save(intervention)

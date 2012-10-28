@@ -2,21 +2,76 @@
     <form name='interventionForm' class='custom-form' show-validation-errors errors='errors'>
       <fieldset>
           <legend>{{formCaption}}</legend>
-        <div class='same-row id' ng-show='selectedIntervention.id'>
+        <div class='same-row id' ng-show='intervention.id'>
 		      <label>Progressivo intervento</label>
-		      <span class='span1 uneditable-input' type='text'>{{selectedIntervention.id}}</span>
+		      <span class='span1 uneditable-input' type='text'>{{intervention.id}}</span>
         </div>
 	    <div class='new-row same-row control-group cliente'>
             <label>Cliente</label>
-            <select id='cliente' class="span6" ng-model='selectedClient' ng-change='clientChanged()' ng-options="client as client.ragione_sociale for client in clients" required></select>
+            <select id='cliente' class="span6" ng-model='selectedClient' ng-change='clientChanged()' ng-options="c.ragione_sociale for c in clients" required></select>
         </div>
         <div ng-show='selectedClient.id'>
 	        <div class='new-row same-row control-group sede'>
                 <label>Sede dell'intervento</label>
-                <select id='sede' class="span6" ng-model='selectedLocation' ng-change='locationChanged()' ng-options="location as location.descrizione for location in locations" required></select>
+                <select id='sede' class="span6" ng-model='selectedLocation' ng-change='locationChanged()' ng-options="l.descrizione for l in locations" required></select>
             </div>
             <div ng-show='selectedLocation'>
-                <b>Sede selezionata!</b>
+                <div class='new-row same-row control-group data_inoltro_richiesta'>
+                    <label>Data inoltro richiesta</label>
+                    <input id="data_inoltro_richiesta" type='text' ng-model='intervention.data_inoltro_richiesta' ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" required>
+                </div>
+                <div class='same-row control-group data_intervento'>
+                    <label>Data intervento</label>
+                    <input id="data_intervento" type='text' ng-model='intervention.data_intervento' ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" required>
+                </div>
+                <div class='new-row same-row control-group contatto'>
+                    <label>Contatto</label>
+                    <input id="contatto" type='text' ng-model='intervention.contatto' required>
+                </div>
+                <div class='same-row control-group email'>
+                    <label>E-Mail</label>
+                    <input id="email" type='text' ng-model='intervention.email'>
+                </div>
+                <div class='new-row control-group descrizione_anomalie'>
+                    <label>Descrizione anomalie</label>
+                    <textarea id="descrizione_anomalie" class='span8' rows='5' ng-model='intervention.descrizione_anomalie' required></textarea>
+                </div>
+                <div class='new-row control-group descrizione_intervento'>
+                    <label>Descrizione intervento</label>
+                    <textarea id="descrizione_intervento" class='span8' rows='5' ng-model='intervention.descrizione_intervento' required></textarea>
+                </div>
+                <div class='new-row same-row control-group lavoro_completato'>
+                    <label>Lavoro completato</label>
+                    <input id="lavoro_completato" type='checkbox' ng-model='intervention.lavoro_completato'>
+                </div>
+                <div class='same-row control-group diritto_di_chiamata'>
+                    <label>Diritto di chiamata</label>
+                    <input id="diritto_di_chiamata" type='checkbox' ng-model='intervention.diritto_di_chiamata'>
+                </div>
+                <div class='new-row same-row control-group inizio'>
+                    <label>Inizio</label>
+                    <input id="inizio" type='input' ng-model='intervention.inizio'>
+                </div>
+                <div class='same-row control-group fine'>
+                    <label>Fine</label>
+                    <input id="fine" type='input' ng-model='intervention.fine'>
+                </div>
+                <div class='new-row same-row control-group ore_lavorate_cliente'>
+                    <label>Ore lavorate presso il cliente</label>
+                    <input id="ore_lavorate_cliente" type='input' class='span2' ng-model='intervention.ore_lavorate_cliente' required>
+                </div>
+                <div class='same-row control-group ore_lavorate_remoto'>
+                    <label>Ore lavorate da remoto</label>
+                    <input id="ore_lavorate_remoto" type='input' class='span2' ng-model='intervention.ore_lavorate_remoto' required>
+                </div>
+                <div class='same-row control-group ore_lavorate_laboratorio'>
+                    <label>Ore lavorate in laboratorio</label>
+                    <input id="ore_lavorate_laboratorio" type='input' class='span2' ng-model='intervention.ore_lavorate_laboratorio' required>
+                </div>
+                <div class='new-row control-group note'>
+                    <label>Note</label>
+                    <textarea id="note" class='span8' rows='5' ng-model='intervention.note'></textarea>
+                </div>
             </div>
         </div>
         <div class='form-actions new-row'>

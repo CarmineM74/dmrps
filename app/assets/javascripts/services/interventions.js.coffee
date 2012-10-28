@@ -41,15 +41,28 @@ class InterventionsSvc
         (response) => @notify('Save:Failure',response)
       )  
 
+  fixDateTime: (i) ->
+    i.inizio = new Date(i.inizio)
+    i.fine = new Date(i.fine)
+    i.data_inoltro_richiesta = new Date(i.data_inoltro_richiesta)
+    i.data_intervento = new Date(i.data_intervento)
+    i
+
+
   index: ->
     rs = @interventions.index(
-      (response) => @notify('Index:Success',response),
-      (response) => @notify('Index:Failure',response)
+      (response) => 
+        response = response.map (i) ->
+            @fixDateTime(i)
+        @notify('Index:Success',response)
+      ,(response) => @notify('Index:Failure',response)
     )
 
   get: (intervention_id) ->
     i = @interventions.get({intervention_id},
-      (response) => @notify('Get:Success', response),
-      (response) => @notify('Get:Failure', response)
+      (response) => 
+        response = @fixDateTime(response)
+        @notify('Get:Success', response)
+      ,(response) => @notify('Get:Failure', response)
     )
 

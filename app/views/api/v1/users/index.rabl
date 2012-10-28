@@ -1,3 +1,3 @@
 collection @users
-attributes :id, :email
 
+extends "api/v1/users/show"

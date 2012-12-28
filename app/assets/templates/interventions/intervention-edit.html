@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class='form-actions new-row'>
-          <button type='submit' class='btn' ng-click='saveIntervention(selectedIntervention)' ng-disabled='!isDirty() || !interventionForm.$valid'>{{formSubmitCaption}}</button>
+          <button type='submit' class='btn' ng-click='saveIntervention(intervention)' ng-disabled='!isDirty() || !interventionForm.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>
       </fieldset>

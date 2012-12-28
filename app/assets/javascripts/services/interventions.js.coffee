@@ -52,7 +52,7 @@ class InterventionsSvc
   index: ->
     rs = @interventions.index(
       (response) => 
-        response = response.map (i) ->
+        response = response.map (i) =>
             @fixDateTime(i)
         @notify('Index:Success',response)
       ,(response) => @notify('Index:Failure',response)

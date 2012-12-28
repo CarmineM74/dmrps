@@ -33,5 +33,4 @@ class @InterventionsCtrl
     )
   
   deleteSuccess: =>
-    bootbox.alert('Interventione rimosso con successo!')
-
+    bootbox.alert('Intervento rimosso con successo!')

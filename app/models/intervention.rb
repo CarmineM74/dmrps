@@ -22,9 +22,6 @@ class Intervention < ActiveRecord::Base
   validates :ore_lavorate_laboratorio, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :ore_lavorate_remoto, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
-  validates :lavoro_completato, presence: true
-  validates :diritto_di_chiamata, presence: true
-
   belongs_to :user
   validate :user, :utente_assegnato
 
@@ -46,14 +43,17 @@ private
   end
 
   def data_inoltro_LE_data_intervento
+    return if data_inoltro_richiesta.nil? or data_intervento.nil?
     errors.add(:data_inoltro_richiesta,"can't be greater than Data intervento") if data_inoltro_richiesta > data_intervento
   end
 
   def data_intervento_GE_data_inoltro
+    return if data_intervento.nil? or data_inoltro_richiesta.nil?
     errors.add(:data_intervento,"can't be less than Data inoltro richiesta") if data_intervento < data_inoltro_richiesta
   end
 
   def check_intervallo_lavorato
+    return if inizio.nil? or fine.nil? or data_inoltro_richiesta.nil?
     errors.add(:inizio,"can't be greater than Fine") if inizio > fine
     errors.add(:fine,"can't be less than Inizio") if fine < inizio
     errors.add(:inizio,"can't be less than Data inoltro richiesta") if inizio < data_inoltro_richiesta

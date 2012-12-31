@@ -43,7 +43,7 @@ class @EditInterventionCtrl
     else
       @$scope.formCaption = "Nuovo intervento"
       @$scope.formSubmitCaption = "Crea"
-      @$scope.intervention = 
+      @$scope.intervention = {
                   user_id: 1
                   data_inoltro_richiesta: new Date()
                   data_intervento: new Date()
@@ -61,7 +61,7 @@ class @EditInterventionCtrl
 				          note: ""
 				          diritto_di_chiamata: true
 				          location_ids: []
-      
+                }
       @$scope.originalIntervention = undefined
 
   interventionRetrieved: (evt, response) =>
@@ -92,7 +92,7 @@ class @EditInterventionCtrl
 
   locationChanged: ->
     @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)
-    @$scope.intervention.locations_id = [@$scope.selectedLocation.id]
+    @$scope.intervention.location_ids = [@$scope.selectedLocation.id]
 
   showValidationErrors: (errors) ->
     @$scope.errors = errors.data

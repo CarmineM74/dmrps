@@ -43,7 +43,25 @@ class @EditInterventionCtrl
     else
       @$scope.formCaption = "Nuovo intervento"
       @$scope.formSubmitCaption = "Crea"
-      @$scope.intervention = undefined
+      @$scope.intervention = 
+                  user_id: 1
+                  data_inoltro_richiesta: new Date()
+                  data_intervento: new Date()
+                  inizio: new Date()
+                  fine: new Date()
+				          email: ""
+				          contatto: ""
+				          descrizione_anomalie: ""
+				          descrizione_intervento: ""
+				          ore_lavorate_cliente: 0
+				          ore_lavorate_laboratorio: 0
+				          ore_lavorate_remoto: 0
+				          appunti: ""
+				          lavoro_completato: true
+				          note: ""
+				          diritto_di_chiamata: true
+				          location_ids: []
+      
       @$scope.originalIntervention = undefined
 
   interventionRetrieved: (evt, response) =>
@@ -74,7 +92,7 @@ class @EditInterventionCtrl
 
   locationChanged: ->
     @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)
-    @$scope.selectedIntervention.location_id = @$scope.selectedLocation.id
+    @$scope.intervention.locations_id = [@$scope.selectedLocation.id]
 
   showValidationErrors: (errors) ->
     @$scope.errors = errors.data
@@ -94,7 +112,7 @@ class @EditInterventionCtrl
 
   saveSuccess: (events, args) =>
     @$scope.errors = []
-    @$scope.originalIntervention = angular.copy(@$scope.selectedIntervention)
+    @$scope.originalIntervention = angular.copy(@$scope.intervention)
     @hideForm()
     bootbox.alert('Dati salvati con successo!')
 
@@ -108,6 +126,6 @@ class @EditInterventionCtrl
 
   hideForm: ->
     if !@$scope.originalIntervention?
-      if !angular.equals(@$scope.originalIntervention, @$scope.selectedIntervention)
-        @$scope.selectedIntervention = angular.copy(@$scope.originalIntervention)
+      if !angular.equals(@$scope.originalIntervention, @$scope.intervention)
+        @$scope.intervention = angular.copy(@$scope.originalIntervention)
     @$scope.errors = []

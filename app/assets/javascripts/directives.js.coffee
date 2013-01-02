@@ -4,7 +4,7 @@ angular.module('directivesService',[])
       restrict: 'A'
       link: (scope, element, attrs, ctrl) ->
         scope.$watch(attrs.errors, (value) ->
-          console.log('Errors: ' + JSON.stringify(value))
+          console.log('[showValidationErrors] Errors: ' + JSON.stringify(value))
           element.find('.control-group')
             .removeClass('error')
             .find('span.help-block')

@@ -2,6 +2,7 @@ class @EditInterventionCtrl
   @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location']
   constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location) ->
     @$scope.errors = []
+
     @$scope.dateTimePickerOpts = {
         changeYear: true
         changeMonth: true
@@ -100,8 +101,8 @@ class @EditInterventionCtrl
   isDirty: ->
     unless @$scope.originalIntervention?
         return true
-    @$log.log('Original: ' + JSON.stringify(@$scope.originalIntervention))
-    @$log.log('Selected: ' + JSON.stringify(@$scope.intervention))
+    @$log.log('[Intervention] Original: ' + JSON.stringify(@$scope.originalIntervention))
+    @$log.log('[Intervention] Selected: ' + JSON.stringify(@$scope.intervention))
     if angular.equals(@$scope.originalIntervention,@$scope.intervention)
       false
     else
@@ -113,19 +114,9 @@ class @EditInterventionCtrl
   saveSuccess: (events, args) =>
     @$scope.errors = []
     @$scope.originalIntervention = angular.copy(@$scope.intervention)
-    @hideForm()
-    bootbox.alert('Dati salvati con successo!')
-
-  reqSuccess: =>
     @$scope.errors = []
-    bootbox.alert('Operazione completata!')
-    @hideForm()
+    bootbox.alert('Dati salvati con successo!')
 
   reqFailed: (event, args) =>
     @showValidationErrors(args)
 
-  hideForm: ->
-    if !@$scope.originalIntervention?
-      if !angular.equals(@$scope.originalIntervention, @$scope.intervention)
-        @$scope.intervention = angular.copy(@$scope.originalIntervention)
-    @$scope.errors = []

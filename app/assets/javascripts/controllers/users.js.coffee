@@ -29,8 +29,8 @@ class @UsersCtrl
     @$scope.errors = errors.data
 
   isDirty: ->
-    #@$log.log('Original: ' + JSON.stringify(@$scope.originalUser))
-    #@$log.log('Selected: ' + JSON.stringify(@$scope.selectedUser))
+    @$log.log('[User] Original: ' + JSON.stringify(@$scope.originalUser))
+    @$log.log('[User] Selected: ' + JSON.stringify(@$scope.selectedUser))
     if angular.equals(@$scope.originalUser,@$scope.selectedUser)
       false
     else

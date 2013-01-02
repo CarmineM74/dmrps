@@ -90,6 +90,8 @@ class @EditInterventionCtrl
   clientChanged: ->
     @$log.log("Fetching locations for " + @$scope.selectedClient.ragione_sociale)
     @$scope.locations = @dmLocationsSvc.index(@$scope.selectedClient.id)
+    if !@$scope.editMode
+      @$scope.intervention.diritto_di_chiamata = @$scope.selectedClient.diritto_di_chiamata
 
   locationChanged: ->
     @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)

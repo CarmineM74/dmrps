@@ -169,7 +169,7 @@ DEPENDENCIES
   prawn!
   rabl
   rack-test
-  rails (= 3.2.8)
+  rails (>= 3.2.8)
   rspec-rails (> 2.0.0)
   sass-rails (~> 3.2.3)
   sqlite3

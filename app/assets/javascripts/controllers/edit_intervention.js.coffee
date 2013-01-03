@@ -24,6 +24,7 @@ class @EditInterventionCtrl
     @$scope.$on('dmInterventionsSvc:Save:Success',@saveSuccess)
     @$scope.$on('dmInterventionsSvc:Save:Failure',@reqFailed)
     @$scope.saveIntervention = angular.bind(this, @saveIntervention)
+    @$scope.cancel = angular.bind(this,@cancel)
 
     @$scope.isDirty = angular.bind(this, @isDirty)
 
@@ -95,12 +96,7 @@ class @EditInterventionCtrl
     @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)
     @$scope.intervention.location_ids = [@$scope.selectedLocation.id]
 
-  showValidationErrors: (errors) ->
-    @$scope.errors = errors.data
-
   isDirty: ->
-    unless @$scope.originalIntervention?
-        return true
     @$log.log('[Intervention] Original: ' + JSON.stringify(@$scope.originalIntervention))
     @$log.log('[Intervention] Selected: ' + JSON.stringify(@$scope.intervention))
     if angular.equals(@$scope.originalIntervention,@$scope.intervention)
@@ -112,11 +108,13 @@ class @EditInterventionCtrl
     @dmInterventionsSvc.save(intervention)
 
   saveSuccess: (events, args) =>
-    @$scope.errors = []
     @$scope.originalIntervention = angular.copy(@$scope.intervention)
     @$scope.errors = []
-    bootbox.alert('Dati salvati con successo!')
+    #bootbox.alert('Dati salvati con successo!')
 
   reqFailed: (event, args) =>
-    @showValidationErrors(args)
+    @$scope.errors = args.data
 
+  cancel: ->
+    @$scope.errors = []
+    @$location.path('/interventions')

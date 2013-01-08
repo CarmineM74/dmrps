@@ -1,6 +1,6 @@
 class @LocationsCtrl
-  @inject: ['$scope','$log','$routeParams','dmLocationsvc']
-  constructor: (@$scope, @$log, @$routeParams, @dmLocationsSvc) ->
+  @inject: ['$scope','$log','$routeParams','dmLocationsvc','$location']
+  constructor: (@$scope, @$log, @$routeParams, @dmLocationsSvc,@$location) ->
     @$scope.errors = []
     @$scope.locations = []
     @$scope.selectedLocation = {}
@@ -9,6 +9,7 @@ class @LocationsCtrl
     @$scope.formSubmitCaption = ''
     @$scope.showForm = false
 
+    @$scope.$on('dmLocationsSvc:Index:Success',@locationsRetrieved)
     @$scope.$on('dmLocationsSvc:Index:Failure',@indexFailed)
     @$scope.fetchAll = angular.bind(this, @index)
     @$scope.selectLocation = angular.bind(this, @selectLocation)
@@ -39,9 +40,13 @@ class @LocationsCtrl
   index: ->
     @$scope.locations = @dmLocationsSvc.index(@$routeParams.client_id)
 
+  locationsRetrieved: (response) =>
+    @$scope.client = @$scope.locations[0].client
+
   indexFailed: (response) =>
     @$log.log('Error while retrieving Locations#index')
     bootbox.alert("Impossibile recuperare l'elenco delle sedi per il cliente!")
+    @$location.path('clients')
 
   selectLocation: (location) ->
     @$scope.originalLocation = angular.copy(location)

@@ -24,6 +24,38 @@ describe "/api/v1/clients.json", :type => :api do
     end
   end
 
+  describe 'Fetching a single client' do
+    let(:client) { FactoryGirl.create(:client) }
+    let(:show_url) { "#{url}/#{client.id}.json" }
+
+    def do_verb
+      get show_url
+    end
+
+    context "when client can't be found" do
+      it "fails with status == :not_found (404)" do
+        client.id = 800
+        do_verb
+        last_response.status.should eq(404)
+      end
+    end
+
+    context "when client is found" do
+      it "succeeds with status == :ok (200)" do
+        do_verb
+        last_response.status.should eq(200)
+      end
+
+      it "replies with client's details" do
+        do_verb
+        body = JSON.parse(last_response.body)
+        body.should_not be_empty
+      end
+    end
+
+  end
+
+
   describe 'Creating a new client' do
     let(:client) { FactoryGirl.build(:client) }
 

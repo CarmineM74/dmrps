@@ -94,6 +94,7 @@ describe "/api/v1/users.json", :type => :api do
         do_update
         @user.reload
         @user.email.should eq('updated@me.com')        
+        puts last_response.body
       end
     end
 

@@ -121,7 +121,6 @@ describe "/api/v1/interventions.json", :type => :api do
 
       it "replies with intervention's details" do
         do_verb
-        puts last_response.body
         body = JSON.parse(last_response.body)
         body['location'].should_not be_empty
         body['user'].should_not be_empty

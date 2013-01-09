@@ -6,6 +6,11 @@ class Api::V1::ClientsController < ApplicationController
     respond_with(@clients)
   end
 
+  def show
+    @client = Client.find(params[:id])
+    respond_with(@client)
+  end
+
   def create
     @client = Client.create(params[:client])
     respond_with(@client)

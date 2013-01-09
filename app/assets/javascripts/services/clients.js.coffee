@@ -13,6 +13,7 @@ class ClientsSvc
         path: 'clients'
       }
       ,{index: {method: 'GET', isArray: true}
+      ,get: {method: 'GET' }
       ,create: {method: 'POST'}
       ,update: {method: 'PUT'}
       ,destroy: {method: 'DELETE'}}
@@ -49,5 +50,11 @@ class ClientsSvc
           c
         @notify('Index:Success',response)
       ,(response) => @notify('Index:Failure',response)
+    )
+
+  get: (client_id) ->
+    c = @clients.get({client_id},
+      (response) => @notify('Get:Success',response)
+      ,(response) => @notify('Get:Failure',response)
     )
 

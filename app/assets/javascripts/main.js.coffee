@@ -56,10 +56,12 @@ class @MainCtrl
   loginFailed: (event, args) =>
     @$log.log('[Main] Login failed')
     bootbox.alert(args.error_msg)
+    @$location.path('/')
 
   logout: ->
     @$log.log('[Main] Logout ...')
     @dmSessionSvc.logout()
+    @$location.path('/')
 
   logoutSuccessful: (event, args) =>
     @$log.log('[Main] Logout successful')

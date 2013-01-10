@@ -54,7 +54,7 @@ class ClientsSvc
 
   get: (client_id) ->
     c = @clients.get({client_id},
-      (response) => @notify('Get:Success',response)
-      ,(response) => @notify('Get:Failure',response)
+      (response) => @notify('Get:Success',response),
+      (response) => @notify('Get:Failure',response)
     )
 

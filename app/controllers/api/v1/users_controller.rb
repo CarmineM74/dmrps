@@ -1,6 +1,4 @@
-class Api::V1::UsersController < ApplicationController
-  before_filter :authentication_required
-  #before_filter :administrator_required
+class Api::V1::UsersController < Api::V1::RestrictedController
 
   before_filter :find_user, :only => [:update, :destroy]
 

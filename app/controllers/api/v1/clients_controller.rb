@@ -1,4 +1,4 @@
-class Api::V1::ClientsController < ApplicationController
+class Api::V1::ClientsController < Api::V1::RestrictedController
   before_filter :find_client, :only => [:update, :destroy]
 
   def index

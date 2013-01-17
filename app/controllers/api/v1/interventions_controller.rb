@@ -1,4 +1,4 @@
-class Api::V1::InterventionsController < ApplicationController
+class Api::V1::InterventionsController < Api::V1::RestrictedController
 
   def index
     @interventions = Intervention.all

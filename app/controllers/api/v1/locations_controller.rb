@@ -1,4 +1,4 @@
-class Api::V1::LocationsController < ApplicationController
+class Api::V1::LocationsController < Api::V1::RestrictedController
   before_filter :find_client
 
   def index

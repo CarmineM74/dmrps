@@ -2,7 +2,7 @@
   .config(['$routeProvider', ($routeProvider) ->
     $routeProvider
       .when('/',
-        {controller: MainCtrl, templateUrl: 'assets/main/index.html'}
+        {controller: WelcomeCtrl, templateUrl: 'assets/main/index.html'}
       )
       .when('/users',
         {controller: UsersCtrl, templateUrl: 'assets/users/index.html'}
@@ -31,14 +31,14 @@
     api_ver: 'v1'
   })
 
-class @MainCtrl
+class @MainNavCtrl
   @inject: ['$scope','$log','$location','$http','dmSessionSvc']
   constructor: (@$scope,@$log,@$location,@$http,@dmSessionSvc) ->
     @$log.log('Bootstrapping application ...')
     @setupXhr()
 
     @$scope.loginInfo = {email: '', password: ''}
-    @$scope.currentUser = angular.bind(this,@currentUser)
+    @$scope.currentUser = undefined
     @$scope.login = angular.bind(this,@login)
     @$scope.logout = angular.bind(this,@logout)
     @$scope.$on('dmSessionSvc:Login:Success',@loginSuccessful)
@@ -52,8 +52,10 @@ class @MainCtrl
 
   loginSuccessful: (event, args) =>
     @$log.log('[Main] Login successful ' + JSON.stringify(args))
+    @$scope.currentUser = @dmSessionSvc.currentUser
 
   loginFailed: (event, args) =>
+    @$scope.currentUser = @dmSessionSvc.currentUser
     @$log.log('[Main] Login failed')
     bootbox.alert(args.error_msg)
     @$location.path('/')
@@ -61,6 +63,7 @@ class @MainCtrl
   logout: ->
     @$log.log('[Main] Logout ...')
     @dmSessionSvc.logout()
+    @$scope.currentUser = @dmSessionSvc.currentUser
     @$location.path('/')
 
   logoutSuccessful: (event, args) =>
@@ -69,14 +72,6 @@ class @MainCtrl
   logoutFailed: (event, args) =>
     @$log.log('[Main] Logout failed: ' + JSON.stringify(args))
     bootbox.alert('Errore durante il logout!')
-
-  currentUser: ->
-    if @dmSessionSvc.currentUser?
-      @$log.log('[Main] Currently logged in as ' + @dmSessionSvc.currentUser.email)
-      @dmSessionSvc.currentUser
-    else
-      @$log.log('[Main] Not logged in')
-      false
 
   setupXhr: ->
     @$log.log('[Main] setup HTTP default hedaers ...')

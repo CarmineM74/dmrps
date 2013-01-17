@@ -18,8 +18,8 @@
     = javascript_include_tag 'angular-ui'
     = javascript_include_tag 'application'
     = csrf_meta_tags
-  %body(ng-controller='MainCtrl')
-    %div.navbar.navbar-fixed-top
+  %body
+    %div.navbar.navbar-fixed-top(ng-controller='MainNavCtrl')
       %div.navbar-inner
         %a.brand(href='/')DM RPS
         %ul.nav
@@ -37,12 +37,12 @@
               %i.icon-calendar
               Interventi
         %ul.nav.pull-right
-          %li(ng-show='currentUser()')
+          %li(ng-show='currentUser')
             %button(type='button' class='btn' ng-click='logout()')Logout
           %li
             %a
               %img#spinner(src='assets/spinner.gif')
-        %form.navbar-form.pull-right(ng-hide='currentUser()')
+        %form.navbar-form.pull-right(ng-hide='currentUser')
           %input.input-small(type='text' placeholder='E-mail' ng-model='loginInfo.email')
           %input.input-small(type='password' placeholder='Password' ng-model='loginInfo.password')
           %button.btn(type='button' ng-click='login()')Login

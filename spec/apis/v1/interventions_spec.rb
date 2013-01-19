@@ -10,6 +10,7 @@ shared_examples_for "requires a client" do
 end
 
 describe "/api/v1/interventions.json", :type => :api do
+  include_examples "authentication required"
 
   let(:client) { FactoryGirl.create(:client) }
   let(:user) { FactoryGirl.create(:user) }
@@ -98,6 +99,8 @@ describe "/api/v1/interventions.json", :type => :api do
   end
 
   describe "Fetching a single intervention" do
+    include_examples "authentication required"
+
     let(:intervention) { FactoryGirl.create(:intervention, user: FactoryGirl.create(:user)) }
     let(:show_url) { "#{url}/#{intervention.id}.json" }
     
@@ -170,6 +173,8 @@ describe "/api/v1/interventions.json", :type => :api do
   end
 
   describe "Deleting an intervention" do
+    include_examples "authentication required"
+
     let!(:intervention) { FactoryGirl.create(:intervention, user: FactoryGirl.create(:user)) }
     let(:delete_url) { "#{url}/#{intervention.id}.json" } 
 

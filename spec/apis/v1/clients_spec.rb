@@ -4,27 +4,31 @@ describe "/api/v1/clients.json", :type => :api do
   let(:url) { "/api/v1/clients" }
   
   describe 'Clients list' do
+    include_examples "authentication required"
+
     let(:client) { FactoryGirl.create(:client) }
 
-    def do_get
+    def do_verb
       get url+'.json'
       @status = last_response.status
       @body = JSON.parse(last_response.body)  
     end
 
     it 'fetches all the clients from the database' do
-      do_get
+      do_verb
       clients = JSON.parse(Client.all.to_json(except: [:created_at, :updated_at]))
       @body.should eq(clients)
     end
 
     it 'replies with status == :ok (200)' do
-      do_get
+      do_verb
       @status.should eq(200)
     end
   end
 
   describe 'Fetching a single client' do
+    include_examples "authentication required"
+
     let(:client) { FactoryGirl.create(:client) }
     let(:show_url) { "#{url}/#{client.id}.json" }
 
@@ -57,9 +61,11 @@ describe "/api/v1/clients.json", :type => :api do
 
 
   describe 'Creating a new client' do
+    include_examples "authentication required"
+
     let(:client) { FactoryGirl.build(:client) }
 
-    def do_post
+    def do_verb
       @post_params =  JSON.parse(client.to_json(except: [:created_at, :updated_at]))
       post url+".json", client: @post_params
       @status = last_response.status
@@ -69,18 +75,18 @@ describe "/api/v1/clients.json", :type => :api do
     context 'with valid parameters' do
       it 'creates a client' do
         expect {
-        do_post
+        do_verb
         }.to change(Client,:count).by(1)
       end
 
       it 'replies with status == :created (201)' do
-        do_post
+        do_verb
         @status.should eq(201)
         @body['errors'].should be_nil
       end
 
       it "response body contains client's details" do
-        do_post
+        do_verb
         c = Client.find_by_ragione_sociale(client.ragione_sociale)
         @body.should eq(JSON.parse(c.to_json(except: [:created_at, :updated_at])))
       end
@@ -90,22 +96,24 @@ describe "/api/v1/clients.json", :type => :api do
     context 'with invalid parameters' do
       it 'fails with errors in response body'  do
         client.ragione_sociale = ''
-        do_post
+        do_verb
         @body['errors'].should_not be_nil
       end
 
       it 'fails with status == :unprocessable_entity (422)' do
-        client.partita_iva = ''
-        do_post
+        client.ragione_sociale = ''
+        do_verb
         @status.should eq(422)
       end
     end
   end
 
   describe 'Updating a client' do
+    include_examples "authentication required"
+
     let(:client) { FactoryGirl.create(:client) }
 
-    def do_update
+    def do_verb
       params = JSON.parse(client.to_json(except: [:created_at, :updated_at]))
       put "#{url}/#{client.id}.json", client: params
       @status = last_response.status
@@ -115,12 +123,12 @@ describe "/api/v1/clients.json", :type => :api do
     context "when the user to update doesn't exists" do
       it "fails with status == :not_found (404)" do
         client.id = 200
-        do_update
+        do_verb
         @status.should eq(404)
       end
       it "fails with error == 'resource not found'" do
         client.id = 200
-        do_update
+        do_verb
         @body['error_msg'].should eq('resource not found')
       end
     end
@@ -128,20 +136,20 @@ describe "/api/v1/clients.json", :type => :api do
     context 'with valid parameters' do
       it "updates client's details" do
         client.ragione_sociale = 'updated'
-        do_update
+        do_verb
         client.reload
         client.ragione_sociale.should eq('updated')
       end
 
       it "replies with status == :ok (200)" do
         client.ragione_sociale = 'updated'
-        do_update
+        do_verb
         @status.should eq(200)
       end
       
       it "doesn't have any error messsages in the response" do
         client.ragione_sociale = 'updated'
-        do_update
+        do_verb
         @body['errors'].should be_nil
       end
 
@@ -150,29 +158,31 @@ describe "/api/v1/clients.json", :type => :api do
     context 'with invalid parameters' do
       it "doesn't update client's details" do
         client.ragione_sociale = ''
-        do_update
+        do_verb
         client.reload
         client.ragione_sociale.should_not eq('')
       end
 
       it "replies with status == :unprocessable_entity (422)" do
         client.ragione_sociale = ''
-        do_update
+        do_verb
         @status.should eq(422)  
       end
 
       it "has errors in the response" do
         client.ragione_sociale = ''
-        do_update
+        do_verb
         @body['errors'].should_not be_nil
       end
     end
   end
 
   describe 'Deleting a client' do
+    include_examples "authentication required"
+
     let(:client) { FactoryGirl.create(:client) }
 
-    def do_delete
+    def do_verb
       delete "#{url}/#{client.id}.json"
       @status = last_response.status
     end
@@ -180,7 +190,7 @@ describe "/api/v1/clients.json", :type => :api do
     context "when the client doesn't exists" do
       before(:each) do
         client.id = 200
-        do_delete
+        do_verb
       end
 
       it "fails with status == :not_found (404)" do
@@ -194,14 +204,14 @@ describe "/api/v1/clients.json", :type => :api do
 
     context "when requested client exists" do
       it "deletes the client from the database" do
-        do_delete
+        do_verb
         expect {
           Client.find(client.id)
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "replies with status == :no_content (204)" do
-        do_delete
+        do_verb
         @status.should eq(204)
       end
     end

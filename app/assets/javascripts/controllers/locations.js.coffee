@@ -11,7 +11,7 @@ class @LocationsCtrl
 
     @$scope.$on('dmLocationsSvc:Index:Success',@locationsRetrieved)
     @$scope.$on('dmLocationsSvc:Index:Failure',@indexFailed)
-    @$scioe.$on('dmClientsSvc:Get:Failure',@clientDetailsFailed)
+    @$scope.$on('dmClientsSvc:Get:Failure',@clientDetailsFailed)
     @$scope.fetchAll = angular.bind(this, @index)
     @$scope.selectLocation = angular.bind(this, @selectLocation)
     @$scope.newLocation = angular.bind(this, @newLocation)

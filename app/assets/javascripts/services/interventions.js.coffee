@@ -49,8 +49,8 @@ class InterventionsSvc
     i
 
 
-  index: ->
-    rs = @interventions.index(
+  index: (query) ->
+    rs = @interventions.index({query: query},
       (response) => 
         response = response.map (i) =>
             @fixDateTime(i)

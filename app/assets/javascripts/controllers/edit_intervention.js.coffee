@@ -31,7 +31,7 @@ class @EditInterventionCtrl
     @$scope.clientChanged = angular.bind(this, @clientChanged)
     @$scope.locationChanged = angular.bind(this, @locationChanged)
 
-    @$scope.clients = @dmClientsSvc.index()
+    @$scope.clients = @dmClientsSvc.index('')
     @$scope.selectedClient = undefined
     @$scope.locations = []
     @$scope.selectedLocation = undefined

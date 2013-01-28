@@ -1,7 +1,11 @@
 class Api::V1::InterventionsController < Api::V1::RestrictedController
 
   def index
-    @interventions = Intervention.all
+    if params[:query].empty?
+      @interventions = Intervention.all
+    else
+      @interventions = Intervention.joins(:user,:locations => :client).where("(interventions.id like :query) or (users.email like :query) or (clients.ragione_sociale like :query)",query: "%#{params[:query]}%")
+    end
     respond_with(@interventions)
   end
 

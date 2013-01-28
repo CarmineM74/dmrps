@@ -32,6 +32,10 @@ class Intervention < ActiveRecord::Base
     ore_lavorate_cliente + ore_lavorate_laboratorio + ore_lavorate_remoto
   end
 
+  def client
+    locations.first.client
+  end
+
 private
 
   def utente_assegnato

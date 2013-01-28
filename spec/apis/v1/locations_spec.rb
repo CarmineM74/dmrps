@@ -18,6 +18,7 @@ describe "/api/v1/locations.json", :type => :api do
   let(:url) { "/api/v1/locations" }
 
   describe 'Locations index' do
+    include_examples "authentication required"
     it_behaves_like "requires a client"
 
     def do_verb
@@ -47,6 +48,7 @@ describe "/api/v1/locations.json", :type => :api do
   end
 
   describe 'Creating a location' do
+    include_examples "authentication required"
     it_behaves_like "requires a client"
 
     let(:location) { FactoryGirl.build(:location) }
@@ -104,6 +106,7 @@ describe "/api/v1/locations.json", :type => :api do
   end
 
   describe 'Updating a location' do
+    include_examples "authentication required"
     it_behaves_like "requires a client"
 
     let(:location_attrs) { FactoryGirl.build(:location).attributes.except('id','client_id','created_at','updated_at') }
@@ -175,6 +178,7 @@ describe "/api/v1/locations.json", :type => :api do
   end
 
   describe 'Deleting a location' do
+    include_examples "authentication required"
     it_behaves_like "requires a client"
 
     let(:location_attrs) { FactoryGirl.build(:location).attributes.except('id','client_id','created_at','updated_at') }

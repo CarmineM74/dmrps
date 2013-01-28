@@ -10,13 +10,13 @@ shared_examples_for "requires a client" do
 end
 
 describe "/api/v1/interventions.json", :type => :api do
-  include_examples "authentication required"
 
   let(:client) { FactoryGirl.create(:client) }
   let(:user) { FactoryGirl.create(:user) }
   let(:url) { "/api/v1/interventions" }
 
   describe "Interventions index" do
+    include_examples "authentication required"
     def do_verb
       get url+".json"
       @body = JSON.parse(last_response.body)
@@ -42,7 +42,7 @@ describe "/api/v1/interventions.json", :type => :api do
   end
 
   describe "Creating an intervention" do
-
+    include_examples "authentication required"
     let(:intervention) { FactoryGirl.build(:intervention, user: FactoryGirl.create(:user)) }
 
     before(:each) do
@@ -134,6 +134,7 @@ describe "/api/v1/interventions.json", :type => :api do
   end
 
   describe "Updating an intervention" do
+    include_examples "authentication required"
     let(:intervention) { FactoryGirl.create(:intervention, user: FactoryGirl.create(:user)) }
     let(:put_url) { "#{url}/#{intervention.id}.json" } 
 

@@ -2,7 +2,11 @@ class Api::V1::ClientsController < Api::V1::RestrictedController
   before_filter :find_client, :only => [:update, :destroy]
 
   def index
-    @clients = Client.all
+    if params[:query].empty?
+      @clients = Client.all
+    else
+      @clients = Client.where("(ragione_sociale like :ragione_sociale) or (id like :codice_cliente)",:ragione_sociale => "%#{params[:query]}%", :codice_cliente => "%#{params[:query]}%")
+    end
     respond_with(@clients)
   end
 

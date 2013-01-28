@@ -7,6 +7,7 @@ class @ClientsCtrl
     @$scope.originalClient = undefined
     @$scope.formCaption = ''
     @$scope.formSubmitCaption = ''
+    @$scope.query = ''
     @$scope.showForm = false
 
     @$scope.tipi_contratto = [
@@ -16,6 +17,7 @@ class @ClientsCtrl
 
     @$scope.$on('dmClientsSvc:Index:Failure',@indexFailed)
     @$scope.fetchAll = angular.bind(this, @index)
+    @$scope.filter = angular.bind(this, @filter)
     @$scope.selectClient = angular.bind(this, @selectClient)
     @$scope.newClient = angular.bind(this, @newClient)
     @$scope.$on('dmClientsSvc:Save:Success',@saveSuccess)
@@ -46,7 +48,12 @@ class @ClientsCtrl
   index: ->
     @$scope.selectedClient = {}
     @$scope.originalClient = undefined
-    @$scope.clients = @dmClientsSvc.index()
+    @$scope.clients = @dmClientsSvc.index('')
+
+  filter: ->
+    @$scope.selectedClient = {}
+    @$scope.originalClient = undefined
+    @$scope.clients = @dmClientsSvc.index(@$scope.query)
 
   indexFailed: (response) =>
     @$log.log('Error while retrieving Clients#index')

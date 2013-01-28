@@ -5,8 +5,8 @@
       <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
       <input class='btn' type='button' value='Nuovo cliente' ng-click='newClient()' />
       <div class='input-append offset1'>
-        <input type='text' class='span3 search-query' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title="La ricerca verra' effettuata sui campi:</br><ul class='unstyled'><li>Codice cliente</li><li>Ragione sociale</li></ul>">
-        <button type='submit' class='btn'>Applica filtro</button>
+        <input type='text' class='span3 search-query' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title="La ricerca verra' effettuata sui campi:</br><ul class='unstyled'><li>Codice cliente</li><li>Ragione sociale</li></ul>" ng-model='query'>
+        <button type='submit' class='btn' ng-click='filter()'>Applica filtro</button>
       </div>
     </form>
     <table class='table table-striped table-bordered table-hover'>

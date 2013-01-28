@@ -41,8 +41,8 @@ class ClientsSvc
         (response) => @notify('Save:Failure',response)
       )  
 
-  index: ->
-    cs = @clients.index(
+  index: (query) ->
+    cs = @clients.index({query: query},
       (response) => 
         response = response.map (c) ->
           c.inizio = new Date(c.inizio)

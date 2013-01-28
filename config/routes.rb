@@ -13,5 +13,7 @@ Dmrps::Application.routes.draw do
     end
   end
 
+  get 'test_pdf', :to => 'main#test_pdf'
+
   root :to => 'main#index'
 end

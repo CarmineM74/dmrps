@@ -4,10 +4,6 @@
     <form class='form-search'>
       <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
       <input class='btn' type='button' value='Nuova sede' ng-click='newLocation()' />
-      <div class='input-append offset1'>
-        <input type='text' class='span3 search-query' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title="La ricerca verra' effettuata sui campi:</br><ul class='unstyled'><li>Descrizione</li><li>Indirizzo</li><li>Citta'</li></ul>">
-        <button type='submit' class='btn'>Applica filtro</button>
-      </div>
     </form>
     <table class='table table-striped table-bordered table-hover'>
       <caption><h3>Elenco sedi per {{client.ragione_sociale}}</h3></caption>

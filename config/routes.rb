@@ -2,7 +2,9 @@ Dmrps::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :sessions
+      resources :sessions do
+        get 'authenticated_user', on: :collection
+      end
       resources :users
       resources :clients
       resources :locations

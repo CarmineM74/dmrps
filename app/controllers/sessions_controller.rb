@@ -1,6 +1,12 @@
 class SessionsController < Api::V1::BaseController
   respond_to :json
 
+  def authenticated_user
+    @user = nil
+    @user = current_user
+    respond_with(@user)
+  end
+
   def create
     u = User.find_by_email(params[:email])
     @user = u && u.authenticate(params[:password])

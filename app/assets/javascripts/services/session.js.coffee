@@ -6,15 +6,17 @@ class SessionSvc
   constructor: (@$rootScope,$resource,@$log,@$location,@appConfig) ->
     @$log.log('Initializing Session Service ...')
     @currentUser = undefined
-    @sessions = $resource('http://:addr:port/api/:api_ver/:path/:user_id'
+    @sessions = $resource('http://:addr:port/api/:api_ver/:path/:subpath/:user_id'
       ,{
         addr: appConfig.serverAddr
         port: appConfig.serverPort
         api_ver: appConfig.api_ver
         path: 'sessions'
+        subpath: ''
       }
       ,{create: {method: 'POST'}
-      ,destroy: {method: 'DELETE'}}
+      ,destroy: {method: 'DELETE'}
+      ,authenticated_user: {method: 'GET', params: {subpath: "authenticated_user"}}}
     )
     @$rootScope.$on('Authentication:Failed', @loginFailed)
 
@@ -29,6 +31,18 @@ class SessionSvc
       @$log.log('Not authenticated. Redirecting to: ' + path)
       @$location.path(path)
       return false
+
+  authenticated_user: ->
+    @sessions.authenticated_user(
+      (response) => 
+        if response.user != ''
+          @currentUser = response.user
+          @notify('CurrentUser:Success',response.user)
+        else
+          @currentUser = undefined
+          @notify('Logout:Success',response)
+      ,(response) => @notify('CurrentUser:Failed',response)
+    )
 
   logout: ->
     @sessions.destroy({user_id: @currentUser.id},

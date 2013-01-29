@@ -1,4 +1,4 @@
-@app = angular.module('dmrps',['ngResource','ui','interceptorServices','directivesService','dmrpsFilters'])
+@app = angular.module('dmrps',['ngResource','ui','interceptorServices','directivesService','dmrpsFilters','ngCookies'])
   .config(['$routeProvider', ($routeProvider) ->
     $routeProvider
       .when('/',
@@ -32,9 +32,10 @@
   })
 
 class @MainNavCtrl
-  @inject: ['$scope','$log','$location','$http','dmSessionSvc']
-  constructor: (@$scope,@$log,@$location,@$http,@dmSessionSvc) ->
+  @inject: ['$scope','$log','$location','$http','dmSessionSvc','$cookieStore']
+  constructor: (@$scope,@$log,@$location,@$http,@dmSessionSvc,@$cookies) ->
     @$log.log('Bootstrapping application ...')
+    @$log.log(@$cookies)
     @setupXhr()
 
     @$scope.loginInfo = {email: '', password: ''}
@@ -45,6 +46,9 @@ class @MainNavCtrl
     @$scope.$on('dmSessionSvc:Login:Failed',@loginFailed)
     @$scope.$on('dmSessionSvc:Logout:Success',@logoutSuccessful)
     @$scope.$on('dmSessionSvc:Logout:Failed',@logoutFailed)
+
+    @$scope.$on('dmSessionSvc:CurrentUser:Success',@loginSuccessful)
+    @dmSessionSvc.authenticated_user()
 
   login: ->
     @$log.log('[Main] Attempting login ...')

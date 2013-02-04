@@ -33,6 +33,7 @@
             <td>{{intervention.totale_ore_lavorate}}</td>
           <td class='span1'>
             <div class='btn-group'>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='PDF' href="/api/v1/interventions/{{intervention.id}}/rps.pdf"><img src='assets/report.png'></a>
               <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Modifica' ng-click="editIntervention(intervention)"><img src='assets/table_edit.png'></a>
               <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Rimuovi' ng-click="deleteIntervention(intervention)"><img src='assets/table_delete.png'></a>
             </div>

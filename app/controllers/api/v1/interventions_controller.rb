@@ -31,6 +31,16 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
     respond_with({})
   end
 
+  def rps
+    respond_to do |format|
+      format.pdf do
+        @intervention = Intervention.find(params[:intervention_id])
+        pdf = RpsPdf.new(@intervention)
+        send_data pdf.render,filename: "rps.pdf", type: "application/pdf"
+      end
+    end
+  end
+
 protected
   
   def find_client

@@ -1,6 +1,7 @@
 class RpsPdf < Prawn::Document
-  def initialize
-    super
+  def initialize(intervention)
+    super()
+    @intervention = intervention
     define_grid(columns:12,rows:24,gutter:5)
     #grid.show_all
     header
@@ -27,27 +28,28 @@ class RpsPdf < Prawn::Document
     logo
     grid([2,0],[3,11]).bounding_box do
       draw_bounded_rectangle(5)
-      text "Rapportini/Richiesta di Assistenza Tecnica\nda inviare tramite fax al nr.: 08119722772 o tramite email: ordini@dmcomputers.it\nad uso esclusivo dei clienti D.M. Computers titolri di contratto di Assistena o Manutenzione", align: :center, valign: :center
+      text "<b>Rapportini/Richiesta di Assistenza Tecnica\nda inviare tramite fax al nr.: 08119722772 o tramite email: ordini@dmcomputers.it</b>\nad uso esclusivo dei clienti D.M. Computers titolri di contratto di Assistena o Manutenzione", align: :center, valign: :center, inline_format: true
     end
     grid([4,0],[5,5]).bounding_box do
       draw_bounded_rectangle(5)
-      text_box "Societa'/Cliente richiedente:\n\nTel. ____________ Fax ____________", at: [10,bounds.top-10]
+      font_size 10
+      text_box "<b>Societa'/Cliente richiedente</b>:\n#{@intervention.client.ragione_sociale}\n\nTel. ____________ Fax ____________", at: [10,bounds.top-10],inline_format: true
     end
     grid([4,6],[5,11]).bounding_box do
       draw_bounded_rectangle(5)
-      text_box "Spett.le\nD.M. COMPUTERS VIA AVERSA, 62\n81030 - GRICIGNANO DI AVERSA (CE)\nTel 0815028568", at: [10,bounds.top-2]
+      text_box "<b>Spett.le</b>\n<font size='7'>D.M. COMPUTERS VIA AVERSA, 62\n81030 - GRICIGNANO DI AVERSA (CE)\nTel 0815028568</font>", at: [10,bounds.top-10], inline_format: true
     end
     grid([6,0],[6,5]).bounding_box do
       draw_bounded_rectangle(5)
-      text_box "Data effettiva inoltro richiesta: __/__/____", at: [10,bounds.top-8]
+      text_box "<b>Data effettiva inoltro richiesta:</b> #{@intervention.data_inoltro_richiesta.strftime('%d/%m/%Y')}", at: [10,bounds.top-8], inline_format: true
     end
     grid([7,0],[7,5]).bounding_box do
       draw_bounded_rectangle(5)
-      text_box "Firma del richiedente: ____________________", at: [10,bounds.top-8]
+      text_box "<b>Firma del richiedente:</b> ____________________", at: [10,bounds.top-8], inline_format: true
     end
     grid([6,6],[7,11]).bounding_box do
       draw_bounded_rectangle(5)
-      text_box "CONTRATTO NR: _________________\n\nSENZA CONTRATTO: _________________", at: [10,bounds.top-8]
+      text_box "<b>CONTRATTO NR:</b> _________________\n\n<b>SENZA CONTRATTO:</b> _________________", at: [10,bounds.top-8], inline_format: true
     end
     font_size 8
     grid([8,0],[10,11]).bounding_box do
@@ -55,68 +57,73 @@ class RpsPdf < Prawn::Document
     end
     grid([8,0],[8,2]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Data intervento: __/__/____", at: [10,bounds.top-8]
+      text_box "<b>Data intervento:</b> #{@intervention.data_intervento.strftime('%d/%m/%Y')}", at: [10,bounds.top-8], inline_format: true
     end
     grid([8,3],[8,6]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Contatto: _____________________________", at: [10,bounds.top-8]
+      text_box "<b>Contatto:</b> #{@intervention.contatto}", at: [10,bounds.top-8], inline_format: true
     end
     grid([9,0],[9,2]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Ora inizio: HH:MM", at: [10,bounds.top-8]
+      text_box "<b>Ora inizio:</b> #{@intervention.inizio.strftime('%H:%M')}", at: [10,bounds.top-8], inline_format: true
     end
     grid([9,4],[9,6]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Ora fine: HH:MM", at: [10,bounds.top-8]
+      text_box "<b>Ora fine:</b> #{@intervention.fine.strftime('%H:%M')}", at: [10,bounds.top-8], inline_format: true
     end
     grid([10,0],[10,6]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "E-Mail: ________________________________________________________", at: [10,bounds.top-8]
+      text_box "<b>E-Mail:</b> #{@intervention.email}", at: [10,bounds.top-8], inline_format: true
     end
     grid([8,7],[10,11]).bounding_box do
       draw_bounded_rectangle(0)
-      font_size 10
-      text_box "Indirizzo\n\nVia: _____________________________\nCAP: ______\nCitta': __________________________\nProvincia: __", at: [10,bounds.top-8]
+      font_size 8
+      loc = @intervention.locations.first
+      text_box "<b>Indirizzo</b>\n\n<b>Via:</b> #{loc.indirizzo}\n<b>CAP:</b> #{loc.cap}\n<b>Citta':</b> #{loc.citta}\n<b>Provincia:</b> #{loc.provincia}", at: [10,bounds.top-8], inline_format: true
     end
   end
 
   def body
     grid([11,0],[14,11]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Descrizione delle anomalie o dei guasti riscontrati", at: [0,bounds.top-7], align: :center
+      text_box "<b>Descrizione delle anomalie o dei guasti riscontrati</b>", at: [0,bounds.top-7], align: :center, inline_format: true
       stroke do
         horizontal_line bounds.left,bounds.right, at: bounds.top-18 
       end
+      text_box "#{@intervention.descrizione_anomalie}", at: [0,bounds.top-20]
     end
     grid([15,0],[18,11]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Descrizione dell'intervento effettuato", at: [0,bounds.top-7], align: :center
+      text_box "<b>Descrizione dell'intervento effettuato</b>", at: [0,bounds.top-7], align: :center, inline_format: true
       stroke do
         horizontal_line bounds.left,bounds.right, at: bounds.top-18 
       end
+      text_box "#{@intervention.descrizione_intervento}", at: [0,bounds.top-20]
     end
     grid([19,0],[21,4]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Ore lavorate c/o il cliente: 000\nOre lavorate in laboratorio: 000\nOre lavorate in remoto: 000\nKm supplementari: 0000", at: [10,bounds.top-8]
+      text_box "<b>Ore lavorate c/o il cliente:</b> #{@intervention.ore_lavorate_cliente}\n<b>Ore lavorate in laboratorio:</b> #{@intervention.ore_lavorate_laboratorio}\n<b>Ore lavorate in remoto:</b> #{@intervention.ore_lavorate_remoto}\n<b>Km supplementari:</b> 0000", at: [10,bounds.top-8], inline_format: true
     end
     grid([19,5],[22,11]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Note\n"+"_"*270, at: [10,bounds.top-8]
+      text_box "<b>Note</b>\n"+@intervention.note, at: [10,bounds.top-8], inline_format: true
     end
     grid([22,0],[22,4]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Lavoro completato: SI - Diritto di chiamata: NO", at: [10,bounds.top-8]
+      lav_completo = @intervention.lavoro_completato ? "SI" : "NO"
+      dir_chiamata = @intervention.diritto_di_chiamata ? "SI" : "NO"
+      text_box "<b>Lavoro completato:</b> #{lav_completo} - <b>Diritto di chiamata:</b> #{dir_chiamata}", at: [10,bounds.top-8], inline_format: true
     end
   end
 
   def footer
     grid([23,0],[24,7]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Timbro e firma del cliente", at: [10,bounds.top-8]
+      text_box "<b>Timbro e firma del cliente</b>", at: [10,bounds.top-8], inline_format: true
     end
     grid([23,8],[24,11]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "Sigla del tecnico", at: [10,bounds.top-8]
+      text_box "<b>Sigla del tecnico</b>", at: [10,bounds.top-8], inline_format: true
     end
   end
 

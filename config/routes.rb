@@ -11,11 +11,10 @@ Dmrps::Application.routes.draw do
       resources :interventions do
         get 'by_client/:client_id', on: :collection, action: 'by_client'
         get 'by_user/:user_id', on: :collection, action: 'by_user'
+        get 'rps', :to => 'interventions#rps'
       end
     end
   end
-
-  get 'test_pdf', :to => 'main#test_pdf'
 
   root :to => 'main#index'
 end

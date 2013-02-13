@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(:version => 20121005094434) do
     t.datetime "updated_at",                                                                               :null => false
     t.string   "tipo_contratto",                                        :default => "Orario",              :null => false
     t.decimal  "costo",                  :precision => 10, :scale => 2, :default => 0.0,                   :null => false
-    t.datetime "inizio",                                                :default => '2013-02-04 00:00:00', :null => false
-    t.datetime "fine",                                                  :default => '2014-02-04 14:53:31', :null => false
+    t.datetime "inizio",                                                :default => '2013-02-13 00:00:00', :null => false
+    t.datetime "fine",                                                  :default => '2014-02-13 18:46:47', :null => false
     t.boolean  "diritto_di_chiamata",                                   :default => false,                 :null => false
     t.decimal  "costo_diritto_chiamata", :precision => 10, :scale => 2, :default => 0.0,                   :null => false
   end
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(:version => 20121005094434) do
     t.integer  "user_id"
     t.date     "data_inoltro_richiesta"
     t.date     "data_intervento"
-    t.datetime "inizio",                                                  :default => '2013-02-04 14:53:31', :null => false
-    t.datetime "fine",                                                    :default => '2013-02-04 15:53:31', :null => false
+    t.datetime "inizio",                                                  :default => '2013-02-13 18:46:47', :null => false
+    t.datetime "fine",                                                    :default => '2013-02-13 19:46:47', :null => false
     t.string   "email"
     t.string   "contatto"
     t.text     "descrizione_anomalie"
@@ -67,16 +67,6 @@ ActiveRecord::Schema.define(:version => 20121005094434) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
-
-  create_table "sessions", :force => true do |t|
-    t.string   "session_id", :null => false
-    t.text     "data"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "users", :force => true do |t|
     t.string   "email"

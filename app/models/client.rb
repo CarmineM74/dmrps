@@ -20,6 +20,8 @@ class Client < ActiveRecord::Base
 
   has_many :locations, :inverse_of => :client, dependent: :delete_all
 
+  has_many :contacts, through: :locations
+
 private
 
   def inizio_must_be_less_than_or_equal_to_fine

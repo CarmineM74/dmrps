@@ -7,4 +7,6 @@ class Location < ActiveRecord::Base
   validates :client, presence: true
   has_and_belongs_to_many :interventions
 
+  has_many :contacts
+
 end

@@ -39,6 +39,17 @@ fc_magazzini.cap = '81030'
 fc_magazzini.client = fc
 fc_magazzini.save
 
+# Adding a bunch of contacts
+%w{ 'Carmine Moleti','Franco Melardo','Vincenzo Bosco','Saverio Bosco'}.each do |c|
+  contact = Contact.new
+  contact.name = c
+  contact.email = c.gsub(' ','.').downcase + '@frigocaserta.it'
+  contact.phone = '123456'
+  contact.notes = 'Artificially crafted'
+  contact.location = fc_magazzini
+  contact.save
+end
+
 # Adding fake interventions
 (1..4).each do |n|
   i = Intervention.new

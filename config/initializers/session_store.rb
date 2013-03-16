@@ -4,4 +4,4 @@
 #Dmrps::Application.config.session_store :active_record_store
 
 # Use Memcached Store for sessions
-Dmrps::Application.config.session_store ActionDispatch::Session::CacheStore, expire_after: 1.minutes
+Dmrps::Application.config.session_store ActionDispatch::Session::CacheStore, expire_after: 10.minutes

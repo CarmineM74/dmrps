@@ -52,6 +52,14 @@
 	        <label>Provincia</label>
           <input id='provincia' class='span1' type='text' ng-model='selectedLocation.provincia' to-uppercase>
 	      </div>
+	      <div class='same-row control-group telefono'>
+	        <label>Nr. Telefono</label>
+          <input id='telefono' class='span3' type='text' ng-model='selectedLocation.telefono'>
+	      </div>
+	      <div class='same-row control-group fax'>
+	        <label>Nr. Fax</label>
+          <input id='fax' class='span3' type='text' ng-model='selectedLocation.fax'>
+	      </div>
         <div class='form-actions new-row'>
           <button type='submit' class='btn' ng-click='saveLocation(selectedLocation)' ng-disabled='!isDirty() || !locationForm.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>

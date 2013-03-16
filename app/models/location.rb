@@ -1,5 +1,6 @@
 class Location < ActiveRecord::Base
-  attr_accessible :cap, :citta, :descrizione, :indirizzo, :provincia
+  attr_accessible :cap, :citta, :descrizione, :indirizzo, :provincia,
+                  :telefono, :fax
   validates :descrizione, :indirizzo, :cap, :citta, :provincia, presence: true
   validates :descrizione, uniqueness: { scope: :client_id }
 

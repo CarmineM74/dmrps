@@ -1,4 +1,4 @@
 object @location
 attributes :id, :client_id, 
-            :descrizione, :indirizzo, :cap, :citta, :provincia
+            :descrizione, :indirizzo, :cap, :citta, :provincia, :telefono, :fax
 

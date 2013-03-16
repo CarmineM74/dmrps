@@ -9,8 +9,10 @@ class Api::V1::BaseController < ActionController::Base
   end
 
   def authentication_required
-    #Rails.logger.info("CURRENT USER: #{current_user.nil? ? 'NON IDENTIFICATO' : current_user.email}")
-    #Rails.logger.info("SESSION ID: #{session[:user_id]}")
+    Rails.logger.info("*"*80)
+    Rails.logger.info("CURRENT USER: #{current_user.nil? ? 'NON IDENTIFICATO' : current_user.email}")
+    Rails.logger.info("SESSION: #{session}")
+    Rails.logger.info("*"*80)
     if current_user.nil?
       render :json => {:error_msg => 'authentication required'}, status: 401
     end

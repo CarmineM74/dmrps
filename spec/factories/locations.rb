@@ -7,6 +7,8 @@ FactoryGirl.define do
     f.citta { 'Nowhereland' }
     f.cap { '01000' }
     f.provincia { 'ZZ' }
+    f.telefono { Faker::PhoneNumber.phone_number }
+    f.fax { Faker::PhoneNumber.phone_number }
     client
   end
 end

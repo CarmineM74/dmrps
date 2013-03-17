@@ -25,6 +25,7 @@ class RpsPdf < Prawn::Document
   end
 
   def header
+    location = @intervention.locations.first
     logo
     grid([2,0],[3,11]).bounding_box do
       draw_bounded_rectangle(5)
@@ -33,11 +34,11 @@ class RpsPdf < Prawn::Document
     grid([4,0],[5,5]).bounding_box do
       draw_bounded_rectangle(5)
       font_size 10
-      text_box "<b>Societa'/Cliente richiedente</b>:\n#{@intervention.client.ragione_sociale}\n\nTel. ____________ Fax ____________", at: [10,bounds.top-10],inline_format: true
+      text_box "<b>Societa'/Cliente richiedente</b>:\n#{@intervention.client.ragione_sociale}\n\nTel. #{location.telefono} Fax #{location.fax}", at: [10,bounds.top-10],inline_format: true
     end
     grid([4,6],[5,11]).bounding_box do
       draw_bounded_rectangle(5)
-      text_box "<b>Spett.le</b>\n<font size='7'>D.M. COMPUTERS VIA AVERSA, 62\n81030 - GRICIGNANO DI AVERSA (CE)\nTel 0815028568</font>", at: [10,bounds.top-10], inline_format: true
+      text_box "<b>Spett.le</b>\n<font size='7'>#{@intervention.client.ragione_sociale}\n#{location.indirizzo}\n#{location.cap} - #{location.citta} (#{location.provincia})<font>", at: [10,bounds.top-10], inline_format: true
     end
     grid([6,0],[6,5]).bounding_box do
       draw_bounded_rectangle(5)

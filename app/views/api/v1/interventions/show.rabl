@@ -5,7 +5,7 @@ attributes :id,
             :contatto, :appunti, :descrizione_anomalie, :descrizione_intervento,
             :diritto_di_chiamata, :email, :inizio, :fine, :note,
             :ore_lavorate_cliente, :ore_lavorate_remoto, :ore_lavorate_laboratorio,
-            :lavoro_completato, :totale_ore_lavorate
+            :lavoro_completato, :totale_ore_lavorate, :km_supplementari
 
 node :user do |i|
     partial('api/v1/users/show', object: i.user)

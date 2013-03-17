@@ -3,7 +3,8 @@ class Intervention < ActiveRecord::Base
   attr_accessible :appunti, :contatto, :data_inoltro_richiesta, :data_intervento,
                   :descrizione_anomalie, :descrizione_intervento, :diritto_di_chiamata,
                   :email, :fine, :inizio, :lavoro_completato, :note, :ore_lavorate_cliente,
-                  :ore_lavorate_laboratorio, :ore_lavorate_remoto, :user_id, :location_ids
+                  :ore_lavorate_laboratorio, :ore_lavorate_remoto, :user_id, :location_ids,
+                  :km_supplementari
 
   validates :data_inoltro_richiesta, presence: true
   validate :data_inoltro_richiesta, :data_inoltro_LE_data_intervento
@@ -21,6 +22,7 @@ class Intervention < ActiveRecord::Base
   validates :ore_lavorate_cliente, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :ore_lavorate_laboratorio, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :ore_lavorate_remoto, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :km_supplementari, numericality: { greater_than_or_equal_to: 0 }
 
   belongs_to :user
   validate :user, :utente_assegnato

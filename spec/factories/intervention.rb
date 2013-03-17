@@ -14,6 +14,7 @@ FactoryGirl.define do
     ore_lavorate_cliente { 10.2 }
     ore_lavorate_remoto { 0.0 }
     ore_lavorate_laboratorio { 1.5 }
+    km_supplementari { 10 }
     appunti { "Nessuno" }
     lavoro_completato { true }
     note { "Fate esattamente quello che vi dico" }

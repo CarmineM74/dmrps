@@ -58,6 +58,14 @@ describe Intervention do
     it "when Ore lavorate laboratorio is < 0" do
       @intervention.ore_lavorate_laboratorio = -1
     end
+
+    it "when Km supplementari is empty" do
+      @intervention.km_supplementari = nil
+    end
+
+    it "when Km supplementari is < 0" do
+      @intervention.km_supplementari = -1
+    end
   end
 
 end

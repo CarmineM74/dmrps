@@ -15,10 +15,14 @@ describe "/api/v1/interventions.json", :type => :api do
   let(:user) { FactoryGirl.create(:user) }
   let(:url) { "/api/v1/interventions" }
 
+  before(:each) do
+    @query = ''
+  end
+
   describe "Interventions index" do
     include_examples "authentication required"
     def do_verb
-      get url+".json"
+      get url+".json",query: @query
       @body = JSON.parse(last_response.body)
       @status = last_response.status
     end
@@ -37,6 +41,30 @@ describe "/api/v1/interventions.json", :type => :api do
         i['user'].should_not be_empty
         i['client'].should_not be_empty
         i['location'].should_not be_empty
+      end
+    end
+
+    describe "When a filter is specified" do
+      let (:i1) { FactoryGirl.create(:intervention, user: FactoryGirl.create(:user)) }
+      let (:i2) { FactoryGirl.create(:intervention, user: FactoryGirl.create(:user)) }
+      let (:i3) { FactoryGirl.create(:intervention, user: FactoryGirl.create(:user)) }
+
+      it "fetches an intervention with id like" do
+        @query = i2.id
+        do_verb
+        @body.first['id'].should eq(@query)
+      end
+
+      it "fetches an intervention with user email like" do
+        @query = i3.user.email
+        do_verb
+        @body.first['user']['email'].should eq(i3.user.email)
+      end
+
+      it "fetches an intervention with client ragione_sociale like" do
+        @query = i1.client.ragione_sociale
+        do_verb
+        @body.first['client']['ragione_sociale'].should eq(@query)
       end
     end
   end

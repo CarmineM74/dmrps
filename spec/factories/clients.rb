@@ -15,5 +15,6 @@ FactoryGirl.define do
     fine {1.years.since}
     diritto_di_chiamata { true }
     costo_diritto_chiamata { 20.0 }
+    nr_contratto { '' }
   end
 end

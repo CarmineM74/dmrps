@@ -39,6 +39,10 @@
                 <label>Tipo contratto</label>
                 <select id='tipo_contratto' ng-model='selectedClient.tipo_contratto' ng-options="tipo.value as tipo.name for tipo in tipi_contratto" required></select>
             </div>
+	        <div class='same-row same-row control-group nr_contratto'>
+                <label>Nr contratto</label>
+                <input id="nr_contratto" class='span2' type='text' ng-model='selectedClient.nr_contratto'>
+            </div>
             <div class='same-row control-group costo'>
                 <label>Costo</label>
                 <input id="costo" class='span2' type='text' ng-model='selectedClient.costo' required>

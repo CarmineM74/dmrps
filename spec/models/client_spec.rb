@@ -36,7 +36,12 @@ describe Client do
     end
 
     it "when costo_diritto_chiamata is < 0" do
-      FactoryGirl.build(:client, costo_diritto_chiamata: -1.0)
+      FactoryGirl.build(:client, costo_diritto_chiamata: -1.0).should_not be_valid
+    end
+
+    it "when another client with the same nr_contratto exists" do
+      c1 = FactoryGirl.create(:client,nr_contratto: '007')
+      c2 = FactoryGirl.build(:client,nr_contratto: '007').should_not be_valid
     end
 
   end

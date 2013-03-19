@@ -29,7 +29,7 @@ class RpsPdf < Prawn::Document
     logo
     grid([2,0],[3,11]).bounding_box do
       draw_bounded_rectangle(5)
-      text "<b>Rapportini/Richiesta di Assistenza Tecnica\nda inviare tramite fax al nr.: 08119722772 o tramite email: ordini@dmcomputers.it</b>\nad uso esclusivo dei clienti D.M. Computers titolri di contratto di Assistena o Manutenzione", align: :center, valign: :center, inline_format: true
+      text "<b>Rapportini/Richiesta di Assistenza Tecnica\nda inviare tramite fax al nr.: 08119722772 o tramite email: ordini@dmcomputers.it</b>\nad uso esclusivo dei clienti D.M. Computers titolari di contratto di Assistenza o Manutenzione", align: :center, valign: :center, inline_format: true
     end
     grid([4,0],[5,5]).bounding_box do
       draw_bounded_rectangle(5)
@@ -50,7 +50,8 @@ class RpsPdf < Prawn::Document
     end
     grid([6,6],[7,11]).bounding_box do
       draw_bounded_rectangle(5)
-      text_box "<b>CONTRATTO NR:</b> _________________\n\n<b>SENZA CONTRATTO:</b> _________________", at: [10,bounds.top-8], inline_format: true
+      info_contratto = @intervention.client.nr_contratto.empty? ? "<b>SENZA CONTRATTO</b>" : "<b>CONTRATTO NR: #{@intervention.client.nr_contratto}</b>"
+      text_box info_contratto, at: [10,bounds.top-8], inline_format: true
     end
     font_size 8
     grid([8,0],[10,11]).bounding_box do

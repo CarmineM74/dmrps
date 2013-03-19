@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130317075448) do
+ActiveRecord::Schema.define(:version => 20130319160627) do
 
   create_table "clients", :force => true do |t|
     t.string   "ragione_sociale",                                                                          :null => false
@@ -25,10 +25,11 @@ ActiveRecord::Schema.define(:version => 20130317075448) do
     t.datetime "updated_at",                                                                               :null => false
     t.string   "tipo_contratto",                                        :default => "Orario",              :null => false
     t.decimal  "costo",                  :precision => 10, :scale => 2, :default => 0.0,                   :null => false
-    t.datetime "inizio",                                                :default => '2013-02-16 00:00:00', :null => false
-    t.datetime "fine",                                                  :default => '2014-02-16 10:25:07', :null => false
+    t.datetime "inizio",                                                :default => '2013-02-13 00:00:00', :null => false
+    t.datetime "fine",                                                  :default => '2014-02-13 18:46:47', :null => false
     t.boolean  "diritto_di_chiamata",                                   :default => false,                 :null => false
     t.decimal  "costo_diritto_chiamata", :precision => 10, :scale => 2, :default => 0.0,                   :null => false
+    t.string   "nr_contratto"
   end
 
   create_table "contacts", :force => true do |t|
@@ -45,8 +46,8 @@ ActiveRecord::Schema.define(:version => 20130317075448) do
     t.integer  "user_id"
     t.date     "data_inoltro_richiesta"
     t.date     "data_intervento"
-    t.datetime "inizio",                                                  :default => '2013-02-16 10:25:07', :null => false
-    t.datetime "fine",                                                    :default => '2013-02-16 11:25:07', :null => false
+    t.datetime "inizio",                                                  :default => '2013-02-13 18:46:47', :null => false
+    t.datetime "fine",                                                    :default => '2013-02-13 19:46:47', :null => false
     t.string   "email"
     t.string   "contatto"
     t.text     "descrizione_anomalie"

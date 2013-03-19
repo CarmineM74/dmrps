@@ -39,7 +39,6 @@ class @MainNavCtrl
     @setupXhr()
 
     @$scope.loginInfo = {email: '', password: ''}
-    @$scope.currentUser = undefined
     @$scope.login = angular.bind(this,@login)
     @$scope.logout = angular.bind(this,@logout)
     @$scope.$on('dmSessionSvc:Login:Success',@loginSuccessful)
@@ -60,10 +59,8 @@ class @MainNavCtrl
 
   loginSuccessful: (event, args) =>
     @$log.log('[Main] Login successful ' + JSON.stringify(args))
-    @$scope.currentUser = @dmSessionSvc.currentUser
 
   loginFailed: (event, args) =>
-    @$scope.currentUser = @dmSessionSvc.currentUser
     @$log.log('[Main] Login failed')
     bootbox.alert(args.error_msg)
     @$location.path('/')
@@ -71,7 +68,6 @@ class @MainNavCtrl
   logout: ->
     @$log.log('[Main] Logout ...')
     @dmSessionSvc.logout()
-    @$scope.currentUser = @dmSessionSvc.currentUser
     @$location.path('/')
 
   logoutSuccessful: (event, args) =>

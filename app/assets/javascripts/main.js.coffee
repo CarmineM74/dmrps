@@ -47,8 +47,12 @@ class @MainNavCtrl
     @$scope.$on('dmSessionSvc:Logout:Success',@logoutSuccessful)
     @$scope.$on('dmSessionSvc:Logout:Failed',@logoutFailed)
 
-    @$scope.$on('dmSessionSvc:CurrentUser:Success',@loginSuccessful)
+    @$scope.$on('dmSessionSvc:CurrentUser:Authenticated',@loginSuccessful)
+    @$scope.$on('dmSessionSvc:CurrentUser:NotAuthenticated',@notAuthenticated)
     @dmSessionSvc.authenticated_user()
+
+  notAuthenticated: =>
+    @$location.path('/')
 
   login: ->
     @$log.log('[Main] Attempting login ...')

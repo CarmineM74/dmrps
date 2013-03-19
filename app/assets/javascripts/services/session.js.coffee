@@ -6,6 +6,8 @@ class SessionSvc
   constructor: (@$rootScope,$resource,@$log,@$location,@appConfig) ->
     @$log.log('Initializing Session Service ...')
     @currentUser = undefined
+    @$rootScope.currentUser = @currentUser
+
     @sessions = $resource('http://:addr:port/api/:api_ver/:path/:subpath/:user_id'
       ,{
         addr: appConfig.serverAddr
@@ -16,31 +18,56 @@ class SessionSvc
       }
       ,{create: {method: 'POST'}
       ,destroy: {method: 'DELETE'}
-      ,authenticated_user: {method: 'GET', params: {subpath: "authenticated_user"}}}
+      ,authenticated_user: {method: 'GET', params: {subpath: "authenticated_user.json"}}}
     )
+
     @$rootScope.$on('Authentication:Failed', @loginFailed)
 
-  notify: (name, args) ->
-    @$rootScope.$broadcast('dmSessionSvc:'+name,args)
+    # Installiamo a livello globale il metodo "can" per il controllo
+    # delle autorizzazioni utente
+    @$rootScope.can = @can
 
-  authenticatedOrRedirect: (path) ->
-    @$log.log('Checking authentication ...')
-    if @currentUser?
-      return true
-    else
-      @$log.log('Not authenticated. Redirecting to: ' + path)
-      @$location.path(path)
+  notify: (name, args) ->
+    @$rootScope.$broadcast('SessionSvc:'+name,args)
+
+  checkCanOptions: (opts) ->
+    if opts?
+      #@$log.log('Options: ' + JSON.stringify(opts))
+      if opts.fail_and_logout
+        bootbox.alert("Autorizzazioni insufficienti per eseguire l'operazione!")
+        @$location.path('/')
+        @logout()
+
+  can: (rule,opts) =>
+    if !@currentUser?
+      #@checkCanOptions(opts)
       return false
+    else
+      if @currentUser.role == 'admin'
+        return true
+      else
+        # @$log.log('Checking permissions for rule: ' + rule)
+        allowed_to = [] 
+        allowed_to.push permission.rule for permission in @currentUser.permissions when permission.status is true
+        #@$log.log('User is allowed to: ' + allowed_to)
+        authorized = (rule in allowed_to)
+        if !authorized
+          @checkCanOptions(opts)
+          return false
+        else
+          return true
 
   authenticated_user: ->
     @sessions.authenticated_user(
       (response) => 
         if response.user != ''
           @currentUser = response.user
-          @notify('CurrentUser:Success',response.user)
+          @$rootScope.currentUser = @currentUser
+          @notify('CurrentUser:Authenticated',response.user)
         else
           @currentUser = undefined
-          @notify('Logout:Success',response)
+          @$rootScope.currentUser = @currentUser
+          @notify('CurrentUser:NotAuthenticated',response)
       ,(response) => @notify('CurrentUser:Failed',response)
     )
 
@@ -50,10 +77,12 @@ class SessionSvc
       (response) => @notify('Logout:Failed',response)
     )
     @currentUser = undefined
+    @$rootScope.currentUser = @currentUser
 
   login: (user) ->
     @$log.log('Login with ' + JSON.stringify(user))
     if @currentUser?
+      @$rootScope.currentUser = @currentUser
       @notify('Login:Success',@currentUser)
     else
       @sessions.create({email: user.email, password: user.password},
@@ -62,10 +91,12 @@ class SessionSvc
 
   loginSuccessful : (response) ->
     @currentUser = response.user
+    @$rootScope.currentUser = @currentUser
     @$log.log('[SessionSVC] Login successful: ' + JSON.stringify(@currentUser))
     @notify('Login:Success',@currentUser)
 
   loginFailed : (event, args) =>
     @$log.log('[SessionSVC] Login failed: ' + JSON.stringify(args.data))
     @currentUser = undefined
+    @$rootScope.currentUser = @currentUser
     @notify('Login:Failed',args.data)

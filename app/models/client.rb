@@ -19,7 +19,7 @@ class Client < ActiveRecord::Base
   validates :costo_diritto_chiamata, numericality: { greater_than_or_equal_to: 0 }
   validates_presence_of :costo_diritto_chiamata, if: Proc.new { |c| c.diritto_di_chiamata }
 
-  validates :nr_contratto, uniqueness: true, if: Proc.new { |c| !c.nr_contratto.empty? }
+  validates :nr_contratto, uniqueness: true, if: Proc.new { |c| !c.nr_contratto.nil? and !c.nr_contratto.empty? }
 
   has_many :locations, :inverse_of => :client, dependent: :delete_all
 

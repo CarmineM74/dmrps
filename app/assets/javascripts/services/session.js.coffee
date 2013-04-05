@@ -1,4 +1,4 @@
-@app.factory('dmSessionSvc',['$rootScope','$resource','$log','$location','appConfig', ($rootScope,$resource,$log,$location,appConfig) ->
+@app.factory('sessionSvc',['$rootScope','$resource','$log','$location','appConfig', ($rootScope,$resource,$log,$location,appConfig) ->
 	new SessionSvc($rootScope,$resource,$log,$location,appConfig) 
 ])
 

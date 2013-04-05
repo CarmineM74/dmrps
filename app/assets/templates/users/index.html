@@ -9,12 +9,14 @@
       <thead>
         <tr>
 	        <th>E-Mail</th>
+	        <th>Ruolo</th>
 	        <th>Azioni</th>
         </tr>
       </thead>
       <tbody>
 	      <tr ng-repeat='user in users'>
           <td>{{user.email}}</td>
+          <td>{{user.role}}</td>
           <td class='span1'>
             <div class='btn-group'>
               <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Modifica utente' ng-click='selectUser(user)'><img src='assets/user_edit.png'></a>
@@ -23,31 +25,49 @@
 	      </tr>
       </tbody>
     </table>
+    <div class='span12' ng-show='nrOfPages > 1'>
+      <pagination class='centered' on-select-page='pageChanged(page)' num-pages='nrOfPages' current-page='currentPage'></pagination>
+    </div>
   </div>
-  <div id='new-user' class='span12'>
+  <div id='new-user' class='span12 row'>
     <form name='userForm' class='customForm' ng-show='showForm' show-validation-errors errors='errors'>
       <fieldset>
         <legend>{{formCaption}}</legend>
-        <div class='alert alert-info' ng-show='selectedUser.id'>
-          La modifica dei dati utente avverra' previo inserimento della password e relativa conferma
+        
+        <ul class='nav nav-tabs'>
+          <li><a class='active' href='#tabCredenziali' data-toggle='tab'>Credenziali</a></li>
+        </ul>
+        <div class='tab-content'>
+          <div class='tab-pane active' id='tabCredenziali'>
+            <div class='alert alert-info' ng-show='selectedUser.id'>
+              La modifica dei dati utente avverra' previo inserimento della password e relativa conferma
+            </div>
+            <div class='control-group email'>
+              <label>E-Mail</label>
+              <input id='email' class='span5' type='text' ng-model='selectedUser.email' required>
+    	      </div>
+            <div class='control-group password'>
+              <label>Password</label>
+              <input id='password' class='span5' type='password' ng-model='selectedUser.password' required>
+    	      </div>
+            <div class='control-group password_confirmation'>
+              <label>Conferma password</label>
+              <input id='password_confirm' class='span5' type='password' ng-model='selectedUser.password_confirmation' required>
+	          </div>
+            <div class='control-group role'>
+              <label>Ruolo</label>
+              <select class='span4' ui-select2='{allowClear: false}' ng-model='selectedUser.role' data-placeholder='Seleziona il ruolo'>
+                <option value=''></option>
+                <option ng-repeat='ruolo in availableRoles' value="{{ruolo.codice}}">{{ruolo.descrizione}}</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <div class='control-group email'>
-          <label >E-Mail</label>
-          <input id='email' class='span5' type='text' ng-model='selectedUser.email' required>
-	      </div>
-        <div class='control-group password'>
-          <label >Password</label>
-          <input id='password' class='span5' type='password' ng-model='selectedUser.password' required>
-	      </div>
-        <div class='control-group password_confirmation'>
-          <label>Conferma password</label>
-          <input id='password_confirm' class='span5' type='password' ng-model='selectedUser.password_confirmation' required>
-	      </div>
+      </fieldset>
         <div class='form-actions'>
           <button type='submit' class='btn' ng-click='saveUser(selectedUser)' ng-disabled='!isDirty() || !userForm.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>
         </div>
-      </fieldset>
     </form>
   </div>
 </div>

@@ -32,8 +32,8 @@
   })
 
 class @MainNavCtrl
-  @inject: ['$scope','$log','$location','$http','dmSessionSvc','$cookieStore']
-  constructor: (@$scope,@$log,@$location,@$http,@dmSessionSvc,@$cookies) ->
+  @inject: ['$scope','$log','$location','$http','sessionSvc','$cookieStore']
+  constructor: (@$scope,@$log,@$location,@$http,@sessionSvc,@$cookies) ->
     @$log.log('Bootstrapping application ...')
     @$log.log(@$cookies)
     @setupXhr()
@@ -41,21 +41,21 @@ class @MainNavCtrl
     @$scope.loginInfo = {email: '', password: ''}
     @$scope.login = angular.bind(this,@login)
     @$scope.logout = angular.bind(this,@logout)
-    @$scope.$on('dmSessionSvc:Login:Success',@loginSuccessful)
-    @$scope.$on('dmSessionSvc:Login:Failed',@loginFailed)
-    @$scope.$on('dmSessionSvc:Logout:Success',@logoutSuccessful)
-    @$scope.$on('dmSessionSvc:Logout:Failed',@logoutFailed)
+    @$scope.$on('sessionSvc:Login:Success',@loginSuccessful)
+    @$scope.$on('sessionSvc:Login:Failed',@loginFailed)
+    @$scope.$on('sessionSvc:Logout:Success',@logoutSuccessful)
+    @$scope.$on('sessionSvc:Logout:Failed',@logoutFailed)
 
-    @$scope.$on('dmSessionSvc:CurrentUser:Authenticated',@loginSuccessful)
-    @$scope.$on('dmSessionSvc:CurrentUser:NotAuthenticated',@notAuthenticated)
-    @dmSessionSvc.authenticated_user()
+    @$scope.$on('sessionSvc:CurrentUser:Authenticated',@loginSuccessful)
+    @$scope.$on('sessionSvc:CurrentUser:NotAuthenticated',@notAuthenticated)
+    @sessionSvc.authenticated_user()
 
   notAuthenticated: =>
     @$location.path('/')
 
   login: ->
     @$log.log('[Main] Attempting login ...')
-    @dmSessionSvc.login(@$scope.loginInfo)
+    @sessionSvc.login(@$scope.loginInfo)
 
   loginSuccessful: (event, args) =>
     @$log.log('[Main] Login successful ' + JSON.stringify(args))
@@ -67,7 +67,7 @@ class @MainNavCtrl
 
   logout: ->
     @$log.log('[Main] Logout ...')
-    @dmSessionSvc.logout()
+    @sessionSvc.logout()
     @$location.path('/')
 
   logoutSuccessful: (event, args) =>

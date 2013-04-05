@@ -1,5 +1,7 @@
 class Api::V1::UsersController < Api::V1::RestrictedController
 
+  authorize_resource
+
   before_filter :find_user, :only => [:update, :destroy]
 
   def index

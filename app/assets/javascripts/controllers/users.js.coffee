@@ -1,28 +1,40 @@
 class @UsersCtrl
-  @inject: ['$scope','$log','dmUsersSvc']
-  constructor: (@$scope, @$log, @dmUsersSvc) ->
+  @inject: ['$scope','$log','usersSvc','sessionSvc']
+  constructor: (@$scope, @$log, @usersSvc,@sessionSvc) ->
+
+    @$scope.$on('UsersSvc:Index:Failure',@indexFailed)
+    @$scope.$on('UsersSvc:Index:Success',@indexSuccess)
+    @$scope.$on('UsersSvc:Save:Success',@saveSuccess)
+    @$scope.$on('UsersSvc:Save:Failure',@reqFailed)
+    @$scope.$on('UsersSvc:Destroy:Success', @deleteSuccess)
+    @$scope.$on('UsersSvc:Destroy:Failure', @reqFailed)
+
+    @$scope.fetchAll = angular.bind(this, @index)
+    @$scope.selectUser = angular.bind(this, @selectUser)
+    @$scope.newUser = angular.bind(this, @newUser)
+    @$scope.saveUser = angular.bind(this, @saveUser)
+    @$scope.deleteUser = angular.bind(this, @deleteUser)
+    @$scope.hideForm = angular.bind(this, @hideForm)
+    @$scope.isDirty = angular.bind(this, @isDirty)
+
+    @$scope.pageChanged = angular.bind(this, @pageChanged)
+
+    @$scope.$on('SessionSvc:CurrentUser:Authenticated', @authenticated)
+    @sessionSvc.authenticated_user()
+
     @$scope.errors = []
-    @$scope.users = []
+
     @$scope.selectedUser = {}
     @$scope.originalUser = undefined
     @$scope.formCaption = ''
     @$scope.formSubmitCaption = ''
     @$scope.showForm = false
+    @$scope.availableRoles = [ {codice: 'admin', descrizione: 'Amministratore'},{codice: 'user', descrizione: 'Utente'},{codice: 'client', descrizione: 'Cliente'} ]
 
-    @$scope.$on('dmUsersSvc:Index:Failure',@indexFailed)
-    @$scope.fetchAll = angular.bind(this, @index)
-    @$scope.selectUser = angular.bind(this, @selectUser)
-    @$scope.newUser = angular.bind(this, @newUser)
-    @$scope.$on('dmUsersSvc:Save:Success',@saveSuccess)
-    @$scope.$on('dmUsersSvc:Save:Failure',@reqFailed)
-    @$scope.saveUser = angular.bind(this, @saveUser)
-    @$scope.$on('dmUsersSvc:Destroy:Success', @deleteSuccess)
-    @$scope.$on('dmUsersSvc:Destroy:Failure', @reqFailed)
-    @$scope.deleteUser = angular.bind(this, @deleteUser)
-    @$scope.hideForm = angular.bind(this, @hideForm)
-
-    @$scope.isDirty = angular.bind(this, @isDirty)
-
+  authenticated: =>
+    unless @$scope.can('ManageUsers',{fail_and_logout: true})
+      return
+    @initPagination()
     @index()
 
   showValidationErrors: (errors) ->
@@ -36,12 +48,34 @@ class @UsersCtrl
     else
       true
 
+  initPagination: ->
+    @$scope.users = []
+    @$scope.allUsers = []
+    @$scope.itemsPerPage = 10
+    @$scope.nrOfPages = 0
+    @$scope.currentPage = 1
+
   index: ->
-    @$scope.users = @dmUsersSvc.index()
+    @usersSvc.index()
+
+  indexSuccess: (events, users) =>
+    @$scope.allUsers = users
+    @$scope.nrOfPages = Math.floor(users.length / 10)
+    if (users.length % 10 ) != 0
+      @$scope.nrOfPages += 1
+    @pageChanged(1)
 
   indexFailed: (response) =>
     @$log.log('Error while retrieving Users#index')
     bootbox.alert("Impossibile recuperare l'elenco degli utenti!")
+
+  pageChanged: (page) ->
+    @$scope.currentPage = page
+    start = (@$scope.currentPage - 1) * @$scope.itemsPerPage 
+    stop = start + (@$scope.itemsPerPage - 1)
+    if stop > @$scope.allUsers.length
+      stop = @$scope.allUsers.length - 1
+    @$scope.users = @$scope.allUsers[start..stop]
 
   selectUser: (user) ->
     @$scope.selectedUser = user
@@ -54,13 +88,13 @@ class @UsersCtrl
 
   newUser: ->
     @$scope.originalUser = undefined
-    @$scope.selectedUser = {email: '', password: '', password_confirmation: ''}
+    @$scope.selectedUser = {email: '', password: '', password_confirmation: '', name: '', role: '', notifications_email: '', ftp_home: '', codice_cliente: '', tracciato_feedback_ricevimento_merce: '', tracciato_richiesta_evasione_merce: '', tracciato_feedback_spedizione_merce: '', email_responsabili_movimentazione: ''}
     @$scope.formCaption = 'Nuovo utente'
     @$scope.formSubmitCaption = 'Salva'
     @$scope.showForm = true
 
   saveUser: (user) ->
-    @dmUsersSvc.save(user)
+    @usersSvc.save(user)
 
   saveSuccess: (event, args) =>
     @$scope.errors = []
@@ -79,7 +113,7 @@ class @UsersCtrl
   deleteUser: (user) ->
     bootbox.confirm("Proseguo con la cancellazione dell'utente?",(result) =>
       if result
-        @dmUsersSvc.destroy(user)
+        @usersSvc.destroy(user)
         @hideForm()
     )
   

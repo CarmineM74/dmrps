@@ -1,4 +1,4 @@
-@app.factory('dmUsersSvc',['$rootScope','$resource','$log','appConfig', ($rootScope,$resource,$log,appConfig) ->
+@app.factory('usersSvc',['$rootScope','$resource','$log','appConfig', ($rootScope,$resource,$log,appConfig) ->
 	new UsersSvc($rootScope,$resource,$log,appConfig) 
 ])
 
@@ -13,6 +13,7 @@ class UsersSvc
         path: 'users'
       }
       ,{index: {method: 'GET', isArray: true}
+      ,show: {method: 'GET', isArray: false}
       ,create: {method: 'POST'}
       ,update: {method: 'PUT'}
       ,destroy: {method: 'DELETE'}}
@@ -20,7 +21,7 @@ class UsersSvc
 
   notify: (name,args) ->
     #@$log.log('Broadcasting : ' + name + ' with ' + JSON.stringify(args))
-    @$rootScope.$broadcast('dmUsersSvc:'+name,args)
+    @$rootScope.$broadcast('UsersSvc:'+name,args)
 
   destroy: (user) ->
     user.$destroy({user_id: user.id},
@@ -45,4 +46,10 @@ class UsersSvc
     @users.index(
       (response) => @notify('Index:Success',response),
       (response) => @notify('Index:Failure',response)
+    )
+
+  show: (id,client_id) ->
+    @users.show({user_id: id, client_id: client_id},
+      (response) => @notify('Show:Success',response),
+      (response) => @notify('Show:Failure',response)
     )

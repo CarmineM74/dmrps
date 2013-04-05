@@ -2,7 +2,12 @@ class Api::V1::BaseController < ActionController::Base
   respond_to :json
   layout nil
   protect_from_forgery
+
   rescue_from ActiveRecord::RecordNotFound, :with => :resource_not_found
+
+  rescue_from CanCan::AccessDenied do |exception|
+    render :json => {:error_msg => exception.message}, status: 401
+  end
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]

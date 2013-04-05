@@ -1,4 +1,7 @@
 class Api::V1::ClientsController < Api::V1::RestrictedController
+
+  authorize_resource
+
   before_filter :find_client, :only => [:update, :destroy]
 
   def index

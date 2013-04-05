@@ -1,5 +1,7 @@
 class Api::V1::InterventionsController < Api::V1::RestrictedController
 
+  authorize_resource
+
   def index
     if params[:query].empty?
       @interventions = Intervention.all

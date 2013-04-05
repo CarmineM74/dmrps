@@ -7,12 +7,12 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Adding default Admin user
-user = User.create(email:'admin@changeme.com',password:'testme',password_confirmation:'testme')
+user = User.create(email:'admin@changeme.com',password:'testme',password_confirmation:'testme', role: 'admin')
 
 # Test SEEDS
 # Adding a bunch of users
 %w{ user1 user2 user3 user4 }.each do |u|
-  User.create(email:"#{u}@seeds.com",password:u,password_confirmation:u)
+  User.create(email:"#{u}@seeds.com",password:u,password_confirmation:u, role: 'user')
 end
 
 # Adding clients and locations

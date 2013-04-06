@@ -1,14 +1,16 @@
 class @ClientsCtrl
-  @inject: ['$scope','$log','dmClientsSvc']
-  constructor: (@$scope, @$log, @dmClientsSvc) ->
+  @inject: ['$scope','$log','dmClientsSvc','dmLocationsSvc']
+  constructor: (@$scope, @$log, @dmClientsSvc, @dmLocationsSvc) ->
     @$scope.errors = []
     @$scope.clients = []
+    @$scope.locations = []
     @$scope.selectedClient = {}
     @$scope.originalClient = undefined
     @$scope.formCaption = ''
     @$scope.formSubmitCaption = ''
     @$scope.query = ''
     @$scope.showForm = false
+    @$scope.nuovoCliente = true
 
     @$scope.tipi_contratto = [
         {name: 'Orario', value: 'Orario'},
@@ -65,6 +67,7 @@ class @ClientsCtrl
     @$scope.formCaption = 'Modifica cliente'
     @$scope.formSubmitCaption = 'Aggiorna dati'
     @$scope.showForm = true
+    @$scope.nuovoCliente = false
 
   newClient: ->
     @$scope.originalClient = undefined
@@ -72,6 +75,7 @@ class @ClientsCtrl
     @$scope.formCaption = 'Nuovo cliente'
     @$scope.formSubmitCaption = 'Salva'
     @$scope.showForm = true
+    @$scope.nuovoCliente = true
 
   saveClient: (client) ->
     @dmClientsSvc.save(client)

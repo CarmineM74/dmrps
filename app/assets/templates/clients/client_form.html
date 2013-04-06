@@ -1,68 +1,86 @@
   <div id='new-client' class='span12'>
     <form name='clientForm' class='custom-form' ng-show='showForm' show-validation-errors errors='errors'>
       <fieldset>
-          <legend>{{formCaption}}</legend>
-        <div class='same-row id' ng-show='selectedClient.id'>
-		      <label>Codice cliente</label>
-		      <span class='span1 uneditable-input' type='text'>{{selectedClient.id}}</span>
-        </div>
-	    <div class='same-row control-group ragione_sociale'>
-	        <label>Ragione sociale</label>
-	        <input id='ragione_sociale' class='span10' type='text' ng-model='selectedClient.ragione_sociale' required>
-        </div>
-	      <div class='same-row control-group indirizzo'>
-	        <label>Indirizzo</label>
-          <input id='indirizzo' class='span5' type='text' ng-model='selectedClient.indirizzo'>
-	      </div>
-	      <div class='clearfix same-row control-group citta'>
-	        <label>Citta'</label>
-          <input id='citta' class='span3' type='text' ng-model='selectedClient.citta'>
-	      </div>
-	      <div class='same-row control-group cap'>
-	        <label>CAP</label>
-          <input id='cap' class='span1' type='text' ng-model='selectedClient.cap'>
-	      </div>
-	      <div class='same-row control-group provincia'>
-	        <label>Provincia</label>
-          <input id='provincia' class='span1' type='text' ng-model='selectedClient.provincia' to-uppercase>
-	      </div>
-	      <div class='new-row same-row control-group partita_iva'>
-	        <label>Partita IVA</label>
-          <input id='partita_iva' class='span3' type='text' ng-model='selectedClient.partita_iva'>
-	      </div>
-	      <div class='same-row control-group codice_fiscale'>
-	        <label>Codice Fiscale</label>
-          <input id='codice_fiscale' class='span3' type='text' ng-model='selectedClient.codice_fiscale'>
-          </div>
-          <legend>Informazioni Contratto<legend>
-	        <div class='new-row same-row control-group tipo_contratto'>
-                <label>Tipo contratto</label>
-                <select id='tipo_contratto' ng-model='selectedClient.tipo_contratto' ng-options="tipo.value as tipo.name for tipo in tipi_contratto" required></select>
+        <legend>{{formCaption}}</legend>
+        <ul class='nav nav-tabs'>
+          <li><a class='active' href='#tabAnagrafica' data-toggle='tab'>Anagrafica</a></li>
+          <li ng-hide='nuovoCliente'><a href='#tabContatti' data-toggle='tab'>Contatti</a></li>
+          <li ng-hide='nuovoCliente'><a href='#tabSedi' data-toggle='tab'>Sedi</a></li>
+        </ul>
+        <div class='tab-content'>
+          <div class='tab-pane active' id='tabAnagrafica'>
+
+            <div class='same-row id' ng-show='selectedClient.id'>
+		          <label>Codice cliente</label>
+		          <span class='span1 uneditable-input' type='text'>{{selectedClient.id}}</span>
             </div>
-	        <div class='same-row same-row control-group nr_contratto'>
-                <label>Nr contratto</label>
-                <input id="nr_contratto" class='span2' type='text' ng-model='selectedClient.nr_contratto'>
+	          <div class='same-row control-group ragione_sociale'>
+	            <label>Ragione sociale</label>
+	            <input id='ragione_sociale' class='span10' type='text' ng-model='selectedClient.ragione_sociale' required>
+            </div>
+	          <div class='same-row control-group indirizzo'>
+	            <label>Indirizzo</label>
+              <input id='indirizzo' class='span5' type='text' ng-model='selectedClient.indirizzo'>
+	          </div>
+	          <div class='clearfix same-row control-group citta'>
+	            <label>Citta'</label>
+              <input id='citta' class='span3' type='text' ng-model='selectedClient.citta'>
+	          </div>
+	          <div class='same-row control-group cap'>
+	            <label>CAP</label>
+              <input id='cap' class='span1' type='text' ng-model='selectedClient.cap'>
+	          </div>
+	          <div class='same-row control-group provincia'>
+	            <label>Provincia</label>
+              <input id='provincia' class='span1' type='text' ng-model='selectedClient.provincia' to-uppercase>
+	          </div>
+	          <div class='new-row same-row control-group partita_iva'>
+	            <label>Partita IVA</label>
+              <input id='partita_iva' class='span3' type='text' ng-model='selectedClient.partita_iva'>
+	          </div>
+	          <div class='same-row control-group codice_fiscale'>
+	            <label>Codice Fiscale</label>
+              <input id='codice_fiscale' class='span3' type='text' ng-model='selectedClient.codice_fiscale'>
+            </div>
+	          <div class='new-row same-row control-group tipo_contratto'>
+              <label>Tipo contratto</label>
+              <select id='tipo_contratto' ng-model='selectedClient.tipo_contratto' ng-options="tipo.value as tipo.name for tipo in tipi_contratto" required></select>
+            </div>
+	          <div class='same-row same-row control-group nr_contratto'>
+              <label>Nr contratto</label>
+              <input id="nr_contratto" class='span2' type='text' ng-model='selectedClient.nr_contratto'>
             </div>
             <div class='same-row control-group costo'>
-                <label>Costo</label>
-                <input id="costo" class='span2' type='text' ng-model='selectedClient.costo' required>
+              <label>Costo</label>
+              <input id="costo" class='span2' type='text' ng-model='selectedClient.costo' required>
             </div>
             <div class='new-row same-row control-group inizio'>
-                <label>Inizio contratto</label>
-                <input id='inizio' type='text' ng-model="selectedClient.inizio" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" required>
+              <label>Inizio contratto</label>
+              <input id='inizio' type='text' ng-model="selectedClient.inizio" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" required>
             </div>
             <div class='same-row control-group fine'>
-                <label>Fine contratto</label>
-                <input id='fine' type='text' ng-model="selectedClient.fine" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" required>
+              <label>Fine contratto</label>
+              <input id='fine' type='text' ng-model="selectedClient.fine" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" required>
             </div>
             <div class='new-row same-row control-group diritto_di_chiamata'>
-                <label>Diritto di chiamata</label>
-                <input id='diritto_di_chiamata' type="CHECKBOX" ng-model="selectedClient.diritto_di_chiamata">
+              <label>Diritto di chiamata</label>
+              <input id='diritto_di_chiamata' type="CHECKBOX" ng-model="selectedClient.diritto_di_chiamata">
             </div>
             <div class='same-row control-group costo_diritto_chiamata' ng-show='selectedClient.diritto_di_chiamata'>
-                <label>Costo diritto di chiamata</label>
-                <input id="costo_diritto_chiamata" class='span2' type='text' ng-model='selectedClient.costo_diritto_chiamata'>
+              <label>Costo diritto di chiamata</label>
+              <input id="costo_diritto_chiamata" class='span2' type='text' ng-model='selectedClient.costo_diritto_chiamata'>
             </div>
+          </div>
+
+          <div class='tab-pane' id='tabContatti'>
+            <p>Elenco contatti per il cliente</p>
+          </div>
+
+          <div class='tab-pane' id='tabSedi'>
+            <p>Gestione sedi cliente</p>
+          </div>
+        </div>
+
         <div class='form-actions new-row'>
           <button type='submit' class='btn' ng-click='saveClient(selectedClient)' ng-disabled='!isDirty() || !clientForm.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="hideForm()">Annulla</button>

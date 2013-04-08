@@ -1,0 +1,40 @@
+<div class='row'>
+    <form name='locationForm' class='custom-form' show-validation-errors errors='errors'>
+      <fieldset>
+        <legend>{{formCaption}}</legend>
+	      <div class='same-row control-group descrizione'>
+	        <label>Descrizione</label>
+	        <input id='descrizione' class='span10' type='text' ng-model='location.descrizione' required>
+        </div>
+	      <div class='same-row control-group indirizzo'>
+	        <label>Indirizzo</label>
+          <input id='indirizzo' class='span5' type='text' ng-model='location.indirizzo' required>
+	      </div>
+	      <div class='clearfix same-row control-group citta'>
+	        <label>Citta'</label>
+          <input id='citta' class='span3' type='text' ng-model='location.citta' required>
+	      </div>
+	      <div class='same-row control-group cap'>
+	        <label>CAP</label>
+          <input id='cap' class='span1' type='text' ng-model='location.cap'>
+	      </div>
+	      <div class='same-row control-group provincia'>
+	        <label>Provincia</label>
+          <input id='provincia' class='span1' type='text' ng-model='location.provincia' to-uppercase>
+	      </div>
+	      <div class='same-row control-group telefono'>
+	        <label>Nr. Telefono</label>
+          <input id='telefono' class='span3' type='text' ng-model='location.telefono'>
+	      </div>
+	      <div class='same-row control-group fax'>
+	        <label>Nr. Fax</label>
+          <input id='fax' class='span3' type='text' ng-model='location.fax'>
+	      </div>
+        <div class='form-actions new-row'>
+          <button type='submit' class='btn' ng-click='saveLocation(location)' ng-disabled='!isDirty() || !locationForm.$valid'>{{formSubmitCaption}}</button>
+          <button type='submit' class='btn' ng-click="quitEditing()">Annulla</button>
+        </div>
+      </fieldset>
+    </form>
+</div>
+

@@ -2,11 +2,16 @@ class Api::V1::LocationsController < Api::V1::RestrictedController
 
   authorize_resource
 
-  before_filter :find_client
+  before_filter :find_client, except: [:show]
 
   def index
     @locations = @client.locations
     respond_with(@locations)
+  end
+
+  def show
+    @location = Location.find(params[:id])
+    respond_with(@location)
   end
 
   def create

@@ -13,6 +13,7 @@ class LocationsSvc
         path: 'locations'
       }
       ,{index: {method: 'GET', isArray: true}
+      ,get: {method: 'GET'}
       ,create: {method: 'POST'}
       ,update: {method: 'PUT'}
       ,destroy: {method: 'DELETE'}}
@@ -46,4 +47,10 @@ class LocationsSvc
     @locations.index({client_id: client_id}
       (response) => @notify('Index:Success',response),
       (response) => @notify('Index:Failure',response)
+    )
+
+  get: (location_id) ->
+    @locations.get({location_id: location_id}
+      (response) => @notify('Get:Success', response),
+      (response) => @notify('Get:Failure', response)
     )

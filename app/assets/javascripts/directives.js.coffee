@@ -37,3 +37,16 @@ angular.module('directivesService',[])
     }
     return d
   )
+  .directive('elencoSedi', ->
+    d = {
+      restrict: 'EA'
+      templateUrl: '/assets/clients/locations.html'
+      scope: {
+        sedi: '='
+        nuovaSedeClick: "&"
+        modificaSedeClick: "&"
+        eliminaSedeClick: "&"
+      }
+    }
+    return d
+  )

@@ -1,4 +1,4 @@
-@app = angular.module('dmrps',['ngResource','ui','interceptorServices','directivesService','dmrpsFilters','ngCookies'])
+@app = angular.module('dmrps',['ngResource','ui','ui.bootstrap','interceptorServices','directivesService','dmrpsFilters','ngCookies'])
   .config(['$routeProvider', ($routeProvider) ->
     $routeProvider
       .when('/',
@@ -10,8 +10,17 @@
       .when('/clients',
         {controller: ClientsCtrl, templateUrl: 'assets/clients/index.html'}
       )
-      .when('/locations/:client_id',
-        {controller: LocationsCtrl, templateUrl: 'assets/locations/index.html'}
+      .when('/clients/add',
+        {controller: EditClientCtrl, templateUrl: 'assets/clients/edit_client.html'}
+      )
+      .when('/clients/edit/:client_id',
+        {controller: EditClientCtrl, templateUrl: 'assets/clients/edit_client.html'}
+      )
+      .when('/locations/add/:client_id',
+        {controller: EditLocationCtrl, templateUrl: 'assets/locations/edit_location.html'}
+      )
+      .when('/locations/edit/:client_id/:location_id',
+        {controller: EditLocationCtrl, templateUrl: 'assets/locations/edit_location.html'}
       )
       .when('/interventions',
         {controller: InterventionsCtrl, templateUrl: 'assets/interventions/index.html'}

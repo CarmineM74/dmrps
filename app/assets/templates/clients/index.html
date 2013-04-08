@@ -1,11 +1,11 @@
 </br>
 <div class='row'>
-  <div class='span12' ng-hide='showForm'>
+  <div class='span12'>
     <form class='form-search'>
       <input class='btn' type='button' value='Aggiorna elenco' ng-click='fetchAll()' />
       <input class='btn' type='button' value='Nuovo cliente' ng-click='newClient()' />
       <div class='input-append offset1'>
-        <input type='text' class='span3 search-query' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title="La ricerca verra' effettuata sui campi:</br><ul class='unstyled'><li>Codice cliente</li><li>Ragione sociale</li></ul>" ng-model='query'>
+        <input type='text' class='span3 search-query' tooltip="La ricerca verra' effettuata sui campi:</br><ul class='unstyled'><li>Codice cliente</li><li>Ragione sociale</li></ul>" ng-model='query'>
         <button type='submit' class='btn' ng-click='filter()'>Applica filtro</button>
       </div>
     </form>
@@ -29,15 +29,13 @@
             <td>{{client.fine | date: 'dd/MM/yyyy'}}</td>
           <td class='span1'>
             <div class='btn-group'>
-              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Modifica cliente' ng-click='selectClient(client)'><img src='assets/computer_edit.png'></a>
+              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Modifica cliente' ng-click='editClient(client)'><img src='assets/computer_edit.png'></a>
               <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Rimuovi cliente' ng-click="deleteClient(client)"><img src='assets/computer_delete.png'></a>
-              <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='Elenco sedi' ng-href='#/locations/{{client.id}}'><img src='assets/brick.png'></a>
             </div>
           </td>
 	      </tr>
       </tbody>
     </table>
   </div>
-  <ng-include src="'/assets/clients/client_form.html'"></ng-include>
 </div>
 

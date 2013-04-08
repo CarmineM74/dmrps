@@ -1,0 +1,25 @@
+<input class='btn' type='button' value='Nuova sede' ng-click='nuovaSedeClick()'/>
+<div ng-hide='sedi.length > 0'><alert type='info'>Non ci sono sedi per il cliente</alert></div>
+<div ng-show='sedi && sedi.length > 0'>
+    <table class='table table-striped table-bordered table-hover'>
+      <thead>
+        <tr>
+          <th>Descrizione</th>
+          <th>Citta'</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+	      <tr ng-repeat='sede in sedi'>
+	        <td>{{sede.descrizione}}</td>
+	        <td>{{sede.citta}}</td>
+          <td class='span1'>
+            <div class='btn-group'>
+              <a class='btn' ui-jq='tooltip' title='Modifica sede' ng-click='modificaSedeClick({location: sede})'><img src='assets/brick_edit.png'></a>
+              <a class='btn' ui-jq='tooltip' title='Rimuovi sede' ng-click="eliminaSedeClick({location: sede})"><img src='assets/brick_delete.png'></a>
+            </div>
+          </td>
+	      </tr>
+      </tbody>
+    </table>
+</div>

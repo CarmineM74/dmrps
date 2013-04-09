@@ -23,7 +23,7 @@ class Client < ActiveRecord::Base
 
   has_many :locations, :inverse_of => :client, dependent: :delete_all
 
-  has_many :contacts, through: :locations
+  has_many :contacts, dependent: :delete_all
 
 private
 

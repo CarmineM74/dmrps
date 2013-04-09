@@ -46,7 +46,7 @@ fc_magazzini.save
   contact.email = c.gsub(' ','.').downcase + '@frigocaserta.it'
   contact.phone = '123456'
   contact.notes = 'Artificially crafted'
-  contact.location = fc_magazzini
+  contact.client = fc
   contact.save
 end
 

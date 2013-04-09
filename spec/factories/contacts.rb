@@ -1,10 +1,9 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 FactoryGirl.define do
   factory :contact do
-    name "MyString"
-    email "MyString"
-    phone "MyString"
-    notes "MyString"
+    name { Faker::Name.name } 
+    email { Faker::Internet.email }
+    phone { Faker::PhoneNumber.phone_number }
+    notes "These are just notes"
+    client
   end
 end

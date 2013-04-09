@@ -6,7 +6,9 @@ Dmrps::Application.routes.draw do
         get 'authenticated_user', on: :collection
       end
       resources :users
-      resources :clients
+      resources :clients do
+        resources :contacts
+      end
       resources :locations
       resources :interventions do
         get 'by_client/:client_id', on: :collection, action: 'by_client'

@@ -50,3 +50,34 @@ angular.module('directivesService',[])
     }
     return d
   )
+  .directive('elencoContatti', ->
+    d = {
+      restrict: 'E'
+      templateUrl: '/assets/clients/contacts.html'
+      scope: {
+        contatti: '='
+        validationErrors: '='
+        saveContact: '&'
+        deleteContact: '&'
+      }
+      controller: ($scope, $element, $attrs) ->
+        
+        $scope.contact = {}
+        $scope.originalContact = {}
+        $scope.errors = []
+
+        $scope.isDirty = () ->
+          if angular.equals($scope.contact,$scope.originalContact)
+            false
+          else
+            true
+
+        $scope.newContact = () ->
+          $scope.contact = {}
+
+        $scope.selectContact = (c) ->
+          $scope.contact = c
+          $scope.originalContact = angular.copy(c)
+    }
+    return d
+  )

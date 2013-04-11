@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(:version => 20130319160627) do
     t.datetime "updated_at",                                                                               :null => false
     t.string   "tipo_contratto",                                        :default => "Orario",              :null => false
     t.decimal  "costo",                  :precision => 10, :scale => 2, :default => 0.0,                   :null => false
-    t.datetime "inizio",                                                :default => '2013-04-09 00:00:00', :null => false
-    t.datetime "fine",                                                  :default => '2014-04-09 06:48:26', :null => false
+    t.datetime "inizio",                                                :default => '2013-04-11 00:00:00', :null => false
+    t.datetime "fine",                                                  :default => '2014-04-11 08:28:37', :null => false
     t.boolean  "diritto_di_chiamata",                                   :default => false,                 :null => false
     t.decimal  "costo_diritto_chiamata", :precision => 10, :scale => 2, :default => 0.0,                   :null => false
     t.string   "nr_contratto"
@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(:version => 20130319160627) do
     t.integer  "user_id"
     t.date     "data_inoltro_richiesta"
     t.date     "data_intervento"
-    t.datetime "inizio",                                                  :default => '2013-04-09 06:48:26', :null => false
-    t.datetime "fine",                                                    :default => '2013-04-09 07:48:26', :null => false
+    t.datetime "inizio",                                                  :default => '2013-04-11 08:28:37', :null => false
+    t.datetime "fine",                                                    :default => '2013-04-11 09:28:37', :null => false
     t.string   "email"
     t.string   "contatto"
     t.text     "descrizione_anomalie"

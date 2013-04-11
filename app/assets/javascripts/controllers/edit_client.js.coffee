@@ -1,8 +1,9 @@
 class @EditClientCtrl
-  @inject: ['$scope','$log','$location','$routeParams','dmClientsSvc','dmLocationsSvc']
-  constructor: (@$scope, @$log, @$location, @$routeParams, @dmClientsSvc, @dmLocationsSvc) ->
+  @inject: ['$scope','$log','$location','$routeParams','dmClientsSvc','dmLocationsSvc','dmContactsSvc']
+  constructor: (@$scope, @$log, @$location, @$routeParams, @dmClientsSvc, @dmLocationsSvc, @dmContactsSvc) ->
     @$scope.errors = []
     @$scope.locations = []
+    @$scope.contacts = []
     @$scope.originalClient = undefined
     @$scope.formCaption = ''
     @$scope.formSubmitCaption = ''
@@ -20,6 +21,11 @@ class @EditClientCtrl
     @$scope.$on('dmLocationsSvc:Index:Failure',@locationsRetrieveFailed)
     @$scope.$on('dmLocationsSvc:Destroy:Success',@locationDeleted)
     @$scope.$on('dmLocationsSvc:Destroy:Failure',@locationDeleteFailed)
+    @$scope.$on('dmContactsSvc:Index:Failure', @contactsRetrieveFailed)
+    @$scope.$on('dmContactsSvc:Save:Success', @contactsSaveSuccess)
+    @$scope.$on('dmContactsSvc:Save:Failure', @contactsSaveFailed)
+    @$scope.$on('dmContactsSvc:Destroy:Success', @contactsSaveSuccess)
+    @$scope.$on('dmContactsSvc:Destroy:Failure', @contactsDestroyFailure)
 
     @$scope.newClient = angular.bind(this, @newClient)
     @$scope.saveClient = angular.bind(this, @saveClient)
@@ -28,6 +34,9 @@ class @EditClientCtrl
     @$scope.newLocation = angular.bind(this, @newLocation)
     @$scope.editLocation = angular.bind(this, @editLocation)
     @$scope.deleteLocation = angular.bind(this, @deleteLocation)
+
+    @$scope.saveContact = angular.bind(this, @saveContact)
+    @$scope.deleteContact = angular.bind(this, @deleteContact)
 
     @$scope.isDirty = angular.bind(this, @isDirty)
 
@@ -56,6 +65,29 @@ class @EditClientCtrl
     else
       true
 
+  saveContact: (contact) ->
+    @dmContactsSvc.save(@$scope.client.id,contact)
+
+  deleteContact: (contact) ->
+    bootbox.confirm("Proseguo con la cancellazione del contatto?", (result) =>
+      if result
+        @dmContactsSvc.destroy(contact)
+    )
+
+  contactsSaveSuccess: (evt, args) =>
+    @$scope.contacts = @dmContactsSvc.index(@$scope.client.id)
+
+  contactSaveFailure: (evt, args) =>
+    @$scope.validationErrors = args.data
+
+  contactDestroySuccess: (evt, args) =>
+    bootbox.alert("Contatto eliminato con successo!")
+    @$scope.contacts = @dmContactsSvc.index(@$scope.client.id)
+
+  contactDestroyFailure: (evt, args) =>
+    @$log.log("[contactDestroyFailure] ERROR: " + JSON.stringify(args))
+    bootbox.alert("Si e' verificato un errore durante la rimozione del contatto!")
+
   newLocation: ->
     @$location.path('/locations/add/' + @$scope.client.id)
 
@@ -78,16 +110,21 @@ class @EditClientCtrl
   clientRetrieveSuccess: (evt, response) =>
     @$scope.originalClient = angular.copy(@$scope.client)
     @$scope.locations = @dmLocationsSvc.index(@$scope.client.id)
+    @$scope.contacts = @dmContactsSvc.index(@$scope.client.id)
 
-  clientRetrieveFailed: (response) =>
+  clientRetrieveFailed: (ievt, response) =>
     @$log.log('Error while retrieving Client')
     @$scope.client = {}
     @$scope.originalClient = undefined
     bootbox.alert("Impossibile recuperare i dati per il cliente")
 
-  locationsRetrieveFailed: (response) =>
+  locationsRetrieveFailed: (evt, response) =>
     @$log.log('Errore durante il recupero delle sedi per il cliente')
     bootbox.alert("Impossibile recuperare l'elenco delle sedi per il cliente")
+
+  contactsRetrieveFailed: (evt, response) =>
+    @$log.log('Errore durante il recupero dei contatti per il cliente')
+    bootbox.alert("Impossibile recuperare i contatti per il cliente")
 
   saveClient: (client) ->
     @dmClientsSvc.save(client)

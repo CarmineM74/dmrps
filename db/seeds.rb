@@ -40,7 +40,7 @@ fc_magazzini.client = fc
 fc_magazzini.save
 
 # Adding a bunch of contacts
-%w{ 'Carmine Moleti','Franco Melardo','Vincenzo Bosco','Saverio Bosco'}.each do |c|
+['Carmine Moleti','Franco Melardo','Vincenzo Bosco','Saverio Bosco'].each do |c|
   contact = Contact.new
   contact.name = c
   contact.email = c.gsub(' ','.').downcase + '@frigocaserta.it'

@@ -81,3 +81,20 @@ angular.module('directivesService',[])
     }
     return d
   )
+  .directive('inputAutocomplete', ->
+    d = {
+      restrict: 'E'
+      template: "<input type='search'>"
+      replace: true
+      transclude: true
+      link: ($scope, $elem, $attrs) ->
+        $elem.autocomplete({
+          minLength: 3
+          source: (term,resp) -> 
+            $scope[$attrs.items](term,resp)
+          select: (evt, ui) -> 
+            $scope[$attrs.selected](evt, ui.item.value)
+        })
+    }
+    return d
+  )

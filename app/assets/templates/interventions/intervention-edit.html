@@ -26,7 +26,7 @@
                 </div>
                 <div class='new-row same-row control-group contatto'>
                     <label>Contatto</label>
-                    <input id="contatto" type='text' ng-model='intervention.contatto' required>
+                    <input-autocomplete ng-model='intervention.contatto' items='getContacts' selected='contactSelected'></input-autocomplete>
                 </div>
                 <div class='same-row control-group email'>
                     <label>E-Mail</label>

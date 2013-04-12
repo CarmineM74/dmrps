@@ -23,7 +23,6 @@ class ContactsSvc
     @$rootScope.$broadcast('dmContactsSvc:'+name,args)
 
   index: (client_id) ->
-    @$log.log('Fetching contacts for ' + client_id)
     contacts = @contacts.index({client_id: client_id},
       (response) => @notify('Index:Success',response),
       (response) => @notify('Index:Failure',response)

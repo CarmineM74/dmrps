@@ -1,6 +1,6 @@
 class @EditInterventionCtrl
-  @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location']
-  constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location) ->
+  @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc']
+  constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc) ->
     @$scope.errors = []
 
     @$scope.dateTimePickerOpts = {
@@ -23,6 +23,8 @@ class @EditInterventionCtrl
     @$scope.$on('dmInterventionsSvc:Get:Success',@interventionRetrieved)
     @$scope.$on('dmInterventionsSvc:Save:Success',@saveSuccess)
     @$scope.$on('dmInterventionsSvc:Save:Failure',@reqFailed)
+    @$scope.$on('dmContactsSvc:Index:Success',@contactsRetrieved)
+
     @$scope.saveIntervention = angular.bind(this, @saveIntervention)
     @$scope.cancel = angular.bind(this,@cancel)
 
@@ -30,6 +32,9 @@ class @EditInterventionCtrl
 
     @$scope.clientChanged = angular.bind(this, @clientChanged)
     @$scope.locationChanged = angular.bind(this, @locationChanged)
+
+    @$scope.getContacts = angular.bind(this, @getContacts)
+    @$scope.contactSelected = angular.bind(this, @contactSelected)
 
     @$scope.clients = @dmClientsSvc.index('')
     @$scope.selectedClient = undefined
@@ -91,8 +96,20 @@ class @EditInterventionCtrl
   clientChanged: ->
     @$log.log("Fetching locations for " + @$scope.selectedClient.ragione_sociale)
     @$scope.locations = @dmLocationsSvc.index(@$scope.selectedClient.id)
+    @$scope.selectedClient.contacts = @dmContactsSvc.index(@$scope.selectedClient.id)
     if !@$scope.editMode
       @$scope.intervention.diritto_di_chiamata = @$scope.selectedClient.diritto_di_chiamata
+
+  contactsRetrieved: (evt, args) =>
+    @$log.log('CONTACTS RETRIEVED')
+    @$scope.contact_names = []
+    @$scope.contact_names.push(c.name) for c in args 
+
+  getContacts: (term, resp) =>
+    resp(c for c in @$scope.contact_names when c.toLowerCase().contains(term.term.toLowerCase()))
+
+  contactSelected: (evt,name) =>
+    alert(name)
 
   locationChanged: ->
     @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)

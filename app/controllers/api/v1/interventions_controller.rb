@@ -2,6 +2,8 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
 
   authorize_resource
 
+  after_filter :find_or_create_contact, only: [:create, :update]
+
   def index
     if params[:query].empty?
       @interventions = Intervention.all
@@ -44,6 +46,12 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
   end
 
 protected
+
+  def find_or_create_contact
+    @client = @intervention.locations.first.client
+    @contact = @client.contacts.find_by_name(params[:contact_name])
+    @contact = @client.contacts.create(name: params[:contact_name], email: params[:email]) if @contact.nil?
+  end
   
   def find_client
     @client = Client.find(params[:client_id])

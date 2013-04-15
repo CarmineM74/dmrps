@@ -42,7 +42,6 @@ class @EditInterventionCtrl
     @$scope.selectedLocation = undefined
     @$scope.contacts = []
     @$scope.contact_names = []
-    @$scope.selectedContact = ''
 
     @$scope.editMode = @$routeParams.intervention_id?
 
@@ -111,7 +110,7 @@ class @EditInterventionCtrl
     resp(c for c in @$scope.contact_names when c.toLowerCase().contains(term.term.toLowerCase()))
 
   contactSelected: (evt,name) =>
-    @$scope.selectedContact = name
+    @$scope.intervention.contatto = name
     @$scope.$apply(() =>
       @$scope.intervention.email = c.email for c in @$scope.contacts when (c.name.toLowerCase() == name.toLowerCase())
     )
@@ -129,7 +128,7 @@ class @EditInterventionCtrl
       true
 
   saveIntervention: (intervention) ->
-    @dmInterventionsSvc.save(intervention)
+    @dmInterventionsSvc.save(intervention,@$scope.intervention.contatto)
 
   saveSuccess: (events, args) =>
     @$scope.originalIntervention = angular.copy(@$scope.intervention)

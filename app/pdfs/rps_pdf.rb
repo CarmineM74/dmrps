@@ -50,7 +50,7 @@ class RpsPdf < Prawn::Document
     end
     grid([6,6],[7,11]).bounding_box do
       draw_bounded_rectangle(5)
-      info_contratto = @intervention.client.nr_contratto.empty? ? "<b>SENZA CONTRATTO</b>" : "<b>CONTRATTO NR: #{@intervention.client.nr_contratto}</b>"
+      info_contratto = (@intervention.client.nr_contratto.nil? || @intervention.client.nr_contratto.empty?) ? "<b>SENZA CONTRATTO</b>" : "<b>CONTRATTO NR: #{@intervention.client.nr_contratto}</b>"
       text_box info_contratto, at: [10,bounds.top-8], inline_format: true
     end
     font_size 8

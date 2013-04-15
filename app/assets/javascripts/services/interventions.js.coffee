@@ -28,15 +28,15 @@ class InterventionsSvc
       (response) => @notify('Destroy:Failure',response)
     )
 
-  save: (intervention) ->
+  save: (intervention,contact_name) ->
     if intervention.id?
-      intervention.$update({intervention_id: intervention.id},
+      intervention.$update({intervention_id: intervention.id, contact_name: contact_name},
         (response) => @notify('Save:Success',response)
         (response) => @notify('Save:Failure',response)
       )
     else
       r = new @interventions(intervention)
-      r.$save(
+      r.$save({contact_name: contact_name},
         (response) => @notify('Save:Success',response), 
         (response) => @notify('Save:Failure',response)
       )  

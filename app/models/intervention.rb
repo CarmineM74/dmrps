@@ -30,6 +30,8 @@ class Intervention < ActiveRecord::Base
   has_and_belongs_to_many :locations
   validate :locations, :sede_assegnata
 
+  has_and_belongs_to_many :activities
+
   def totale_ore_lavorate
     ore_lavorate_cliente + ore_lavorate_laboratorio + ore_lavorate_remoto
   end

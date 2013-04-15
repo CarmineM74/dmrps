@@ -40,6 +40,9 @@ class @EditInterventionCtrl
     @$scope.selectedClient = undefined
     @$scope.locations = []
     @$scope.selectedLocation = undefined
+    @$scope.contacts = []
+    @$scope.contact_names = []
+    @$scope.selectedContact = ''
 
     @$scope.editMode = @$routeParams.intervention_id?
 
@@ -96,20 +99,22 @@ class @EditInterventionCtrl
   clientChanged: ->
     @$log.log("Fetching locations for " + @$scope.selectedClient.ragione_sociale)
     @$scope.locations = @dmLocationsSvc.index(@$scope.selectedClient.id)
-    @$scope.selectedClient.contacts = @dmContactsSvc.index(@$scope.selectedClient.id)
+    @dmContactsSvc.index(@$scope.selectedClient.id)
     if !@$scope.editMode
       @$scope.intervention.diritto_di_chiamata = @$scope.selectedClient.diritto_di_chiamata
 
   contactsRetrieved: (evt, args) =>
-    @$log.log('CONTACTS RETRIEVED')
-    @$scope.contact_names = []
+    @$scope.contacts = args
     @$scope.contact_names.push(c.name) for c in args 
 
   getContacts: (term, resp) =>
     resp(c for c in @$scope.contact_names when c.toLowerCase().contains(term.term.toLowerCase()))
 
   contactSelected: (evt,name) =>
-    alert(name)
+    @$scope.selectedContact = name
+    @$scope.$apply(() =>
+      @$scope.intervention.email = c.email for c in @$scope.contacts when (c.name.toLowerCase() == name.toLowerCase())
+    )
 
   locationChanged: ->
     @$log.log("Location selected: " + @$scope.selectedLocation.descrizione)

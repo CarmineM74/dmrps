@@ -18,3 +18,8 @@ end
 node :location do |i|
     partial('api/v1/locations/show', object: i.locations.first)
 end
+
+node :activities do |i|
+  partial('api/v1/activities/index', object: i.activities)
+end
+

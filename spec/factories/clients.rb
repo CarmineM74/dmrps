@@ -16,5 +16,6 @@ FactoryGirl.define do
     diritto_di_chiamata { true }
     costo_diritto_chiamata { 20.0 }
     nr_contratto { '' }
+    contacts
   end
 end

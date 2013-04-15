@@ -21,6 +21,7 @@ FactoryGirl.define do
     diritto_di_chiamata { true }
     after(:build) do |intervention,evaluator|
       intervention.locations = [FactoryGirl.create(:location,interventions: [intervention])]
+      intervention.activities = [FactoryGirl.create(:activity,interventions: [intervention])]
     end
   end
 end

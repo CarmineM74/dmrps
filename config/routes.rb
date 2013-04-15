@@ -15,6 +15,7 @@ Dmrps::Application.routes.draw do
         get 'by_user/:user_id', on: :collection, action: 'by_user'
         get 'rps', :to => 'interventions#rps'
       end
+      resources :activities
     end
   end
 

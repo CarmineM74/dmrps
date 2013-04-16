@@ -12,7 +12,8 @@ angular.module('directivesService',[])
           for k,v of value.errors
             element.find('.control-group.'+k)
               .addClass('error')
-              .find('input')
+              .children()
+              .last()
               .after("<span class='help-block'>"+v+"</span>")
         )
     }

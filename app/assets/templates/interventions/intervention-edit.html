@@ -36,6 +36,15 @@
                     <label>Descrizione anomalie</label>
                     <textarea id="descrizione_anomalie" class='span8' rows='5' ng-model='intervention.descrizione_anomalie' required></textarea>
                 </div>
+                <div class='new-row well span11'>
+                  <div class='span5'>
+                    <span>Attivita' disponibili</span>
+                    <elenco-attivita ng-model='attivita_disponibili' allow-remove='true'></elenco-attivita>
+                  </div>
+                  <div class='span5'>
+                    <span>Attivita' effettuate</span>
+                  </div>
+                </div>
                 <div class='new-row control-group descrizione_intervento'>
                     <label>Descrizione intervento</label>
                     <textarea id="descrizione_intervento" class='span8' rows='5' ng-model='intervention.descrizione_intervento' required></textarea>

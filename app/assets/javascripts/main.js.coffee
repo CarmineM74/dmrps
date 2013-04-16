@@ -31,6 +31,9 @@
       .when('/interventions/edit/:intervention_id',
         {controller: EditInterventionCtrl, templateUrl: 'assets/interventions/intervention-edit.html'}
       )
+      .when('/activities',
+        {controller: ActivitiesCtrl, templateUrl: 'assets/activities/index.html'}
+      )
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{

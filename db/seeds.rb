@@ -50,6 +50,13 @@ fc_magazzini.save
   contact.save
 end
 
+# Adding fake activities
+(1..10).each do |n|
+  a = Activity.new
+  a.descrizione = "Attivita' predefinita Nr. #{n}"
+  a.save
+end
+
 # Adding fake interventions
 (1..4).each do |n|
   i = Intervention.new
@@ -61,6 +68,7 @@ end
   i.email = 'ced@frigocaserta.it'
   i.descrizione_anomalie = "Test N.#{n}"
   i.descrizione_intervento = 'Risoluzione problemi di configurazione'
+  (1..3).each { |x| i.activities << Activity.find(x) }
   i.diritto_di_chiamata = fc.diritto_di_chiamata
   i.inizio = i.data_intervento
 
@@ -74,3 +82,5 @@ end
   i.note = 'nulla da dichiarare'
   i.save
 end
+
+

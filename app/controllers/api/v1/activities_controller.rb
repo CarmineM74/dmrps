@@ -19,7 +19,7 @@ class Api::V1::ActivitiesController < Api::V1::RestrictedController
   end
 
   def destroy
-    @ativity.destroy
+    @activity.destroy
     respond_with({})
   end
 

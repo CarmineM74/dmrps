@@ -1,4 +1,21 @@
 angular.module('directivesService',[])
+  .directive('inputAutocomplete', ->
+    d = {
+      restrict: 'E'
+      template: "<input type='search'>"
+      replace: true
+      transclude: true
+      link: ($scope, $elem, $attrs) ->
+        $elem.autocomplete({
+          minLength: 3
+          source: (term,resp) -> 
+            $scope[$attrs.items](term,resp)
+          select: (evt, ui) -> 
+            $scope[$attrs.selected](evt, ui.item.value)
+        })
+    }
+    return d
+  )
   .directive('showValidationErrors', ->
     d = {
       restrict: 'A'
@@ -82,20 +99,41 @@ angular.module('directivesService',[])
     }
     return d
   )
-  .directive('inputAutocomplete', ->
+  .directive('elencoAttivita', ->
     d = {
       restrict: 'E'
-      template: "<input type='search'>"
-      replace: true
-      transclude: true
-      link: ($scope, $elem, $attrs) ->
-        $elem.autocomplete({
-          minLength: 3
-          source: (term,resp) -> 
-            $scope[$attrs.items](term,resp)
-          select: (evt, ui) -> 
-            $scope[$attrs.selected](evt, ui.item.value)
-        })
+      templateUrl: '/assets/activities/activities.html'
+      scope: {
+        attivita: '='
+        showDelete: '='
+        showPick: '='
+        selectActivity: '&'
+        pickActivity: '&'
+        deleteActivity: '&'
+      }
+      controller: ($scope, $element, $attrs) ->
+        $scope.nrOfPages = 0
+        $scope.currentPage = 1
+        $scope.itemsPerPage = 10
+        $scope.activities = []
+
+        $scope.pageChanged = (page) ->
+          $scope.nrOfPages = Math.floor($scope.attivita.length / $scope.itemsPerPage)
+          if ($scope.attivita.length % $scope.itemsPerPage) != 0
+            $scope.nrOfPages += 1
+          $scope.currentPage = page
+          start = ($scope.currentPage - 1) * $scope.itemsPerPage
+          stop = start + ($scope.itemsPerPage) - 1
+          if stop > $scope.attivita.length 
+            stop = $scope.attivita.length - 1
+          $scope.activities = $scope.attivita[start..stop]
+
+
+        $scope.$watch('attivita',(value) ->
+          $scope.attivita = value
+          $scope.pageChanged(1)
+        )
+
     }
     return d
   )

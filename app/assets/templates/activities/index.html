@@ -9,23 +9,10 @@
         </form>
       </div>
     </div>
-    <table ng-show='activities.length > 0' class='table table-striped table-bordered table-hover'>
-      <thead>
-        <tr>
-          <th>Descrizione</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat='a in activities' ng-click='selectActivity(a)'>
-          <td>{{a.descrizione}}</td>
-          <td class='span1'><button class='btn' ng-click='removeActivity(a)'><i class='icon-remove'></i></button></td>
-        </tr>
-      </tbody>
-    </table>
-    <div ng-show='nrOfPages > 1'>
-      <pagination class='centered' on-select-page='pageChanged(page)' num-pages='nrOfPages' current-page='currentPage'></pagination>
-    </div>
+    <elenco-attivita attivita='allActivities' show-delete='true' 
+                     remove-activity='removeActivity(activity)'
+                     select-activity='selectActivity(activity)'>
+    </elenco-attivita>
   </div>
   <div class='span5 well' ng-show='activity'>
     <form name='activityForm' show-validation-errors errors='errors'>

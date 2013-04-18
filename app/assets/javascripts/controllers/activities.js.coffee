@@ -22,7 +22,9 @@ class @ActivitiesCtrl
     @$scope.activity = undefined
     @$scope.originalActivity = undefined
 
-    @initPagination()
+    @$scope.allActivities = []
+    @$scope.originalActivity = undefined
+
     @fetchAll()
 
   isDirty: () ->
@@ -31,28 +33,8 @@ class @ActivitiesCtrl
     else
       true
 
-  initPagination: () ->
-    @$scope.activities = []
-    @$scope.allActivities = []
-    @$scope.originalActivity = undefined
-    @$scope.itemsPerPage = 10
-    @$scope.currentPage = 1
-    @$scope.nrOfPages = 0
-
-  pageChanged: (page) ->
-    @$scope.nrOfPages = Math.floor(@$scope.allActivities.length / @$scope.itemsPerPage)
-    if (@$scope.allActivities.length % @$scope.itemsPerPage) != 0
-      @$scope.nrOfPages += 1
-    @$scope.currentPage = page
-    start = (@$scope.currentPage - 1) * @$scope.itemsPerPage
-    stop = start + (@$scope.itemsPerPage) - 1
-    if stop > @$scope.allActivities.length
-      stop = @$scope.allActivities.length - 1
-    @$scope.activities = @$scope.allActivities[start..stop]
-
   fetchAll: () ->
     @dmActivitiesSvc.index()
-    @pageChanged(1)
 
   selectActivity: (a) ->
     @$scope.activity = angular.copy(a) 
@@ -69,7 +51,6 @@ class @ActivitiesCtrl
     @dmActivitiesSvc.destroy(a)
 
   activityDestroyed: (evt, args) =>
-    @initPagination()
     @fetchAll()
 
   activityDestroyFailed: (evt, args) =>
@@ -77,7 +58,6 @@ class @ActivitiesCtrl
     bootbox.alert("Impossibile rimuovere l'attivita' selezionata!")
 
   activitySaved: (evt, args) =>
-    @initPagination()
     @fetchAll()
 
   activitySaveFailed: (evt, args) =>
@@ -87,10 +67,9 @@ class @ActivitiesCtrl
     @$scope.allActivities = args
     @$scope.activity = undefined
     @$scope.originalActivity = undefined
-    @pageChanged(1)
 
   activitiesRetrieveFailed: (evt, args) =>
     @$log.log('[activitiesRetrieveFalied]: ' + JSON.stringify(args))
-    @$scope.activities = []
+    @$scope.allActivities = []
     @$scope.activity = undefined
     @$scope.originalActivity = undefined

@@ -26,6 +26,11 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
   def update
     @intervention = Intervention.find(params[:id])
     @intervention.update_attributes(params[:intervention])
+    current_activities = @intervention.activities.map { |a| a.id }
+    new_activities = params[:activities_ids]
+    (current_activities - new_activities).each { |id| @intervention.activities.delete(Activity.find(id)) }
+
+    (new_activities - current_activities).each { |id| @intervention.activities << Activity.find(id) }
     respond_with(@intervention)
   end
 

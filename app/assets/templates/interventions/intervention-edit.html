@@ -39,10 +39,17 @@
                 <div class='new-row well span11'>
                   <div class='span5'>
                     <span>Attivita' disponibili</span>
-                    <elenco-attivita ng-model='attivita_disponibili' allow-remove='true'></elenco-attivita>
+                    <elenco-attivita attivita='attivita_disponibili' 
+                                      pick-activity='pickActivity(activity)'
+                                      show-pick='true'>
+                    </elenco-attivita>
                   </div>
                   <div class='span5'>
                     <span>Attivita' effettuate</span>
+                    <elenco-attivita attivita='attivita_selezionate' 
+                                      delete-activity='unpickActivity(activity)'
+                                      show-delete='true'>
+                    </elenco-attivita>
                   </div>
                 </div>
                 <div class='new-row control-group descrizione_intervento'>

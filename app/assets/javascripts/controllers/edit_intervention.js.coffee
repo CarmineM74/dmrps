@@ -1,6 +1,6 @@
 class @EditInterventionCtrl
-  @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc']
-  constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc) ->
+  @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc', 'dmActivitiesSvc']
+  constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc, @dmActivitiesSvc) ->
     @$scope.errors = []
 
     @$scope.dateTimePickerOpts = {
@@ -25,6 +25,9 @@ class @EditInterventionCtrl
     @$scope.$on('dmInterventionsSvc:Save:Failure',@reqFailed)
     @$scope.$on('dmContactsSvc:Index:Success',@contactsRetrieved)
 
+    @$scope.$on('dmActivitiesSvc:Index:Success', @activitiesRetrieved)
+    @$scope.$on('dmActivitiesSvc:Index:Failure', @activitiesRetrieveFailed)
+
     @$scope.saveIntervention = angular.bind(this, @saveIntervention)
     @$scope.cancel = angular.bind(this,@cancel)
 
@@ -32,6 +35,9 @@ class @EditInterventionCtrl
 
     @$scope.clientChanged = angular.bind(this, @clientChanged)
     @$scope.locationChanged = angular.bind(this, @locationChanged)
+
+    @$scope.pickActivity = angular.bind(this, @pickActivity)
+    @$scope.unpickActivity = angular.bind(this, @unpickActivity)
 
     @$scope.getContacts = angular.bind(this, @getContacts)
     @$scope.contactSelected = angular.bind(this, @contactSelected)
@@ -44,6 +50,8 @@ class @EditInterventionCtrl
     @$scope.contact_names = []
 
     @$scope.editMode = @$routeParams.intervention_id?
+    @$scope.attivita_disponibili = []
+    @$scope.attivita_selezionate = []
 
     if @$scope.editMode
       @$scope.formCaption = "Modifica intervento"
@@ -72,12 +80,41 @@ class @EditInterventionCtrl
 				          location_ids: []
                   activities_ids: []
                 }
+      @$scope.attivita_selezionate = []
       @$scope.originalIntervention = undefined
+      @recuperaAttivita()
+
+  recuperaAttivita: () ->
+    @dmActivitiesSvc.index()
+
+  activitiesRetrieved: (evt, args) =>
+    @$scope.allActivities = args
+    @aggiornaAttivitaDisponibili()
+
+  aggiornaAttivitaDisponibili: () ->
+    @$scope.attivita_disponibili = []
+    @$scope.attivita_disponibili.push(a) for a in @$scope.allActivities when @$scope.intervention.activities_ids.indexOf(a.id) == -1
+    @$scope.attivita_selezionate = []
+    @$scope.attivita_selezionate.push(a) for a in @$scope.allActivities when @$scope.intervention.activities_ids.indexOf(a.id) != -1
+
+
+  activitiesRetrieveFailed: (evt, args) =>
+    @$log.log('[activitiesRetrieveFailed]: ' + JSON.stringify(args))
+    bootbox.alert("Si e' verificato un errore durante il recupero delle attivita'!")
 
   interventionRetrieved: (evt, response) =>
     @$scope.originalIntervention = angular.copy(@$scope.intervention)
     @$scope.selectedClient = (c for c in @$scope.clients when c.id is @$scope.intervention.client.id)[0]
     @clientChanged()
+    @recuperaAttivita()
+
+  pickActivity: (a) ->
+    @$scope.intervention.activities_ids.push(a.id)
+    @aggiornaAttivitaDisponibili()
+
+  unpickActivity: (a) ->
+    @$scope.intervention.activities_ids = @$scope.intervention.activities_ids.filter((id) => id isnt a.id)
+    @aggiornaAttivitaDisponibili()
 
   interventionRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving intervention: ' + JSON.stringify(response))

@@ -8,7 +8,7 @@
       <tbody>
         <tr ng-repeat='a in activities' ng-click='selectActivity({activity:a})'>
           <td>{{a.descrizione}}</td>
-          <td ng-show='showDelete' class='span1'><button class='btn' ng-click='removeActivity({activity:a})'><i class='icon-remove'></i></button></td>
+          <td ng-show='showDelete' class='span1'><button class='btn' ng-click='deleteActivity({activity:a})'><i class='icon-remove'></i></button></td>
           <td ng-show='showPick' class='span1'><button class='btn' ng-click='pickActivity({activity:a})'><i class='icon-check'></i></button></td>
         </tr>
       </tbody>

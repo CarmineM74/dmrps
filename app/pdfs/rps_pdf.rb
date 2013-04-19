@@ -86,7 +86,7 @@ class RpsPdf < Prawn::Document
   end
 
   def body
-    grid([11,0],[14,11]).bounding_box do
+    grid([11,0],[13,11]).bounding_box do
       draw_bounded_rectangle(0)
       text_box "<b>Descrizione delle anomalie o dei guasti riscontrati</b>", at: [0,bounds.top-7], align: :center, inline_format: true
       stroke do
@@ -94,7 +94,7 @@ class RpsPdf < Prawn::Document
       end
       text_box "#{@intervention.descrizione_anomalie}", at: [0,bounds.top-20]
     end
-    grid([15,0],[18,11]).bounding_box do
+    grid([14,0],[19,05]).bounding_box do
       draw_bounded_rectangle(0)
       text_box "<b>Descrizione dell'intervento effettuato</b>", at: [0,bounds.top-7], align: :center, inline_format: true
       stroke do
@@ -102,11 +102,20 @@ class RpsPdf < Prawn::Document
       end
       text_box "#{@intervention.descrizione_intervento}", at: [0,bounds.top-20]
     end
-    grid([19,0],[21,4]).bounding_box do
+    grid([14,6],[19,11]).bounding_box do
+      draw_bounded_rectangle(0)
+      text_box "<b>Elenco Attivita'</b>", at: [0,bounds.top-7], align: :center, inline_format: true
+      stroke do
+        horizontal_line bounds.left,bounds.right, at: bounds.top-18 
+      end
+      attivita = @intervention.activities.inject([]) { |a,v| a << v.descrizione; a }.join("\n")
+      text_box "#{attivita}", at: [0,bounds.top-20]
+    end
+    grid([20,0],[21,4]).bounding_box do
       draw_bounded_rectangle(0)
       text_box "<b>Ore lavorate c/o il cliente:</b> #{@intervention.ore_lavorate_cliente}\n<b>Ore lavorate in laboratorio:</b> #{@intervention.ore_lavorate_laboratorio}\n<b>Ore lavorate in remoto:</b> #{@intervention.ore_lavorate_remoto}\n<b>Km supplementari:</b> 0000", at: [10,bounds.top-8], inline_format: true
     end
-    grid([19,5],[22,11]).bounding_box do
+    grid([20,5],[22,11]).bounding_box do
       draw_bounded_rectangle(0)
       text_box "<b>Note</b>\n"+@intervention.note, at: [10,bounds.top-8], inline_format: true
     end

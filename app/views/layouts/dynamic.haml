@@ -26,7 +26,7 @@
     %div.navbar.navbar-fixed-top(ng-controller='MainNavCtrl')
       %div.navbar-inner
         %a.brand(href='/')DM RPS
-        %ul.nav
+        %ul.nav(ng-show='currentUser')
           %li.dropdown
             %a.dropdown-toggle(href='#' data-toggle='dropdown')
               Sistema

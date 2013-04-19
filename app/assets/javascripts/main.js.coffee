@@ -53,13 +53,13 @@ class @MainNavCtrl
     @$scope.loginInfo = {email: '', password: ''}
     @$scope.login = angular.bind(this,@login)
     @$scope.logout = angular.bind(this,@logout)
-    @$scope.$on('sessionSvc:Login:Success',@loginSuccessful)
-    @$scope.$on('sessionSvc:Login:Failed',@loginFailed)
-    @$scope.$on('sessionSvc:Logout:Success',@logoutSuccessful)
-    @$scope.$on('sessionSvc:Logout:Failed',@logoutFailed)
+    @$scope.$on('SessionSvc:Login:Success',@loginSuccessful)
+    @$scope.$on('SessionSvc:Login:Failed',@loginFailed)
+    @$scope.$on('SessionSvc:Logout:Success',@logoutSuccessful)
+    @$scope.$on('SessionSvc:Logout:Failed',@logoutFailed)
 
-    @$scope.$on('sessionSvc:CurrentUser:Authenticated',@loginSuccessful)
-    @$scope.$on('sessionSvc:CurrentUser:NotAuthenticated',@notAuthenticated)
+    @$scope.$on('SessionSvc:CurrentUser:Authenticated',@loginSuccessful)
+    @$scope.$on('SessionSvc:CurrentUser:NotAuthenticated',@notAuthenticated)
     @sessionSvc.authenticated_user()
 
   notAuthenticated: =>

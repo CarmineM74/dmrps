@@ -12,7 +12,7 @@ describe "/api/v1/users.json", :type => :api do
 
     it 'fetches all the users from the database' do
       do_verb
-      users = JSON.parse(User.all.to_json(:only => [:id, :email]))
+      users = JSON.parse(User.all.to_json(:only => [:id, :email, :role]))
       JSON.parse(last_response.body).should eql(users)
     end
 
@@ -30,7 +30,7 @@ describe "/api/v1/users.json", :type => :api do
     end
     
     def do_verb
-      params = {email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation}
+      params = {email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation, role: 'client'}
       post url+".json", :user => params
     end
 
@@ -180,6 +180,25 @@ describe "/api/v1/users.json", :type => :api do
         do_verb
         last_response.status.should eql(204)
       end
+
+      context "with interventions" do
+        before(:each) do
+          i = FactoryGirl.create(:intervention, user: @user)
+        end
+        
+        it "replies with status == :not_acceptable (406)" do
+          do_verb
+          last_response.status.should eq(406)
+        end
+
+        it "error_msg == Ci sono degli RPS associati all'utente" do
+          do_verb
+          body = JSON.parse(last_response.body)
+          body['error_msg'].should eq("Ci sono degli RPS associati all'utente")
+        end
+
+      end
+
     end
 
     context "When user doesn't exists" do

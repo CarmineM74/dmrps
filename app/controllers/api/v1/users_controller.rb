@@ -19,8 +19,12 @@ class Api::V1::UsersController < Api::V1::RestrictedController
   end
 
   def destroy
-    @user.destroy
-    respond_with(@user)
+    if @user.interventions.size > 0
+      render :json => {error_msg: "Ci sono degli RPS associati all'utente"}, status: 406
+    else
+      @user.destroy
+      respond_with(@user)
+    end
   end
 
 private

@@ -7,7 +7,7 @@ class @UsersCtrl
     @$scope.$on('UsersSvc:Save:Success',@saveSuccess)
     @$scope.$on('UsersSvc:Save:Failure',@reqFailed)
     @$scope.$on('UsersSvc:Destroy:Success', @deleteSuccess)
-    @$scope.$on('UsersSvc:Destroy:Failure', @reqFailed)
+    @$scope.$on('UsersSvc:Destroy:Failure', @deleteFailed)
 
     @$scope.fetchAll = angular.bind(this, @index)
     @$scope.selectUser = angular.bind(this, @selectUser)
@@ -123,6 +123,10 @@ class @UsersCtrl
     @$scope.selectedUser = undefined
     bootbox.alert('Utente rimosso con successo!')
     @hideForm()
+
+  deleteFailed: (evt,args) =>
+    @$scope.errors = []
+    bootbox.alert("Impossibile eliminare l'utente selezionato:<br/>" + args.data.error_msg)
 
   hideForm: ->
     if !@$scope.originalUser?

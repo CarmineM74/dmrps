@@ -179,7 +179,7 @@ describe "/api/v1/users.json", :type => :api do
 
       context "with interventions" do
         before(:each) do
-          i = FactoryGirl.create(:intervention, user: user)
+          i = FactoryGirl.create(:intervention_with_associations, user: user)
         end
         
         it "replies with status == :not_acceptable (406)" do

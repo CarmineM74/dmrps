@@ -87,13 +87,13 @@ describe "/api/v1/clients.json", :type => :api do
 
     context 'with invalid parameters' do
       it 'fails with errors in response body'  do
-        client.ragione_sociale = ''
+        client_attrs[:ragione_sociale] = ''
         do_verb
         @body['errors'].should_not be_nil
       end
 
       it 'fails with status == :unprocessable_entity (422)' do
-        client.ragione_sociale = ''
+        client_attrs[:ragione_sociale] = ''
         do_verb
         @status.should eq(422)
       end

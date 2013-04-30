@@ -24,7 +24,7 @@ class @EditClientCtrl
     @$scope.$on('dmContactsSvc:Index:Failure', @contactsRetrieveFailed)
     @$scope.$on('dmContactsSvc:Save:Success', @contactsSaveSuccess)
     @$scope.$on('dmContactsSvc:Save:Failure', @contactsSaveFailed)
-    @$scope.$on('dmContactsSvc:Destroy:Success', @contactsSaveSuccess)
+    @$scope.$on('dmContactsSvc:Destroy:Success', @contactsDestroySuccess)
     @$scope.$on('dmContactsSvc:Destroy:Failure', @contactsDestroyFailure)
 
     @$scope.newClient = angular.bind(this, @newClient)
@@ -80,13 +80,13 @@ class @EditClientCtrl
   contactSaveFailure: (evt, args) =>
     @$scope.validationErrors = args.data
 
-  contactDestroySuccess: (evt, args) =>
+  contactsDestroySuccess: (evt, args) =>
     bootbox.alert("Contatto eliminato con successo!")
     @$scope.contacts = @dmContactsSvc.index(@$scope.client.id)
 
-  contactDestroyFailure: (evt, args) =>
+  contactsDestroyFailure: (evt, args) =>
     @$log.log("[contactDestroyFailure] ERROR: " + JSON.stringify(args))
-    bootbox.alert("Si e' verificato un errore durante la rimozione del contatto!")
+    bootbox.alert("Si e' verificato un errore durante la rimozione del contatto:<br/>" + args.data.error_msg)
 
   newLocation: ->
     @$location.path('/locations/add/' + @$scope.client.id)

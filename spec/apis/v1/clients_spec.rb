@@ -59,15 +59,13 @@ describe "/api/v1/clients.json", :type => :api do
 
   end
 
-
   describe 'Creating a new client' do
     include_examples "authentication required"
 
-    let(:client) { FactoryGirl.build(:client) }
+    let(:client_attrs) { FactoryGirl.attributes_for(:client) }
 
     def do_verb
-      @post_params =  JSON.parse(client.to_json(except: [:created_at, :updated_at]))
-      post url+".json", client: @post_params
+      post url+".json", client: client_attrs
       @status = last_response.status
       @body = JSON.parse(last_response.body)
     end
@@ -83,12 +81,6 @@ describe "/api/v1/clients.json", :type => :api do
         do_verb
         @status.should eq(201)
         @body['errors'].should be_nil
-      end
-
-      it "response body contains client's details" do
-        do_verb
-        c = Client.find_by_ragione_sociale(client.ragione_sociale)
-        @body.should eq(JSON.parse(c.to_json(except: [:created_at, :updated_at])))
       end
 
     end
@@ -214,6 +206,16 @@ describe "/api/v1/clients.json", :type => :api do
         do_verb
         @status.should eq(204)
       end
+
+      it "deletes associated locations"
+
+      it "deletes associated contacts"
+
+      context "with interventions" do
+        it "replies with status == :not_acceptable (406)"
+        it "error_msg == Ci sono degli RPS associati al cliente"
+      end
+
     end
 
   end

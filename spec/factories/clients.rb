@@ -17,7 +17,7 @@ FactoryGirl.define do
     costo_diritto_chiamata { 20.0 }
     nr_contratto { '' }
     after(:build) do |client, evaluator|
-      client.contacts = [FactoryGirl.create(:contact,client: client)]
+      client.contacts = [FactoryGirl.build(:contact,client: client)]
     end
   end
 end

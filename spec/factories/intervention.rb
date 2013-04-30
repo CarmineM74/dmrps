@@ -20,8 +20,8 @@ FactoryGirl.define do
     note { "Fate esattamente quello che vi dico" }
     diritto_di_chiamata { true }
     after(:build) do |intervention,evaluator|
-      intervention.locations = [FactoryGirl.create(:location,interventions: [intervention])]
-      intervention.activities = [FactoryGirl.create(:activity,interventions: [intervention])]
+      intervention.locations = [FactoryGirl.build(:location,interventions: [intervention])]
+      intervention.activities = [FactoryGirl.build(:activity,interventions: [intervention])]
     end
   end
 end

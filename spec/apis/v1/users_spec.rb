@@ -24,14 +24,10 @@ describe "/api/v1/users.json", :type => :api do
 
   describe 'Creating a new user' do
     include_examples "authentication required"
+    let (:user_attrs) { FactoryGirl.attributes_for(:user, role: 'client') }
 
-    before(:each) do
-      @user = FactoryGirl.build(:user)
-    end
-    
     def do_verb
-      params = {email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation, role: 'client'}
-      post url+".json", :user => params
+      post url+".json", :user => user_attrs
     end
 
     context 'with valid parametrs' do
@@ -42,7 +38,6 @@ describe "/api/v1/users.json", :type => :api do
       end
 
       it 'replies with status :created (201)' do
-        users = User.all.to_json
         do_verb
         last_response.status.should eq(201)
       end
@@ -51,27 +46,27 @@ describe "/api/v1/users.json", :type => :api do
         do_verb
         body = JSON.parse(last_response.body)
         body['id'].should_not be_nil
-        body['email'].should eql(@user.email)
+        body['email'].should eql(user_attrs[:email])
       end
 
     end
 
     context 'with invalid parameters' do
       it "doesn't create a new user" do
-        @user.email = ''
+        user_attrs[:email] = ''
         lambda {
           do_verb
         }.should_not change(User,:count)
       end
 
       it 'replies with status == :unprocessable_entity (422)' do
-        @user.email = ''
+        user_attrs[:email] = ''
         do_verb
         last_response.status.should eq(422)
       end
 
       it 'response body contains the list of errors and an error_msg' do
-        @user.email = ''
+        user_attrs[:email] = ''
         do_verb
         response = JSON.parse(last_response.body)
         response['errors'].should_not be_empty
@@ -83,28 +78,29 @@ describe "/api/v1/users.json", :type => :api do
 
   describe 'Updating an user' do
     include_examples "authentication required"
+    let(:user) { FactoryGirl.create(:user) }
 
-    before(:each) do
-      @user = FactoryGirl.create(:user)
-    end
-    
     def do_verb
-      put "#{url}/#{@user.id}.json", :user => {email: @user.email, password: @user.password, password_confirmation: @user.password_confirmation} 
+      put "#{url}/#{user.id}.json", :user => user.attributes.except('id','created_at','updated_at','password_digest').merge({password: user.password,password_confirmation: user.password_confirmation})
     end
     
     context 'with valid parameters' do 
+      before(:each) do
+        user.password = 'c'
+        user.password_confirmation = 'c'
+      end
+
       it 'replies with status == :ok (200)' do
-        @user.email = 'updated@me.com'
+        user.email = 'updated@me.com'
         do_verb
         last_response.status.should eq(200)
       end
 
       it "updates user's details" do
-        @user.email = 'updated@me.com'
+        user.email = 'updated@me.com'
         do_verb
-        @user.reload
-        @user.email.should eq('updated@me.com')        
-        puts last_response.body
+        user.reload
+        user.email.should eq('updated@me.com')        
       end
     end
 
@@ -115,32 +111,32 @@ describe "/api/v1/users.json", :type => :api do
         end
 
         it "when email is empty" do
-          @user.email = ''
+          user.email = ''
           do_verb
         end
 
         it "when email is already taken" do
           user2 = FactoryGirl.create(:user, email: 'iamme@me.com')
-          @user.email = user2.email
+          user.email = user2.email
           do_verb
         end
 
         it "when password is empty" do
-          @user.password = ''
+          user.password = ''
           do_verb
         end
 
         it "doesn't update user's details" do
-          @user.email = ''
+          user.email = ''
           do_verb
-          @user.reload
-          @user.email.should_not eql('')
+          user.reload
+          user.email.should_not eql('')
         end
       end
 
       context "When user doesn't exists" do
         it "replies with status == :not_found (404)" do
-          @user.id = 200
+          user.id = 200
           do_verb
           last_response.status.should eq(404)
           response = JSON.parse(last_response.body)
@@ -148,7 +144,7 @@ describe "/api/v1/users.json", :type => :api do
       end
 
       it 'response body contains errors' do
-        @user.email = ''
+        user.email = ''
         do_verb
         response = JSON.parse(last_response.body)
         response['errors'].should_not be_empty
@@ -158,9 +154,9 @@ describe "/api/v1/users.json", :type => :api do
 
   describe "Deleting an user" do
     include_examples "authentication required"
+    let!(:user) { FactoryGirl.create(:user) }
 
-    before(:each) { @user = FactoryGirl.create(:user) }
-    let(:url) { "/api/v1/users/#{@user.id}.json" }
+    let(:url) { "/api/v1/users/#{user.id}.json" }
 
     def do_verb
       delete url
@@ -172,7 +168,7 @@ describe "/api/v1/users.json", :type => :api do
           do_verb
         }.to change(User,:count).by(-1)
         expect {
-          User.find(@user.id)
+          User.find(user.id)
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
@@ -183,7 +179,7 @@ describe "/api/v1/users.json", :type => :api do
 
       context "with interventions" do
         before(:each) do
-          i = FactoryGirl.create(:intervention, user: @user)
+          i = FactoryGirl.create(:intervention, user: user)
         end
         
         it "replies with status == :not_acceptable (406)" do
@@ -203,7 +199,7 @@ describe "/api/v1/users.json", :type => :api do
 
     context "When user doesn't exists" do
         it "replies with status == :not_found (404)" do
-          @user.id = 200
+          user.id = 200
           do_verb
           last_response.status.should eq(404)
           response = JSON.parse(last_response.body)

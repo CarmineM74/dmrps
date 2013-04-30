@@ -10,7 +10,7 @@ FactoryGirl.define do
     f.telefono { Faker::PhoneNumber.phone_number }
     f.fax { Faker::PhoneNumber.phone_number }
     after(:build) do |location, evaluator|
-      location.client = FactoryGirl.create(:client,locations: [location])
+      location.client = FactoryGirl.build(:client,locations: [location])
     end
   end
 end

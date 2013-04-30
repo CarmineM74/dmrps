@@ -172,7 +172,7 @@ describe "/api/v1/clients.json", :type => :api do
   describe 'Deleting a client' do
     include_examples "authentication required"
 
-    let(:client) { FactoryGirl.create(:client) }
+    let(:client) { FactoryGirl.create(:client_with_associations) }
 
     def do_verb
       delete "#{url}/#{client.id}.json"

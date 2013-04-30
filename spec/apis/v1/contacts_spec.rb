@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "/api/v1/clients/:client_id/contacts", :type => :api do
-  let (:client) { FactoryGirl.create(:client) }
+  let (:client) { FactoryGirl.create(:client_with_associations) }
   let (:url) { "/api/v1/clients/#{client.id}/contacts" }
 
   describe "Client's contacts list" do
@@ -24,10 +24,8 @@ describe "/api/v1/clients/:client_id/contacts", :type => :api do
     end
 
     it "fetches client's contacts list" do
-      contact = FactoryGirl.create(:contact, client: client)
       do_verb
       @body.should_not be_empty
-      @body.first["email"].should eq(contact.email)
     end
   end
 
@@ -122,7 +120,7 @@ describe "/api/v1/clients/:client_id/contacts", :type => :api do
 
   describe "Deleting a client's contact" do
     include_examples "authentication required"
-    let!(:contact) { FactoryGirl.create(:contact, client: client) }
+    let!(:contact) { client.contacts.first } 
 
     def do_verb
       delete "#{url}/#{contact.id}.json"
@@ -140,6 +138,27 @@ describe "/api/v1/clients/:client_id/contacts", :type => :api do
           do_verb
         }.to change(Contact, :count).by(-1)
       end
+
+      context "assigned to an intervention" do
+        before(:each) do
+          i = FactoryGirl.build(:intervention_with_associations)
+          i.contatto = contact.name
+          i.email = contact.email
+          i.locations = [client.locations.first]
+          i.save
+        end
+
+        it "replies with status == :not_acceptable (406)" do
+          do_verb
+          @status.should eq(406)
+        end
+
+        it "error_msg == Il contatto e' stato assegnato ad almeno un RPS" do
+          do_verb
+          JSON.parse(last_response.body)['error_msg'].should eq("Il contatto e' stato assegnato ad almeno un RPS")
+        end
+      end
+
     end
 
     context "when contact does not exists" do

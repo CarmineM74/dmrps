@@ -20,8 +20,12 @@ class Api::V1::ContactsController < Api::V1::RestrictedController
   end
 
   def destroy
-    @client.contacts.delete(@contact) 
-    respond_with({})
+    if @client.interventions.find_by_contatto_and_email(@contact.name,@contact.email)
+      render :json => {error_msg: "Il contatto e' stato assegnato ad almeno un RPS"}, status: 406
+    else
+      @client.contacts.delete(@contact) 
+      respond_with({})
+    end
   end
 
 private

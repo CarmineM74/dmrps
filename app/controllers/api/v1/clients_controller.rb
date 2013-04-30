@@ -29,8 +29,13 @@ class Api::V1::ClientsController < Api::V1::RestrictedController
   end
 
   def destroy
-    @client.destroy
-    respond_with({})
+    Rails.logger.info "Client interventions COUNT: #{@client.interventions.count}"
+    if @client.interventions.count > 0
+      render :json => {error_msg: 'Ci sono degli RPS associati al cliente'}, status: 406
+    else
+      @client.destroy
+      respond_with({})
+    end
   end
 
 private

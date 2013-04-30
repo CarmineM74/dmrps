@@ -25,6 +25,8 @@ class Client < ActiveRecord::Base
 
   has_many :contacts, dependent: :delete_all
 
+  has_many :interventions, through: :locations
+
 private
 
   def inizio_must_be_less_than_or_equal_to_fine

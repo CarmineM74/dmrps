@@ -19,9 +19,16 @@ FactoryGirl.define do
     lavoro_completato { true }
     note { "Fate esattamente quello che vi dico" }
     diritto_di_chiamata { true }
-    after(:build) do |intervention,evaluator|
-      intervention.locations = [FactoryGirl.build(:location,interventions: [intervention])]
-      intervention.activities = [FactoryGirl.build(:activity,interventions: [intervention])]
+
+    factory :intervention_with_associations do
+      after(:build) do |intervention,evaluator|
+        intervention.locations = FactoryGirl.build_list(:location,1,interventions: [intervention])
+        intervention.activities = FactoryGirl.build_list(:activity,8,interventions: [intervention])
+      end
+      after(:create) do |intervention,evaluator|
+        intervention.locations = FactoryGirl.create_list(:location,1,interventions: [intervention])
+        intervention.activities = FactoryGirl.create_list(:activity,8,interventions: [intervention])
+      end
     end
   end
 end

@@ -207,13 +207,28 @@ describe "/api/v1/clients.json", :type => :api do
         @status.should eq(204)
       end
 
-      it "deletes associated locations"
+      it "deletes associated locations" do
+        do_verb
+        Location.find_all_by_client_id(client.id).count.should eq(0)
+      end
 
-      it "deletes associated contacts"
+      it "deletes associated contacts" do
+        do_verb
+        Contact.find_all_by_client_id(client.id).count.should eq(0)
+      end
 
       context "with interventions" do
-        it "replies with status == :not_acceptable (406)"
-        it "error_msg == Ci sono degli RPS associati al cliente"
+        it "replies with status == :not_acceptable (406)" do
+          i = FactoryGirl.create(:intervention, locations: [client.locations.first])
+          do_verb
+          @status.should eq(406)
+        end
+
+        it "error_msg == Ci sono degli RPS associati al cliente" do
+          i = FactoryGirl.create(:intervention, locations: [client.locations.first])
+          do_verb
+          JSON.parse(last_response.body)['error_msg'].should eq('Ci sono degli RPS associati al cliente')
+        end
       end
 
     end

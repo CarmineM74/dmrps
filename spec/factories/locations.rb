@@ -9,8 +9,6 @@ FactoryGirl.define do
     f.provincia { 'ZZ' }
     f.telefono { Faker::PhoneNumber.phone_number }
     f.fax { Faker::PhoneNumber.phone_number }
-    after(:build) do |location, evaluator|
-      location.client = FactoryGirl.build(:client,locations: [location])
-    end
+    client 
   end
 end

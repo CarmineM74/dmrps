@@ -6,7 +6,7 @@ class @ClientsCtrl
 
     @$scope.$on('dmClientsSvc:Index:Failure',@indexFailed)
     @$scope.$on('dmClientsSvc:Destroy:Success', @deleteSuccess)
-    @$scope.$on('dmClientsSvc:Destroy:Failure', @reqFailed)
+    @$scope.$on('dmClientsSvc:Destroy:Failure', @deleteFailed)
 
     @$scope.fetchAll = angular.bind(this, @index)
     @$scope.filter = angular.bind(this, @filter)
@@ -43,4 +43,7 @@ class @ClientsCtrl
   
   deleteSuccess: =>
     bootbox.alert('Cliente rimosso con successo!')
+
+  deleteFailed: (evt, args) =>
+    bootbox.alert("Impossibile eliminare il cliente:<br/>" + args.data.error_msg)
 

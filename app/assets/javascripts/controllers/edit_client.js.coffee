@@ -104,9 +104,9 @@ class @EditClientCtrl
     @$log.log('[locationDeleted]: ' + JSON.stringify(@$scope.client))
     @$scope.locations = @dmLocationsSvc.index(@$scope.client.id)
 
-  locationDeleteFailure: (event, args) =>
-    @$log.log("[LocationDeleteFailure] " + JSON.stringify(args))
-    bootbox.alert("Operazione fallita!")
+  locationDeleteFailed: (event, args) =>
+    @$log.log("[LocationDeleteFailed] " + JSON.stringify(args))
+    bootbox.alert("Impossibile eliminare la sede:<br/>"+args.data.error_msg)
 
   clientRetrieveSuccess: (evt, response) =>
     @$scope.client = response

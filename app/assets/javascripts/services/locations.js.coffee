@@ -22,8 +22,8 @@ class LocationsSvc
   notify: (name,args) ->
     @$rootScope.$broadcast('dmLocationsSvc:'+name,args)
 
-  destroy: (location) ->
-    client.$destroy({client_id: client.id},
+  destroy: (location,client) ->
+    location.$destroy({location_id: location.id, client_id: client.id},
       (response) => @notify('Destroy:Success',response),
       (response) => @notify('Destroy:Failure',response)
     )

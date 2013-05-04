@@ -45,7 +45,7 @@ class @EditClientCtrl
     if @$scope.editMode
       @$scope.formCaption = 'Modifica cliente'
       @$scope.formSubmitCaption = 'Aggiorna'
-      @$scope.client = @dmClientsSvc.get(@$routeParams.client_id)
+      @dmClientsSvc.get(@$routeParams.client_id)
     else
       @$scope.formCaption = 'Nuovo cliente'
       @$scope.formSubmitCaption = 'Crea'
@@ -59,8 +59,8 @@ class @EditClientCtrl
     unless @$scope.originalClient?
         return true
     @$log.log('Original: ' + JSON.stringify(@$scope.originalClient))
-    @$log.log('Selected: ' + JSON.stringify(@$scope.selectedClient))
-    if angular.equals(@$scope.originalClient,@$scope.selectedClient)
+    @$log.log('Selected: ' + JSON.stringify(@$scope.client))
+    if angular.equals(@$scope.originalClient,@$scope.client)
       false
     else
       true
@@ -97,10 +97,11 @@ class @EditClientCtrl
   deleteLocation: (location) ->
     bootbox.confirm("Proseguo con la cancellazione della sede?", (result) =>
       if result
-        @dmLocationsSvc.destroy(location)
+        @dmLocationsSvc.destroy(location,@$scope.client)
     )
 
-  locationDeleted: =>
+  locationDeleted: (evt, args) =>
+    @$log.log('[locationDeleted]: ' + JSON.stringify(@$scope.client))
     @$scope.locations = @dmLocationsSvc.index(@$scope.client.id)
 
   locationDeleteFailure: (event, args) =>
@@ -108,6 +109,7 @@ class @EditClientCtrl
     bootbox.alert("Operazione fallita!")
 
   clientRetrieveSuccess: (evt, response) =>
+    @$scope.client = response
     @$scope.originalClient = angular.copy(@$scope.client)
     @$scope.locations = @dmLocationsSvc.index(@$scope.client.id)
     @$scope.contacts = @dmContactsSvc.index(@$scope.client.id)

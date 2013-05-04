@@ -26,9 +26,13 @@ class Api::V1::LocationsController < Api::V1::RestrictedController
   end
 
   def destroy
-    @location = @client.locations.find(params[:id])
-    @client.locations.delete(@location)
-    respond_with({})
+    if Intervention.joins(:locations).where("locations.id == #{params[:id]}").count > 0
+      render :json => {error_msg: "La sede e' stata utilizzata in almeno un intervento"}, status: 406
+    else
+      @location = @client.locations.find(params[:id])
+      @client.locations.delete(@location)
+      respond_with({})
+    end
   end
 
 protected

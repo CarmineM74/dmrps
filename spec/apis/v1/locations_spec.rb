@@ -223,6 +223,23 @@ describe "/api/v1/locations.json", :type => :api do
         do_verb
         last_response.status.should eq(204)
       end
+
+      context "when has been used in at least one intervention" do
+        let!(:intervention) { FactoryGirl.create(:intervention, locations: [location]) }
+
+        it "replies with status == :not_acceptable (406)" do
+          do_verb
+          last_response.status.should eq(406)
+        end
+
+        it "error_msg == La sede e' stata utilizzata in almeno un intervento" do
+          do_verb
+          body = JSON.parse(last_response.body)
+          body['error_msg'].should eq("La sede e' stata utilizzata in almeno un intervento")
+        end
+
+      end
+
     end
 
   end

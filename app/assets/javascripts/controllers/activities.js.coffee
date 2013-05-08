@@ -55,7 +55,7 @@ class @ActivitiesCtrl
 
   activityDestroyFailed: (evt, args) =>
     @$log.log('[activityDestroyFailed]: ' + JSON.stringify(args))
-    bootbox.alert("Impossibile rimuovere l'attivita' selezionata!")
+    bootbox.alert("Impossibile rimuovere l'attivita' selezionata:<br/>"+args.data.error_msg)
 
   activitySaved: (evt, args) =>
     @fetchAll()

@@ -110,5 +110,67 @@ describe "/api/v1/activities", :type => :api do
 
   end
 
+  describe "Delete activity" do
+    include_examples "authentication required"
+    let (:activity) { FactoryGirl.create(:activity) }
+
+    def do_verb
+      delete "#{url}/#{activity.id}.json"
+    end
+
+    context "When activity does not exists" do
+      it "replies with status == :not_found (404)" do
+        activity.id = 800
+        do_verb
+        last_response.status.should eq(404)
+      end
+
+      it "error_msg == 'resource not found'" do
+        activity.id = 800
+        do_verb
+        b = JSON.parse(last_response.body)
+        b['error_msg'].should eq('resource not found')
+      end
+    end
+
+    context "When activity exists" do
+
+      context "When it has not been used in any intervention" do
+        it "replies with status == :no_content (204)" do
+          do_verb
+          last_response.status.should eq(204)
+        end
+
+        it "activity is removed from DB" do
+          do_verb
+          expect {Activity.find(activity.id)}.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
+      context "When it has used in at least one intervention" do
+        let!(:intervention) { FactoryGirl.create(:intervention_with_associations) }
+
+        before(:each) do
+          intervention.activities << activity
+          intervention.save
+        end
+
+        it "replies with status == :not_acceptable (406)" do
+          do_verb
+          last_response.status.should eq(406)
+        end
+
+        it "error_msg == L'attivita' e' stata utilizzata in almeno un RPS" do
+          do_verb
+          b = JSON.parse(last_response.body)
+          b['error_msg'].should eq("L'attivita' e' stata utilizzata in almeno un RPS")
+        end
+
+      end
+
+    end
+
+  end
+
 end
 

@@ -19,8 +19,12 @@ class Api::V1::ActivitiesController < Api::V1::RestrictedController
   end
 
   def destroy
-    @activity.destroy
-    respond_with({})
+    if @activity.interventions.count != 0
+      render :json => { error_msg: "L'attivita' e' stata utilizzata in almeno un RPS" }, status: 406
+    else
+      @activity.destroy
+      respond_with({})
+    end
   end
 
 private

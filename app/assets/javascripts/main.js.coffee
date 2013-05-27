@@ -1,4 +1,4 @@
-@app = angular.module('dmrps',['ngResource','ui','ui.bootstrap','interceptorServices','directivesService','dmrpsFilters','ngCookies'])
+@app = angular.module('dmrps',['ngResource','ui.directives','ui.bootstrap','ui.bootstrap.dialog','interceptorServices','directivesService','dmrpsFilters','ngCookies'])
   .config(['$routeProvider', ($routeProvider) ->
     $routeProvider
       .when('/',
@@ -44,8 +44,8 @@
   })
 
 class @MainNavCtrl
-  @inject: ['$scope','$log','$location','$http','sessionSvc','$cookieStore']
-  constructor: (@$scope,@$log,@$location,@$http,@sessionSvc,@$cookies) ->
+  @inject: ['$scope','$log','$location','$http','dialogsSvc','sessionSvc','$cookieStore']
+  constructor: (@$scope,@$log,@$location,@$http,@dialogsSvc,@sessionSvc,@$cookies) ->
     @$log.log('Bootstrapping application ...')
     @$log.log(@$cookies)
     @setupXhr()
@@ -74,7 +74,7 @@ class @MainNavCtrl
 
   loginFailed: (event, args) =>
     @$log.log('[Main] Login failed')
-    bootbox.alert(args.error_msg)
+    @dialogsSvc.alert(args.error_msg)
     @$location.path('/')
 
   logout: ->
@@ -87,7 +87,7 @@ class @MainNavCtrl
 
   logoutFailed: (event, args) =>
     @$log.log('[Main] Logout failed: ' + JSON.stringify(args))
-    bootbox.alert('Errore durante il logout!')
+    @dialogsSvc.alert('Errore durante il logout!')
 
   setupXhr: ->
     @$log.log('[Main] setup HTTP default hedaers ...')

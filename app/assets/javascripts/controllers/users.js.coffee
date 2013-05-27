@@ -1,6 +1,6 @@
 class @UsersCtrl
-  @inject: ['$scope','$log','usersSvc','sessionSvc']
-  constructor: (@$scope, @$log, @usersSvc,@sessionSvc) ->
+  @inject: ['$scope','$log','dialogsSvc','usersSvc','sessionSvc']
+  constructor: (@$scope, @$log,@dialogsSvc, @usersSvc,@sessionSvc) ->
 
     @$scope.$on('UsersSvc:Index:Failure',@indexFailed)
     @$scope.$on('UsersSvc:Index:Success',@indexSuccess)
@@ -67,7 +67,7 @@ class @UsersCtrl
 
   indexFailed: (response) =>
     @$log.log('Error while retrieving Users#index')
-    bootbox.alert("Impossibile recuperare l'elenco degli utenti!")
+    @dialogsSvc.alert("Impossibile recuperare l'elenco degli utenti!")
 
   pageChanged: (page) ->
     @$scope.currentPage = page
@@ -100,33 +100,34 @@ class @UsersCtrl
     @$scope.errors = []
     @$scope.originalUser = angular.copy(@$selectedUser)
     @hideForm()
-    bootbox.alert('Dati salvati con successo!')
+    @dialogsSvc.alert('Dati salvati con successo!')
 
   reqSuccess: =>
     @$scope.errors = []
-    bootbox.alert('Operazione completata!')
+    @dialogsSvc.alert('Operazione completata!')
     @hideForm()
 
   reqFailed: (event, args) =>
     @showValidationErrors(args)
 
   deleteUser: (user) ->
-    bootbox.confirm("Proseguo con la cancellazione dell'utente?",(result) =>
-      if result
-        @usersSvc.destroy(user)
-        @hideForm()
+    @dialogsSvc.messageBox("Cancellazione utente", "Proseguo con la cancellazione dell'utente?", @dialogsSvc.SiNoButtons,
+      (result) =>
+        if result == 'si'
+          @usersSvc.destroy(user)
+          @hideForm()
     )
   
   deleteSuccess: =>
     @$scope.errors = []
     @$scope.originalUser = undefined
     @$scope.selectedUser = undefined
-    bootbox.alert('Utente rimosso con successo!')
+    @dialogsSvc.alert('Utente rimosso con successo!')
     @hideForm()
 
   deleteFailed: (evt,args) =>
     @$scope.errors = []
-    bootbox.alert("Impossibile eliminare l'utente selezionato:<br/>" + args.data.error_msg)
+    @dialogsSvc.alert("Impossibile eliminare l'utente selezionato:<br/>" + args.data.error_msg)
 
   hideForm: ->
     if !@$scope.originalUser?

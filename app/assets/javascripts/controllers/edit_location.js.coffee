@@ -1,6 +1,6 @@
 class @EditLocationCtrl
-  @inject: ['$scope','$log','$routeParams','dmLocationsvc','dmClientsSvc','$location']
-  constructor: (@$scope, @$log, @$routeParams, @dmLocationsSvc,@dmClientsSvc,@$location) ->
+  @inject: ['$scope','$log','$routeParams','dialogsSvc','dmLocationsvc','dmClientsSvc','$location']
+  constructor: (@$scope, @$log, @$routeParams, @dialogsSvc, @dmLocationsSvc,@dmClientsSvc,@$location) ->
     @$scope.errors = []
     @$scope.originalLocation = undefined
 
@@ -51,11 +51,11 @@ class @EditLocationCtrl
     @$scope.errors = []
     @$scope.originalLocation = angular.copy(@$scope.selectedLocation)
     @hideForm()
-    bootbox.alert('Dati salvati con successo!')
+    @dialogsSvc.alert('Dati salvati con successo!')
 
   reqSuccess: =>
     @$scope.errors = []
-    bootbox.alert('Operazione completata!')
+    @dialogsSvc.alert('Operazione completata!')
     @hideForm()
 
   reqFailed: (event, args) =>
@@ -63,7 +63,7 @@ class @EditLocationCtrl
 
   locationRetrieveFailed: (event, args) =>
     @$log.log('[LocationRetrieveFailed]: ' + JSON.stringify(args))
-    bootbox.alert('Impossibile recuperare i dettagli della sede')
+    @dialogsSvc.alert('Impossibile recuperare i dettagli della sede')
 
   locationRetrieved: (event, args) =>
     @$log.log('Location: ' + JSON.stringify(args))

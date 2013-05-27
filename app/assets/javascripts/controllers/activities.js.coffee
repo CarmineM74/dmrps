@@ -1,6 +1,6 @@
 class @ActivitiesCtrl
-  @inject: ['$scope','$log','dmActivitiesSvc']
-  constructor: (@$scope,@$log,@dmActivitiesSvc) ->
+  @inject: ['$scope','$log','dialogsSvc','dmActivitiesSvc']
+  constructor: (@$scope,@$log,@dialogsSvc,@dmActivitiesSvc) ->
     @$log.log('[ActivitiesCtrl] Init ...')
 
     @$scope.$on('dmActivitiesSvc:Index:Success', @activitiesRetrieved)
@@ -55,7 +55,7 @@ class @ActivitiesCtrl
 
   activityDestroyFailed: (evt, args) =>
     @$log.log('[activityDestroyFailed]: ' + JSON.stringify(args))
-    bootbox.alert("Impossibile rimuovere l'attivita' selezionata:<br/>"+args.data.error_msg)
+    @dialogsSvc.alert("Impossibile rimuovere l'attivita' selezionata:<br/>"+args.data.error_msg)
 
   activitySaved: (evt, args) =>
     @fetchAll()

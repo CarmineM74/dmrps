@@ -1,9 +1,9 @@
-@app.factory('sessionSvc',['$rootScope','$resource','$log','$location','appConfig', ($rootScope,$resource,$log,$location,appConfig) ->
-	new SessionSvc($rootScope,$resource,$log,$location,appConfig) 
+@app.factory('sessionSvc',['$rootScope','$resource','$log','$location','appConfig','dialogsSvc', ($rootScope,$resource,$log,$location,appConfig,dialogsSvc) ->
+	new SessionSvc($rootScope,$resource,$log,$location,appConfig,dialogsSvc) 
 ])
 
 class SessionSvc
-  constructor: (@$rootScope,$resource,@$log,@$location,@appConfig) ->
+  constructor: (@$rootScope,$resource,@$log,@$location,@appConfig,@dialogsSvc) ->
     @$log.log('Initializing Session Service ...')
     @currentUser = undefined
     @$rootScope.currentUser = @currentUser
@@ -34,7 +34,7 @@ class SessionSvc
     if opts?
       #@$log.log('Options: ' + JSON.stringify(opts))
       if opts.fail_and_logout
-        bootbox.alert("Autorizzazioni insufficienti per eseguire l'operazione!")
+        @dialogsSvc.alert("Autorizzazioni insufficienti per eseguire l'operazione!")
         @$location.path('/')
         @logout()
 

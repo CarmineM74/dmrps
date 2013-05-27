@@ -1,6 +1,6 @@
 class @InterventionsCtrl
-  @inject: ['$scope','$log','dmInterventionsSvc','$routeParams','$location']
-  constructor: (@$scope, @$log, @dmInterventionsSvc,@$routeParams,@$location) ->
+  @inject: ['$scope','$log','dialogsSvc','dmInterventionsSvc','$routeParams','$location']
+  constructor: (@$scope, @$log, @dialogsSvc,@dmInterventionsSvc,@$routeParams,@$location) ->
     @$scope.interventions = []
     @$scope.query = ''
 
@@ -23,7 +23,7 @@ class @InterventionsCtrl
 
   indexFailed: (response) =>
     @$log.log('Error while retrieving Interventions#index')
-    bootbox.alert("Impossibile recuperare l'elenco degli interventi!")
+    @dialogsSvc.alert("Impossibile recuperare l'elenco degli interventi!")
 
   editIntervention: (intervention) ->
     @$location.path('interventions/edit/'+intervention.id)
@@ -32,11 +32,12 @@ class @InterventionsCtrl
     @$location.path('interventions/add')
 
   deleteIntervention: (intervention) ->
-    bootbox.confirm("Proseguo con la cancellazione del intervento?",(result) =>
-      if result
-        @dmInterventionsSvc.destroy(intervention)
+    @dialogsSvc.messageBox("Cancellazione intervento", "Proseguo con la cancellazione del intervento?",@dialogsSvc.SiNoButtons,
+      (result) =>
+        if result == 'si'
+          @dmInterventionsSvc.destroy(intervention)
     )
   
   deleteSuccess: =>
-    bootbox.alert('Intervento rimosso con successo!')
+    @dialogsSvc.alert('Intervento rimosso con successo!')
     @index()

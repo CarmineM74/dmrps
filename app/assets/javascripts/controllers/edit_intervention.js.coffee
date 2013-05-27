@@ -1,6 +1,6 @@
 class @EditInterventionCtrl
-  @inject: ['$scope','$log','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc', 'dmActivitiesSvc']
-  constructor: (@$scope, @$log, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc, @dmActivitiesSvc) ->
+  @inject: ['$scope','$log','dialogsSvc','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc', 'dmActivitiesSvc']
+  constructor: (@$scope, @$log, @dialogsSvc, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc, @dmActivitiesSvc) ->
     @$scope.errors = []
 
     @$scope.dateTimePickerOpts = {
@@ -100,7 +100,7 @@ class @EditInterventionCtrl
 
   activitiesRetrieveFailed: (evt, args) =>
     @$log.log('[activitiesRetrieveFailed]: ' + JSON.stringify(args))
-    bootbox.alert("Si e' verificato un errore durante il recupero delle attivita'!")
+    @dialogsSvc.alert("Si e' verificato un errore durante il recupero delle attivita'!")
 
   interventionRetrieved: (evt, response) =>
     @$scope.originalIntervention = angular.copy(@$scope.intervention)
@@ -118,12 +118,12 @@ class @EditInterventionCtrl
 
   interventionRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving intervention: ' + JSON.stringify(response))
-    bootbox.alert("Si e' verificato un errore durante il recupero dell'intervento!")
+    @dialogsSvc.alert("Si e' verificato un errore durante il recupero dell'intervento!")
     @$location.path('/interventions')
 
   clientsRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving clients list')
-    bootbox.alert("Si e' verificato un errore durante il recupero dell'elenco clienti!")
+    @dialogsSvc.alert("Si e' verificato un errore durante il recupero dell'elenco clienti!")
 
   locationsRetrieved: (evt, response) => 
     if @$scope.editMode
@@ -131,7 +131,7 @@ class @EditInterventionCtrl
 
   locationsRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving locations list')
-    bootbox.alert("Si e' verificato un errore durante il recupero dell'elenco sedi per il cliente selezionato!")
+    @dialogsSvc.alert("Si e' verificato un errore durante il recupero dell'elenco sedi per il cliente selezionato!")
 
   clientChanged: ->
     @$log.log("Fetching locations for " + @$scope.selectedClient.ragione_sociale)
@@ -171,7 +171,7 @@ class @EditInterventionCtrl
   saveSuccess: (events, args) =>
     @$scope.originalIntervention = angular.copy(@$scope.intervention)
     @$scope.errors = []
-    #bootbox.alert('Dati salvati con successo!')
+    #@dialogsSvc.alert('Dati salvati con successo!')
 
   reqFailed: (event, args) =>
     @$scope.errors = args.data

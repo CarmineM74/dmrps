@@ -1,6 +1,6 @@
 class @EditClientCtrl
-  @inject: ['$scope','$log','$location','$routeParams','dmClientsSvc','dmLocationsSvc','dmContactsSvc']
-  constructor: (@$scope, @$log, @$location, @$routeParams, @dmClientsSvc, @dmLocationsSvc, @dmContactsSvc) ->
+  @inject: ['$scope','$log','$location','$routeParams','dialogsSvc','dmClientsSvc','dmLocationsSvc','dmContactsSvc']
+  constructor: (@$scope, @$log, @$location, @$routeParams, @dialogsSvc,@dmClientsSvc, @dmLocationsSvc, @dmContactsSvc) ->
     @$scope.errors = []
     @$scope.locations = []
     @$scope.contacts = []
@@ -69,9 +69,10 @@ class @EditClientCtrl
     @dmContactsSvc.save(@$scope.client.id,contact)
 
   deleteContact: (contact) ->
-    bootbox.confirm("Proseguo con la cancellazione del contatto?", (result) =>
-      if result
-        @dmContactsSvc.destroy(contact)
+    @dialogsSvc.messageBox("Cancellazione contatto","Proseguo con la cancellazione del contatto?", @dialogsSvc.SiNoButtons,
+      (result) =>
+        if result == 'si'
+          @dmContactsSvc.destroy(contact)
     )
 
   contactsSaveSuccess: (evt, args) =>
@@ -81,12 +82,12 @@ class @EditClientCtrl
     @$scope.validationErrors = args.data
 
   contactsDestroySuccess: (evt, args) =>
-    bootbox.alert("Contatto eliminato con successo!")
+    @dialogsSvc.alert("Contatto eliminato con successo!")
     @$scope.contacts = @dmContactsSvc.index(@$scope.client.id)
 
   contactsDestroyFailure: (evt, args) =>
     @$log.log("[contactDestroyFailure] ERROR: " + JSON.stringify(args))
-    bootbox.alert("Si e' verificato un errore durante la rimozione del contatto:<br/>" + args.data.error_msg)
+    @dialogsSvc.alert("Si e' verificato un errore durante la rimozione del contatto:<br/>" + args.data.error_msg)
 
   newLocation: ->
     @$location.path('/locations/add/' + @$scope.client.id)
@@ -95,9 +96,10 @@ class @EditClientCtrl
     @$location.path('/locations/edit/' + @$scope.client.id + '/' + location.id)
 
   deleteLocation: (location) ->
-    bootbox.confirm("Proseguo con la cancellazione della sede?", (result) =>
-      if result
-        @dmLocationsSvc.destroy(location,@$scope.client)
+    @dialogsSvc.messageBox("Cancellazione sede", "Proseguo con la cancellazione della sede?", @dialogsSvc.SiNoButtons,
+      (result) =>
+        if result == 'si'
+          @dmLocationsSvc.destroy(location,@$scope.client)
     )
 
   locationDeleted: (evt, args) =>
@@ -106,7 +108,7 @@ class @EditClientCtrl
 
   locationDeleteFailed: (event, args) =>
     @$log.log("[LocationDeleteFailed] " + JSON.stringify(args))
-    bootbox.alert("Impossibile eliminare la sede:<br/>"+args.data.error_msg)
+    @dialogsSvc.alert("Impossibile eliminare la sede:<br/>"+args.data.error_msg)
 
   clientRetrieveSuccess: (evt, response) =>
     @$scope.client = response
@@ -118,15 +120,15 @@ class @EditClientCtrl
     @$log.log('Error while retrieving Client')
     @$scope.client = {}
     @$scope.originalClient = undefined
-    bootbox.alert("Impossibile recuperare i dati per il cliente")
+    @dialogsSvc.alert("Impossibile recuperare i dati per il cliente")
 
   locationsRetrieveFailed: (evt, response) =>
     @$log.log('Errore durante il recupero delle sedi per il cliente')
-    bootbox.alert("Impossibile recuperare l'elenco delle sedi per il cliente")
+    @dialogsSvc.alert("Impossibile recuperare l'elenco delle sedi per il cliente")
 
   contactsRetrieveFailed: (evt, response) =>
     @$log.log('Errore durante il recupero dei contatti per il cliente')
-    bootbox.alert("Impossibile recuperare i contatti per il cliente")
+    @dialogsSvc.alert("Impossibile recuperare i contatti per il cliente")
 
   saveClient: (client) ->
     @dmClientsSvc.save(client)
@@ -135,11 +137,11 @@ class @EditClientCtrl
     @$scope.errors = []
     @$scope.originalClient = angular.copy(@$scope.client)
     @hideForm()
-    bootbox.alert('Dati salvati con successo!')
+    @dialogsSvc.alert('Dati salvati con successo!')
 
   reqSuccess: =>
     @$scope.errors = []
-    bootbox.alert('Operazione completata!')
+    @dialogsSvc.alert('Operazione completata!')
     @hideForm()
 
   reqFailed: (event, args) =>

@@ -1,6 +1,6 @@
 class @ClientsCtrl
-  @inject: ['$scope','$log','$location', 'dmClientsSvc']
-  constructor: (@$scope, @$log, @$location,  @dmClientsSvc) ->
+  @inject: ['$scope','$log','$location','dialogsSvc', 'dmClientsSvc']
+  constructor: (@$scope, @$log, @$location,@dialogsSvc,  @dmClientsSvc) ->
     @$scope.clients = []
     @$scope.query = ''
 
@@ -24,10 +24,10 @@ class @ClientsCtrl
 
   indexFailed: (response) =>
     @$log.log('Error while retrieving Clients#index')
-    bootbox.alert("Impossibile recuperare l'elenco dei clienti!")
+    @dialogsSvc.alert("Impossibile recuperare l'elenco dei clienti!")
 
   reqFailed: (event, args) =>
-    bootbox.alert("Operazione fallita!")
+    @dialogsSvc.alert("Operazione fallita!")
 
   newClient: ->
     @$location.path('clients/add')
@@ -36,14 +36,15 @@ class @ClientsCtrl
     @$location.path('clients/edit/'+client.id)
 
   deleteClient: (client) ->
-    bootbox.confirm("Proseguo con la cancellazione del cliente?",(result) =>
-      if result
-        @dmClientsSvc.destroy(client)
+    @dialogsSvc.messageBox("Cancellazione cliente","Proseguo con la cancellazione del cliente?",@dialogsSvc.SiNoButtons,
+      (result) =>
+        if result == 'si'
+          @dmClientsSvc.destroy(client)
     )
   
   deleteSuccess: =>
-    bootbox.alert('Cliente rimosso con successo!')
+    @dialogsSvc.alert('Cliente rimosso con successo!')
 
   deleteFailed: (evt, args) =>
-    bootbox.alert("Impossibile eliminare il cliente:<br/>" + args.data.error_msg)
+    @dialogsSvc.alert("Impossibile eliminare il cliente:<br/>" + args.data.error_msg)
 

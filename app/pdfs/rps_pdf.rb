@@ -16,17 +16,13 @@ class RpsPdf < Prawn::Document
   end
 
   def logo
-    grid([0,0],[1,5]).bounding_box do
-      draw_bounded_rectangle(20)
-    end
-    grid([0,1],[1,4]).bounding_box do
-      draw_text "LOGO HERE", :at => [0,25]
-    end
+    image "./app/assets/images/logo_dm.png", position: :left, width: 100, height: 50
   end
 
   def header
     location = @intervention.locations.first
     logo
+    move_down 10
     grid([2,0],[3,11]).bounding_box do
       draw_bounded_rectangle(5)
       text "<b>Rapportini/Richiesta di Assistenza Tecnica\nda inviare tramite fax al nr.: 08119722772 o tramite email: ordini@dmcomputers.it</b>\nad uso esclusivo dei clienti D.M. Computers titolari di contratto di Assistenza o Manutenzione", align: :center, valign: :center, inline_format: true

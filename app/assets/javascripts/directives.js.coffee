@@ -26,6 +26,7 @@ angular.module('directivesService',[])
             .removeClass('error')
             .find('span.help-block')
             .remove()
+          return if value?.errors == undefined
           for k,v of value.errors
             element.find('.control-group.'+k)
               .addClass('error')
@@ -41,17 +42,17 @@ angular.module('directivesService',[])
       restrict: 'A'
       require: 'ngModel'
       link: (scope, element, attrs, ctrl) ->
-        cur_value = element.val().toUpperCase()
+        
+        to_uppercase = (cur_value) =>
+          return '' if !cur_value?
+          new_value = cur_value.toUpperCase()
+          if (cur_value != new_value)
+            ctrl.$setViewValue(new_value)
+            ctrl.$render()
+          new_value      
 
-        element.bind('blur', ->
-          scope.$apply( -> ctrl.$setViewValue(element.val().toUpperCase()))
-          ctrl.$render()
-        )
-
-        ctrl.$render = -> 
-          element.val(ctrl.$viewValue)
-
-        ctrl.$setViewValue(cur_value)
+        ctrl.$parsers.push(to_uppercase)
+        to_uppercase(scope[attrs.ngModel])
     }
     return d
   )

@@ -54,7 +54,10 @@ class ClientsSvc
 
   get: (client_id) ->
     c = @clients.get({client_id},
-      (response) => @notify('Get:Success',response),
-      (response) => @notify('Get:Failure',response)
+      (response) => 
+        response.inizio = new Date(response.inizio)
+        response.fine = new Date(response.fine)
+        @notify('Get:Success',response)
+      ,(response) => @notify('Get:Failure',response)
     )
 

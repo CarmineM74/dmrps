@@ -2,14 +2,8 @@
     <form name='clientForm' class='custom-form' show-validation-errors errors='errors'>
       <fieldset>
         <legend>{{formCaption}}</legend>
-        <ul class='nav nav-tabs'>
-          <li><a class='active' href='#tabAnagrafica' data-toggle='tab'>Anagrafica</a></li>
-          <li ng-show='editMode'><a href='#tabContatti' data-toggle='tab'>Contatti</a></li>
-          <li ng-show='editMode'><a href='#tabSedi' data-toggle='tab'>Sedi</a></li>
-        </ul>
-        <div class='tab-content'>
-          <div class='span11 tab-pane active' id='tabAnagrafica'>
-
+        <tabs>
+          <pane heading="Anagrafica">
             <div class='same-row id' ng-show='client.id'>
 		          <label>Codice cliente</label>
 		          <span class='span1 uneditable-input' type='text'>{{client.id}}</span>
@@ -70,16 +64,18 @@
               <label>Costo diritto di chiamata</label>
               <input id="costo_diritto_chiamata" class='span2' type='text' ng-model='client.costo_diritto_chiamata'>
             </div>
+          </pane>
+          <div ng-switch on="editMode">
+            <div ng-switch-when='true'>
+              <pane heading="Contatti">
+                <elenco-contatti contatti='contacts' save-contact='saveContact(contact)' delete-contact='deleteContact(contact)'></elenco-contatti>
+              </pane>
+              <pane heading="Sedi">
+                <elenco-sedi sedi='locations' nuova-sede-click='newLocation(client)' modifica-sede-click='editLocation(location)' elimina-sede-click='deleteLocation(location)'></elenco-sedi>
+              </pane>
+            </div>
           </div>
-
-          <div class='span11 tab-pane' id='tabContatti'>
-            <elenco-contatti contatti='contacts' save-contact='saveContact(contact)' delete-contact='deleteContact(contact)'></elenco-contatti>
-          </div>
-
-          <div class='span11 tab-pane' id='tabSedi'>
-            <elenco-sedi sedi='locations' nuova-sede-click='newLocation(client)' modifica-sede-click='editLocation(location)' elimina-sede-click='deleteLocation(location)'></elenco-sedi>
-          </div>
-        </div>
+        </tabs>
 
         <div class='form-actions new-row'>
           <button type='submit' class='btn' ng-click='saveClient(client)' ng-disabled='!isDirty() || !clientForm.$valid'>{{formSubmitCaption}}</button>

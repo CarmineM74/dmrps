@@ -43,17 +43,16 @@ angular.module('directivesService',[])
       restrict: 'A'
       require: 'ngModel'
       link: (scope, element, attrs, ctrl) ->
-        cur_value = element.val().toUpperCase()
-
-        element.bind('blur', ->
-          scope.$apply( -> ctrl.$setViewValue(element.val().toUpperCase()))
-          ctrl.$render()
-        )
-
-        ctrl.$render = -> 
-          element.val(ctrl.$viewValue)
-
-        ctrl.$setViewValue(cur_value)
+        touppercase = (value) ->
+          unless value?
+            return '' 
+          upcased = value.toUpperCase()
+          if (upcased != value)
+            ctrl.$setViewValue(upcased)
+            ctrl.$render()
+          return upcased
+        ctrl.$parsers.push(touppercase)
+        touppercase(scope[attrs.ngModel])
     }
     return d
   )

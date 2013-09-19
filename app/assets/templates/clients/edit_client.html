@@ -1,11 +1,6 @@
 <div id='new-client' class='span12'>
-  <ul class='nav nav-tabs'>
-    <li><a class='active' href='#tabAnagrafica' data-toggle='tab'>Anagrafica</a></li>
-    <li ng-show='editMode'><a href='#tabContatti' data-toggle='tab'>Contatti</a></li>
-    <li ng-show='editMode'><a href='#tabSedi' data-toggle='tab'>Sedi</a></li>
-  </ul>
-  <div class='tab-content'>
-    <div class='span11 tab-pane active' id='tabAnagrafica'>
+  <tabs>
+    <pane heading="Anagrafica">
       <form name='clientForm' class='custom-form' show-validation-errors errors='errors'>
         <fieldset>
           <legend>{{formCaption}}</legend>
@@ -56,11 +51,11 @@
             </div>
             <div class='new-row same-row control-group inizio'>
               <label>Inizio contratto</label>
-              <input id='inizio' type='text' ng-model="client.inizio" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" required>
+              <input id='inizio' type='text' ng-model="client.inizio" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" ui-date-format required>
             </div>
             <div class='same-row control-group fine'>
               <label>Fine contratto</label>
-              <input id='fine' type='text' ng-model="client.fine" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" required>
+              <input id='fine' type='text' ng-model="client.fine" ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}" ui-date-format required>
             </div>
             <div class='new-row same-row control-group diritto_di_chiamata'>
               <label>Diritto di chiamata</label>
@@ -70,21 +65,19 @@
               <label>Costo diritto di chiamata</label>
               <input id="costo_diritto_chiamata" class='span2' type='text' ng-model='client.costo_diritto_chiamata'>
             </div>
-          </div>
-          <div class='form-actions new-row'>
-            <button type='submit' class='btn' ng-click='saveClient(client)' ng-disabled='!isDirty() || !clientForm.$valid'>{{formSubmitCaption}}</button>
-            <button type='submit' class='btn' ng-click="quitEditing()">Annulla</button>
+            <div class='form-actions new-row'>
+              <button type='submit' class='btn' ng-click='saveClient(client)' ng-disabled='!isDirty() || !clientForm.$valid'>{{formSubmitCaption}}</button>
+              <button type='submit' class='btn' ng-click="quitEditing()">Annulla</button>
+            </div>
         </fieldset>
       </form>
-    </div>
-          <div class='span11 tab-pane' id='tabContatti'>
-            <elenco-contatti contatti='contacts' save-contact='saveContact(contact)' delete-contact='deleteContact(contact)'></elenco-contatti>
-          </div>
-
-          <div class='span11 tab-pane' id='tabSedi'>
-            <elenco-sedi sedi='locations' nuova-sede-click='newLocation(client)' modifica-sede-click='editLocation(location)' elimina-sede-click='deleteLocation(location)'></elenco-sedi>
-          </div>
-  </div>
-
+    </pane>
+    <pane heading="Contatti">
+      <elenco-contatti contatti='contacts' save-contact='saveContact(contact)' delete-contact='deleteContact(contact)'></elenco-contatti>
+    </pane>
+    <pane heading="Sedi">
+      <elenco-sedi sedi='locations' nuova-sede-click='newLocation(client)' modifica-sede-click='editLocation(location)' elimina-sede-click='deleteLocation(location)'></elenco-sedi>
+    </pane>
+  </tabs>
 </div>
 

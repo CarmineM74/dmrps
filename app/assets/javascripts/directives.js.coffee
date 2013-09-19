@@ -26,6 +26,8 @@ angular.module('directivesService',[])
             .removeClass('error')
             .find('span.help-block')
             .remove()
+          unless value?
+            return false
           for k,v of value.errors
             element.find('.control-group.'+k)
               .addClass('error')

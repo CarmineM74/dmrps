@@ -136,8 +136,8 @@ class @EditClientCtrl
   saveSuccess: (events, args) =>
     @$scope.errors = []
     @$scope.originalClient = angular.copy(@$scope.client)
-    @hideForm()
     @dialogsSvc.alert('Dati salvati con successo!')
+    @hideForm()
 
   reqSuccess: =>
     @$scope.errors = []

@@ -35,7 +35,7 @@ class @EditLocationCtrl
 
   isDirty: ->
     #@$log.log('Original: ' + JSON.stringify(@$scope.originalLocation))
-    #@$log.log('Selected: ' + JSON.stringify(@$scope.selectedLocation))
+    #@$log.log('Selected: ' + JSON.stringify(@$scope.location))
     if angular.equals(@$scope.originalLocation,@$scope.location)
       false
     else
@@ -49,7 +49,7 @@ class @EditLocationCtrl
 
   saveSuccess: (event, args) =>
     @$scope.errors = []
-    @$scope.originalLocation = angular.copy(@$scope.selectedLocation)
+    @$scope.originalLocation = angular.copy(@$scope.location)
     @hideForm()
     @dialogsSvc.alert('Dati salvati con successo!')
 

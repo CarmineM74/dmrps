@@ -1,6 +1,6 @@
 <div id='new-client' class='span12'>
-  <tabs>
-    <pane heading="Anagrafica">
+  <tabset>
+    <tab heading="Anagrafica">
       <form name='clientForm' class='custom-form' show-validation-errors errors='errors'>
         <fieldset>
           <legend>{{formCaption}}</legend>
@@ -71,13 +71,13 @@
             </div>
         </fieldset>
       </form>
-    </pane>
-    <pane heading="Contatti">
+    </tab>
+    <tab heading="Contatti">
       <elenco-contatti contatti='contacts' save-contact='saveContact(contact)' delete-contact='deleteContact(contact)'></elenco-contatti>
-    </pane>
-    <pane heading="Sedi">
+    </tab>
+    <tab heading="Sedi">
       <elenco-sedi sedi='locations' nuova-sede-click='newLocation(client)' modifica-sede-click='editLocation(location)' elimina-sede-click='deleteLocation(location)'></elenco-sedi>
-    </pane>
-  </tabs>
+    </tab>
+  </tabset>
 </div>
 

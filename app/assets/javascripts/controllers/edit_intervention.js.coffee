@@ -78,7 +78,7 @@ class @EditInterventionCtrl
 				          note: ""
 				          diritto_di_chiamata: true
 				          location_ids: []
-                  activities_ids: []
+                  ,activities_ids: []
                 }
       @$scope.attivita_selezionate = []
       @$scope.originalIntervention = undefined

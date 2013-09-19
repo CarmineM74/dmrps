@@ -132,6 +132,8 @@ angular.module('directivesService',[])
 
         $scope.$watch('attivita',(value) ->
           $scope.attivita = value
+          unless value?
+            return false
           $scope.pageChanged(1)
         )
 

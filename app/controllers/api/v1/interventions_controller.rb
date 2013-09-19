@@ -20,6 +20,8 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
 
   def create
     @intervention = Intervention.create(params[:intervention])
+    new_activities = params[:activities_ids]
+    new_activities.each { |id| @intervention.activities << Activity.find(id) }
     respond_with(@intervention)
   end
 

@@ -16,11 +16,10 @@ class RpsPdf < Prawn::Document
   end
 
   def logo
-    grid([0,0],[1,5]).bounding_box do
+    grid([0,0],[1,11]).bounding_box do
       draw_bounded_rectangle(20)
-    end
-    grid([0,1],[1,4]).bounding_box do
-      draw_text "LOGO HERE", :at => [0,25]
+      image "./app/assets/images/logo_dm.png", position: 15, vposition: 2, width: 100
+      text_box "<font size='7'><b>D.M. Computers di C. Della Gatta</b>\nVia Aversa, 62\n81030 Gricignano di Aversa (CE)\nP.IVA 02521390613\nTel 0815028568</font>", at: [120,bounds.top-10], inline_format: true
     end
   end
 

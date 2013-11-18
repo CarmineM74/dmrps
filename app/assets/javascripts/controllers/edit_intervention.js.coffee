@@ -15,11 +15,12 @@ class @EditInterventionCtrl
         minuteText: 'MM'
     }
 
+    @$scope.$on('dmClientsSvc:Index:Success',@clientsRetrievalSuccess)
     @$scope.$on('dmClientsSvc:Index:Failure',@clientsRetrievalFailed)
     @$scope.$on('dmLocationsSvc:Index:Failure',@locationsRetrievalFailed)
     @$scope.$on('dmLocationsSvc:Index:Success',@locationsRetrieved)
 
-    @$scope.$on('dmInterventionsSvc:Get:Failure',@interventionRetrievalFailed) 
+    @$scope.$on('dmInterventionsSvc:Get:Failure',@interventionRetrievalFailed)
     @$scope.$on('dmInterventionsSvc:Get:Success',@interventionRetrieved)
     @$scope.$on('dmInterventionsSvc:Save:Success',@saveSuccess)
     @$scope.$on('dmInterventionsSvc:Save:Failure',@reqFailed)
@@ -121,11 +122,19 @@ class @EditInterventionCtrl
     @dialogsSvc.alert("Si e' verificato un errore durante il recupero dell'intervento!")
     @$location.path('/interventions')
 
+  clientsRetrievalSuccess: (evt, response) =>
+    if @$scope.clients.length == 0
+      @dialogsSvc.messageBox('Dati insufficienti', "Per poter compilare un rapporto di intervento è necessario definire un'anagrafica clienti con almeno una sede!", [@dialogsSvc.OkBtn])
+      @$location.path('/clients')
+
   clientsRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving clients list')
     @dialogsSvc.alert("Si e' verificato un errore durante il recupero dell'elenco clienti!")
 
-  locationsRetrieved: (evt, response) => 
+  locationsRetrieved: (evt, response) =>
+    if @$scope.locations.length == 0
+      @dialogsSvc.messageBox('Dati insufficienti', "Per poter compilare un rapporto di intervento è necessario indicare un cliente che abbia almeno una sede definita!", [@dialogsSvc.OkBtn])
+      @$location.path('/clients')
     if @$scope.editMode
       @$scope.selectedLocation = (l for l in @$scope.locations when l.id is @$scope.intervention.location.id)[0]
 
@@ -142,7 +151,7 @@ class @EditInterventionCtrl
 
   contactsRetrieved: (evt, args) =>
     @$scope.contacts = args
-    @$scope.contact_names.push(c.name) for c in args 
+    @$scope.contact_names.push(c.name) for c in args
 
   getContacts: (term, resp) =>
     resp(c for c in @$scope.contact_names when c.toLowerCase().contains(term.term.toLowerCase()))

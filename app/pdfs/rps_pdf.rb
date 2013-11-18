@@ -113,7 +113,7 @@ class RpsPdf < Prawn::Document
     end
     grid([20,0],[21,4]).bounding_box do
       draw_bounded_rectangle(0)
-      text_box "<b>Ore lavorate c/o il cliente:</b> #{@intervention.ore_lavorate_cliente}\n<b>Ore lavorate in laboratorio:</b> #{@intervention.ore_lavorate_laboratorio}\n<b>Ore lavorate in remoto:</b> #{@intervention.ore_lavorate_remoto}\n<b>Km supplementari:</b> 0000", at: [10,bounds.top-8], inline_format: true
+      text_box "<b>Ore lavorate c/o il cliente:</b> #{@intervention.ore_lavorate_cliente}\n<b>Ore lavorate in laboratorio:</b> #{@intervention.ore_lavorate_laboratorio}\n<b>Ore lavorate in remoto:</b> #{@intervention.ore_lavorate_remoto}\n<b>Km supplementari:</b> #{@intervention.km_supplementari}", at: [10,bounds.top-8], inline_format: true
     end
     grid([20,5],[22,11]).bounding_box do
       draw_bounded_rectangle(0)

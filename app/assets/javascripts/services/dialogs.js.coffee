@@ -1,9 +1,9 @@
-@app.factory('dialogsSvc',['$rootScope','$resource','$log','$modal',($rootScope,$resource,$log,$modal) ->
-  new DialogsSvc($rootScope,$resource,$log,$modal)
+@app.factory('dialogsSvc',['$rootScope','$resource','$log','$dialog',($rootScope,$resource,$log,$dialog) ->
+  new DialogsSvc($rootScope,$resource,$log,$dialog)
 ])
 
 class DialogsSvc
-  constructor: (@$rootScope, @$resource, @$log, @$modal) ->
+  constructor: (@$rootScope, @$resource, @$log, @$dialog) ->
     @$log.log('Initi dialogsSvc ...')
 
     @OkBtn = {label: 'Ok', result: 'ok'}
@@ -25,36 +25,25 @@ class DialogsSvc
   alert: (msg) ->
     t = "<div class='modal-body'><p>"+msg+"</p></div>"+
         "<div class='modal-footer'>"+
-        "<button ng-click='close()' class='btn btn-primary'>Ok</button>"+
-        "</div>"
+        "<button ng-click='close()' class='btn btn-primary'>Ok</button>"
     opts = {}
     opts.backdrop = true
+    opts.backdropClick = true
     opts.template = t
     opts.controller = 'AlertCtrl'
-    @$modal.open(opts)
+    @$dialog.dialog(opts).open()
 
   messageBox: (title, msg, buttons, cb) ->
-    t = "<div class='modal-header'><h3>"+title+"</h3></div>"+
-        "<div class='modal-body'><p>"+msg+"</p></div>"
-    if buttons.length > 0
-      t = t + "<div class='modal-footer'>"
-      btns = for btnid,b of buttons
-                "<button ng-click='close("+'"'+b.result+'"'+")' class='btn'>"+b.label+"</button>"
-      t = t + btns.join("")
-      t = t + "</div>"
-    opts = {}
-    opts.backdrop = true
-    opts.template = t
-    opts.controller = 'AlertCtrl'
-    @$modal.open(opts)
-      .result.then((result) =>
+    @$dialog.messageBox(title,msg,buttons)
+      .open()
+      .then((result) => 
         if cb?
           cb(result)
       )
 
 class @AlertCtrl
-  @inject: ['$scope','$modalInstance']
-  constructor: (@$scope,@$modalInstance) ->
-    @$scope.close = (result) =>
-      @$modalInstance.close(result)
+  @inject: ['$scope','dialog']
+  constructor: (@$scope,@dialog) ->
+    @$scope.close = () =>
+      @dialog.close()
 

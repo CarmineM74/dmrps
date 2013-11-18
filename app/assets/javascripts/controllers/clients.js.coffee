@@ -41,9 +41,10 @@ class @ClientsCtrl
         if result == 'si'
           @dmClientsSvc.destroy(client)
     )
-  
+
   deleteSuccess: =>
     @dialogsSvc.alert('Cliente rimosso con successo!')
+    @index()
 
   deleteFailed: (evt, args) =>
     @dialogsSvc.alert("Impossibile eliminare il cliente:<br/>" + args.data.error_msg)

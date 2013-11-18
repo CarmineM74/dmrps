@@ -124,6 +124,7 @@ class @EditInterventionCtrl
 
   clientsRetrievalSuccess: (evt, response) =>
     if @$scope.clients.length == 0
+      @dialogsSvc.alert('mamma')
       @dialogsSvc.messageBox('Dati insufficienti', "Per poter compilare un rapporto di intervento è necessario definire un'anagrafica clienti con almeno una sede!", [@dialogsSvc.OkBtn])
       @$location.path('/clients')
 

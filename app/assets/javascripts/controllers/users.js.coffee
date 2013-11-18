@@ -29,7 +29,7 @@ class @UsersCtrl
     @$scope.formCaption = ''
     @$scope.formSubmitCaption = ''
     @$scope.showForm = false
-    @$scope.availableRoles = [ {codice: 'admin', descrizione: 'Amministratore'},{codice: 'user', descrizione: 'Utente'},{codice: 'client', descrizione: 'Cliente'} ]
+    @$scope.availableRoles = [ {codice: 'admin', descrizione: 'Amministratore'},{codice: 'user', descrizione: 'Utente'}]
 
   authenticated: =>
     unless @$scope.can('ManageUsers',{fail_and_logout: true})
@@ -71,7 +71,7 @@ class @UsersCtrl
 
   pageChanged: (page) ->
     @$scope.currentPage = page
-    start = (@$scope.currentPage - 1) * @$scope.itemsPerPage 
+    start = (@$scope.currentPage - 1) * @$scope.itemsPerPage
     stop = start + (@$scope.itemsPerPage - 1)
     if stop > @$scope.allUsers.length
       stop = @$scope.allUsers.length - 1
@@ -117,7 +117,7 @@ class @UsersCtrl
           @usersSvc.destroy(user)
           @hideForm()
     )
-  
+
   deleteSuccess: =>
     @$scope.errors = []
     @$scope.originalUser = undefined

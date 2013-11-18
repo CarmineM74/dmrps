@@ -4,7 +4,7 @@
 
 class DialogsSvc
   constructor: (@$rootScope, @$resource, @$log, @$dialog) ->
-    @$log.log('Initi dialogsSvc ...')
+    @$log.log('Init dialogsSvc ...')
 
     @OkBtn = {label: 'Ok', result: 'ok'}
     @CancelBtn = {label: 'Cancel', result: 'cancel'}
@@ -36,7 +36,7 @@ class DialogsSvc
   messageBox: (title, msg, buttons, cb) ->
     @$dialog.messageBox(title,msg,buttons)
       .open()
-      .then((result) => 
+      .then((result) =>
         if cb?
           cb(result)
       )

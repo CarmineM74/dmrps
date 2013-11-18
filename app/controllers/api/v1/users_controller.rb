@@ -23,12 +23,10 @@ class Api::V1::UsersController < Api::V1::RestrictedController
     if @user.interventions.size > 0
       render :json => {error_msg: "Ci sono degli RPS associati all'utente"}, status: 406
     else
-      if @user.admin? and User.where(role: 'admin').count > 1
-        @user.destroy
-        respond_with(@user)
-      else
-      render :json => {error_msg: "Non e' possibile rimuovere l'unico amministratore del sistema!"}, status: 406
-      end
+      render :json => {error_msg: "Solo l'amministratore puo' rimuovere gli utenti dal sistema!"}, status: 406 and return unless current_user.admin?
+      render :json => {error_msg: "Non e' possibile rimuovere l'unico amministratore del sistema!"}, status: 406 and return if (@user.admin? and (User.where(role: 'admin').count == 1))
+      @user.destroy
+      respond_with(@user)
     end
   end
 

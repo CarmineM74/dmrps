@@ -25,6 +25,8 @@ class @ActivitiesCtrl
     @$scope.allActivities = []
     @$scope.originalActivity = undefined
 
+    @$scope.stato = ''
+
     @fetchAll()
 
   isDirty: () ->
@@ -37,12 +39,14 @@ class @ActivitiesCtrl
     @dmActivitiesSvc.index()
 
   selectActivity: (a) ->
-    @$scope.activity = angular.copy(a) 
+    @$scope.activity = angular.copy(a)
     @$scope.originalActivity = angular.copy(a)
+    @$scope.stato = 'Modifica'
 
   newActivity: () ->
     @$scope.activity = { descrizione: '' }
     @$scope.originalActivity = undefined
+    @$scope.stato = 'Inserimento'
 
   saveActivity: (a) ->
     @dmActivitiesSvc.save(a)
@@ -58,6 +62,7 @@ class @ActivitiesCtrl
     @dialogsSvc.alert("Impossibile rimuovere l'attivita' selezionata:<br/>"+args.data.error_msg)
 
   activitySaved: (evt, args) =>
+    @$scope.stato = ''
     @fetchAll()
 
   activitySaveFailed: (evt, args) =>
@@ -67,9 +72,11 @@ class @ActivitiesCtrl
     @$scope.allActivities = args
     @$scope.activity = undefined
     @$scope.originalActivity = undefined
+    @$scope.stato = ''
 
   activitiesRetrieveFailed: (evt, args) =>
     @$log.log('[activitiesRetrieveFalied]: ' + JSON.stringify(args))
     @$scope.allActivities = []
     @$scope.activity = undefined
     @$scope.originalActivity = undefined
+    @$scope.stato = ''

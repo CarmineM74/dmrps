@@ -1,4 +1,4 @@
-@app = angular.module('dmrps',['ngResource','ui.jq','ui.bootstrap','ui.date','ui.select2','interceptorServices','directivesService','dmrpsFilters','ngCookies'])
+@app = angular.module('dmrps',['ngResource','ui.utils','ui.bootstrap','ui.date','ui.select2','interceptorServices','directivesService','dmrpsFilters','ngCookies'])
   .config(['$routeProvider', ($routeProvider) ->
     $routeProvider
       .when('/',

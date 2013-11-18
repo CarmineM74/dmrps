@@ -1,5 +1,4 @@
 class Api::V1::UsersController < Api::V1::RestrictedController
-
   authorize_resource
 
   before_filter :find_user, :only => [:update, :destroy]
@@ -9,13 +8,15 @@ class Api::V1::UsersController < Api::V1::RestrictedController
   end
 
   def create
-    @user = User.create(params[:user])
+    @user = User.new(params[:user])
+    set_perms_and_password()
     respond_with(@user) 
   end
 
   def update
-     @user.update_attributes(params[:user])
-     respond_with(@user)
+    @user.update_attributes(params[:user].except('password','password_confirmation'))
+    set_perms_and_password()
+    respond_with(@user)
   end
 
   def destroy
@@ -28,6 +29,14 @@ class Api::V1::UsersController < Api::V1::RestrictedController
   end
 
 private
+
+  def set_perms_and_password
+    if params[:password]
+      @user.password = params[:password]
+      @user.password_confirmation = params[:password_confirmation]
+    end
+    @user.save
+  end
 
   def find_user
     @user = User.find(params[:id])

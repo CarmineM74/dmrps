@@ -26,6 +26,7 @@ class RpsPdf < Prawn::Document
   def header
     location = @intervention.locations.first
     logo
+    move_down 10
     grid([2,0],[3,11]).bounding_box do
       draw_bounded_rectangle(5)
       text "<b>Rapportini/Richiesta di Assistenza Tecnica\nda inviare tramite fax al nr.: 08119722772 o tramite email: ordini@dmcomputers.it</b>\nad uso esclusivo dei clienti D.M. Computers titolari di contratto di Assistenza o Manutenzione", align: :center, valign: :center, inline_format: true
@@ -89,7 +90,7 @@ class RpsPdf < Prawn::Document
       draw_bounded_rectangle(0)
       text_box "<b>Descrizione delle anomalie o dei guasti riscontrati</b>", at: [0,bounds.top-7], align: :center, inline_format: true
       stroke do
-        horizontal_line bounds.left,bounds.right, at: bounds.top-18 
+        horizontal_line bounds.left,bounds.right, at: bounds.top-18
       end
       text_box "#{@intervention.descrizione_anomalie}", at: [0,bounds.top-20]
     end
@@ -97,7 +98,7 @@ class RpsPdf < Prawn::Document
       draw_bounded_rectangle(0)
       text_box "<b>Descrizione dell'intervento effettuato</b>", at: [0,bounds.top-7], align: :center, inline_format: true
       stroke do
-        horizontal_line bounds.left,bounds.right, at: bounds.top-18 
+        horizontal_line bounds.left,bounds.right, at: bounds.top-18
       end
       text_box "#{@intervention.descrizione_intervento}", at: [0,bounds.top-20]
     end
@@ -105,7 +106,7 @@ class RpsPdf < Prawn::Document
       draw_bounded_rectangle(0)
       text_box "<b>Elenco Attivita'</b>", at: [0,bounds.top-7], align: :center, inline_format: true
       stroke do
-        horizontal_line bounds.left,bounds.right, at: bounds.top-18 
+        horizontal_line bounds.left,bounds.right, at: bounds.top-18
       end
       attivita = @intervention.activities.inject([]) { |a,v| a << v.descrizione; a }.join("\n")
       text_box "#{attivita}", at: [0,bounds.top-20]

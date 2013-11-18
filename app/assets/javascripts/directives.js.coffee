@@ -8,9 +8,9 @@ angular.module('directivesService',[])
       link: ($scope, $elem, $attrs) ->
         $elem.autocomplete({
           minLength: 3
-          source: (term,resp) -> 
+          source: (term,resp) ->
             $scope[$attrs.items](term,resp)
-          select: (evt, ui) -> 
+          select: (evt, ui) ->
             $scope[$attrs.selected](evt, ui.item.value)
         })
     }
@@ -26,8 +26,7 @@ angular.module('directivesService',[])
             .removeClass('error')
             .find('span.help-block')
             .remove()
-          unless value?
-            return false
+          return if value?.errors == undefined
           for k,v of value.errors
             element.find('.control-group.'+k)
               .addClass('error')
@@ -43,16 +42,17 @@ angular.module('directivesService',[])
       restrict: 'A'
       require: 'ngModel'
       link: (scope, element, attrs, ctrl) ->
-        touppercase = (value) ->
-          unless value?
-            return '' 
-          upcased = value.toUpperCase()
-          if (upcased != value)
-            ctrl.$setViewValue(upcased)
+
+        to_uppercase = (cur_value) =>
+          return '' if !cur_value?
+          new_value = cur_value.toUpperCase()
+          if (cur_value != new_value)
+            ctrl.$setViewValue(new_value)
             ctrl.$render()
-          return upcased
-        ctrl.$parsers.push(touppercase)
-        touppercase(scope[attrs.ngModel])
+          new_value
+
+        ctrl.$parsers.push(to_uppercase)
+        to_uppercase(scope[attrs.ngModel])
     }
     return d
   )
@@ -80,7 +80,7 @@ angular.module('directivesService',[])
         deleteContact: '&'
       }
       controller: ($scope, $element, $attrs) ->
-        
+
         $scope.contact = {}
         $scope.originalContact = {}
         $scope.errors = []
@@ -125,7 +125,7 @@ angular.module('directivesService',[])
           $scope.currentPage = page
           start = ($scope.currentPage - 1) * $scope.itemsPerPage
           stop = start + ($scope.itemsPerPage) - 1
-          if stop > $scope.attivita.length 
+          if stop > $scope.attivita.length
             stop = $scope.attivita.length - 1
           $scope.activities = $scope.attivita[start..stop]
 

@@ -19,16 +19,19 @@ class Api::V1::ClientsController < Api::V1::RestrictedController
   end
 
   def create
+    render :json => {error_msg: "La creazione dei clienti e' consentita solo agli amministratori!"}, status: 406 and return unless current_user.admin?
     @client = Client.create(params[:client])
     respond_with(@client)
   end
 
   def update
+    render :json => {error_msg: "La modifica dei clienti e' consentita solo agli amministratori!"}, status: 406 and return unless current_user.admin?
     @client.update_attributes(params[:client])
     respond_with(@client)
   end
 
   def destroy
+    render :json => {error_msg: "L'eliminazione dei clienti e' consentita solo agli amministratori!"}, status: 406 and return unless current_user.admin?
     Rails.logger.info "Client interventions COUNT: #{@client.interventions.count}"
     if @client.interventions.count > 0
       render :json => {error_msg: 'Ci sono degli RPS associati al cliente'}, status: 406
@@ -39,7 +42,7 @@ class Api::V1::ClientsController < Api::V1::RestrictedController
   end
 
 private
-  
+
   def find_client
     @client = Client.find(params[:id])
   end

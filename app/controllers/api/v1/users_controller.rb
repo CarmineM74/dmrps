@@ -12,6 +12,7 @@ class Api::V1::UsersController < Api::V1::RestrictedController
     @user = User.new(params[:user])
     if @user.user?
       @user.permissions << Permission.find_by_rule('ManageActivities')
+      @user.permissions << Permission.find_by_rule('ManageInterventions')
       @user.permissions << Permission.find_by_rule('CreateInterventions')
     end
     set_perms_and_password()
@@ -19,6 +20,7 @@ class Api::V1::UsersController < Api::V1::RestrictedController
   end
 
   def update
+    render :json => {error_msg: "La modifica dei dati utenti e' consentita solo agli amministratori!"}, status: 406 and return unless current_user.admin?
     @user.update_attributes(params[:user].except('password','password_confirmation'))
     set_perms_and_password()
     respond_with(@user)

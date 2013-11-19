@@ -1,6 +1,6 @@
 class @ClientsCtrl
-  @inject: ['$scope','$log','$location','dialogsSvc', 'dmClientsSvc']
-  constructor: (@$scope, @$log, @$location,@dialogsSvc,  @dmClientsSvc) ->
+  @inject: ['$scope','$log','$location','dialogsSvc', 'dmClientsSvc','sessionSvc']
+  constructor: (@$scope, @$log, @$location,@dialogsSvc,  @dmClientsSvc, @sessionSvc) ->
     @$scope.clients = []
     @$scope.query = ''
 
@@ -14,6 +14,12 @@ class @ClientsCtrl
     @$scope.editClient = angular.bind(this, @editClient)
     @$scope.deleteClient = angular.bind(this, @deleteClient)
 
+    @$scope.$on('SessionSvc:CurrentUser:Authenticated', @authenticated)
+    @sessionSvc.authenticated_user()
+
+  authenticated: =>
+    unless @$scope.can('ManageClients',{fail_and_logout: true})
+      return
     @index()
 
   index: ->

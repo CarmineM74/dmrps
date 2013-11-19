@@ -1,3 +1,3 @@
 object @permission
 
-attributes :id, :rule
+attributes :id, :rule, :status

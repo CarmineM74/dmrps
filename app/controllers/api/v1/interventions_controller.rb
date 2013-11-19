@@ -20,12 +20,15 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
 
   def create
     @intervention = Intervention.create(params[:intervention])
-    new_activities = params[:activities_ids]
-    new_activities.each { |id| @intervention.activities << Activity.find(id) }
+    unless params[:activities_ids].blank?
+      new_activities = params[:activities_ids]
+      new_activities.each { |id| @intervention.activities << Activity.find(id) }
+    end
     respond_with(@intervention)
   end
 
   def update
+    render :json => {error_msg: "La modifica degli interventi e' consentita solo agli amministratori!"}, status: 406 and return unless current_user.admin?
     @intervention = Intervention.find(params[:id])
     @intervention.update_attributes(params[:intervention])
     current_activities = @intervention.activities.map { |a| a.id }
@@ -37,6 +40,7 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
   end
 
   def destroy
+    render :json => {error_msg: "La rimozione degli interventi e' consentita solo agli amministratori!"}, status: 406 and return unless current_user.admin?
     @intervention = Intervention.find(params[:id])
     @intervention.delete
     respond_with({})
@@ -59,7 +63,7 @@ protected
     @contact = @client.contacts.find_by_name(params[:contact_name])
     @contact = @client.contacts.create(name: params[:contact_name], email: params[:email]) if @contact.nil?
   end
-  
+
   def find_client
     @client = Client.find(params[:client_id])
   end

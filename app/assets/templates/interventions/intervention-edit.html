@@ -88,7 +88,14 @@
                 </div>
                 <div class='same-row control-group km_supplementari'>
                     <label>Km supplementari</label>
-                    <input id="km_supplementari" type='input' class='span2' ng-model='intervention.km_supplementari' required>
+                    <input id="km_supplementari" type='number' class='span2' ng-model='intervention.km_supplementari' 
+                      name='kmsupplementari'
+                      min='0'
+                      pattern='/^[0-9]+$/'
+                      required >
+                      <span class='error' ng-show='interventionForm.kmsupplementari.$error.number'>
+                        Formato numero non valido: deve essere un numero intero!
+                      </span>
                 </div>
                 <div class='new-row control-group note'>
                     <label>Note</label>

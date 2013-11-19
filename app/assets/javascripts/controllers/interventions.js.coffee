@@ -1,6 +1,6 @@
 class @InterventionsCtrl
-  @inject: ['$scope','$log','dialogsSvc','dmInterventionsSvc','$routeParams','$location']
-  constructor: (@$scope, @$log, @dialogsSvc,@dmInterventionsSvc,@$routeParams,@$location) ->
+  @inject: ['$scope','$log','dialogsSvc','dmInterventionsSvc','$routeParams','$location','sessionSvc']
+  constructor: (@$scope, @$log, @dialogsSvc,@dmInterventionsSvc,@$routeParams,@$location,@sessionSvc) ->
     @$scope.interventions = []
     @$scope.query = ''
 
@@ -13,6 +13,12 @@ class @InterventionsCtrl
     @$scope.$on('dmInterventionsSvc:Destroy:Failure', @reqFailed)
     @$scope.deleteIntervention = angular.bind(this, @deleteIntervention)
 
+    @$scope.$on('SessionSvc:CurrentUser:Authenticated', @authenticated)
+    @sessionSvc.authenticated_user()
+
+  authenticated: =>
+    unless @$scope.can('ManageInterventions',{fail_and_logout: true})
+      return
     @index()
 
   index: ->
@@ -37,7 +43,7 @@ class @InterventionsCtrl
         if result == 'si'
           @dmInterventionsSvc.destroy(intervention)
     )
-  
+
   deleteSuccess: =>
     @dialogsSvc.alert('Intervento rimosso con successo!')
     @index()

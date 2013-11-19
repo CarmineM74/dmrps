@@ -13,11 +13,11 @@ user.password_confirmation = 'testme'
 user.save
 
 # Adding default permissions
-manage_users = Permission.create(rule: 'ManageUsers')
-manage_clients = Permission.create(rule: 'ManageClients')
-manage_activities = Permission.create(rule: 'ManageActivities')
-manage_interventions = Permission.create(rule: 'ManageInterventions')
-create_interventions = Permission.create(rule: 'CreateInterventions')
-edit_interventions = Permission.create(rule: 'EditInterventions')
-delete_interventions = Permission.create(rule: 'DeleteInterventions')
+manage_users = Permission.create(rule: 'ManageUsers', status: true)
+manage_clients = Permission.create(rule: 'ManageClients', status: true)
+manage_activities = Permission.create(rule: 'ManageActivities', status: true)
+manage_interventions = Permission.create(rule: 'ManageInterventions', status: true)
+create_interventions = Permission.create(rule: 'CreateInterventions', status: true)
+edit_interventions = Permission.create(rule: 'EditInterventions', status: true)
+delete_interventions = Permission.create(rule: 'DeleteInterventions', status: true)
 

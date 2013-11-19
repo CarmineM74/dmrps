@@ -1,6 +1,6 @@
 class @EditInterventionCtrl
-  @inject: ['$scope','$log','dialogsSvc','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc', 'dmActivitiesSvc']
-  constructor: (@$scope, @$log, @dialogsSvc, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc, @dmActivitiesSvc) ->
+  @inject: ['$scope','$log','dialogsSvc','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc', 'dmActivitiesSvc','sessionSvc']
+  constructor: (@$scope, @$log, @dialogsSvc, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc, @dmActivitiesSvc, @sessionSvc) ->
     @$scope.errors = []
 
     @$scope.dateTimePickerOpts = {
@@ -54,6 +54,19 @@ class @EditInterventionCtrl
     @$scope.attivita_disponibili = []
     @$scope.attivita_selezionate = []
 
+    @$scope.$on('SessionSvc:CurrentUser:Authenticated', @authenticated)
+    @sessionSvc.authenticated_user()
+
+  authenticated: =>
+    if @$scope.editMode
+      unless @$scope.can('EditInterventions',{fail_and_logout: true})
+        return
+    else
+      unless @$scope.can('CreateInterventions',{fail_and_logout: true})
+        return
+    @initialize()
+
+  initialize: =>
     if @$scope.editMode
       @$scope.formCaption = "Modifica intervento"
       @$scope.formSubmitCaption = "Aggiorna"
@@ -62,7 +75,7 @@ class @EditInterventionCtrl
       @$scope.formCaption = "Nuovo intervento"
       @$scope.formSubmitCaption = "Crea"
       @$scope.intervention = {
-                  user_id: 1
+                  user_id: @sessionSvc.currentUser.id
                   data_inoltro_richiesta: new Date()
                   data_intervento: new Date()
                   inizio: new Date()
@@ -98,7 +111,6 @@ class @EditInterventionCtrl
     @$scope.attivita_selezionate = []
     @$scope.attivita_selezionate.push(a) for a in @$scope.allActivities when @$scope.intervention.activities_ids.indexOf(a.id) != -1
 
-
   activitiesRetrieveFailed: (evt, args) =>
     @$log.log('[activitiesRetrieveFailed]: ' + JSON.stringify(args))
     @dialogsSvc.alert("Si e' verificato un errore durante il recupero delle attivita'!")
@@ -125,7 +137,10 @@ class @EditInterventionCtrl
   clientsRetrievalSuccess: (evt, response) =>
     if @$scope.clients.length == 0
       @dialogsSvc.messageBox('Dati insufficienti', "Per poter compilare un rapporto di intervento è necessario definire un'anagrafica clienti con almeno una sede!", [@dialogsSvc.OkBtn])
-      @$location.path('/clients')
+      if @$scope.can('ManageClients',{})
+        @$location.path('/clients')
+      else
+        @$location.path('/')
 
   clientsRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving clients list')
@@ -134,7 +149,10 @@ class @EditInterventionCtrl
   locationsRetrieved: (evt, response) =>
     if @$scope.locations.length == 0
       @dialogsSvc.messageBox('Dati insufficienti', "Per poter compilare un rapporto di intervento è necessario indicare un cliente che abbia almeno una sede definita!", [@dialogsSvc.OkBtn])
-      @$location.path('/clients')
+      if @$scope.can('ManageClients',{})
+        @$location.path('/clients')
+      else
+        @$location.path('/')
     if @$scope.editMode
       @$scope.selectedLocation = (l for l in @$scope.locations when l.id is @$scope.intervention.location.id)[0]
 

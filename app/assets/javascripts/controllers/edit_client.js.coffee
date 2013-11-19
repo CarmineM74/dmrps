@@ -1,6 +1,6 @@
 class @EditClientCtrl
-  @inject: ['$scope','$log','$location','$routeParams','dialogsSvc','dmClientsSvc','dmLocationsSvc','dmContactsSvc']
-  constructor: (@$scope, @$log, @$location, @$routeParams, @dialogsSvc,@dmClientsSvc, @dmLocationsSvc, @dmContactsSvc) ->
+  @inject: ['$scope','$log','$location','$routeParams','dialogsSvc','dmClientsSvc','dmLocationsSvc','dmContactsSvc','sessionSvc']
+  constructor: (@$scope, @$log, @$location, @$routeParams, @dialogsSvc,@dmClientsSvc, @dmLocationsSvc, @dmContactsSvc, @sessionSvc) ->
     @$scope.errors = []
     @$scope.locations = []
     @$scope.contacts = []
@@ -42,6 +42,9 @@ class @EditClientCtrl
 
     @$scope.editMode = @$routeParams.client_id?
 
+    @$scope.$on('SessionSvc:CurrentUser:Authenticated', @authenticated)
+    @sessionSvc.authenticated_user()
+
     if @$scope.editMode
       @$scope.formCaption = 'Modifica cliente'
       @$scope.formSubmitCaption = 'Aggiorna'
@@ -51,6 +54,10 @@ class @EditClientCtrl
       @$scope.formSubmitCaption = 'Crea'
       @$scope.client = {}
       @$scope.originalClient = undefined
+
+  authenticated: =>
+    unless @$scope.can('ManageClients',{fail_and_logout: true})
+      return
 
   showValidationErrors: (errors) ->
     @$scope.errors = errors.data

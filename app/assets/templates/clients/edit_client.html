@@ -72,12 +72,12 @@
         </fieldset>
       </form>
     </tab>
-    <tab heading="Contatti">
-      <elenco-contatti contatti='contacts' save-contact='saveContact(contact)' delete-contact='deleteContact(contact)'></elenco-contatti>
-    </tab>
-    <tab heading="Sedi">
-      <elenco-sedi sedi='locations' nuova-sede-click='newLocation(client)' modifica-sede-click='editLocation(location)' elimina-sede-click='deleteLocation(location)'></elenco-sedi>
-    </tab>
+        <tab heading="Contatti" disabled='!editMode'>
+          <elenco-contatti contatti='contacts' save-contact='saveContact(contact)' delete-contact='deleteContact(contact)'></elenco-contatti>
+        </tab>
+        <tab heading="Sedi" disabled='!editMode'>
+          <elenco-sedi sedi='locations' nuova-sede-click='newLocation(client)' modifica-sede-click='editLocation(location)' elimina-sede-click='deleteLocation(location)'></elenco-sedi>
+        </tab>
   </tabset>
 </div>
 

@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   validates :role, inclusion: { in: ROLES }
   validates :password, :password_confirmation, presence: true, if: :validate_password?
 
+  has_and_belongs_to_many :permissions
   has_many :interventions
 
   def admin?

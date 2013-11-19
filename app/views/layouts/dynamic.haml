@@ -31,9 +31,9 @@
               Sistema
               %b.caret
             %ul.dropdown-menu
-              %li
+              %li(ng-show="can('ManageUsers')")
                 %a(href='#/users')Gestione utenti
-              %li
+              %li(ng-show="can('ManageClients')")
                 %a(href='#/clients')Gestione clienti
               %li
                 %a(href='#/activities')Gestione attivita'

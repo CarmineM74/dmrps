@@ -134,6 +134,9 @@ class @EditClientCtrl
     @dmClientsSvc.save(client)
 
   saveSuccess: (events, args) =>
+    #@$log.log('Client saved: ' + JSON.stringify(args))
+    @$scope.client = args
+    @$scope.editMode = true
     @$scope.errors = []
     @$scope.originalClient = angular.copy(@$scope.client)
     @dialogsSvc.alert('Dati salvati con successo!')

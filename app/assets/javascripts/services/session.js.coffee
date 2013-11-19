@@ -1,5 +1,5 @@
 @app.factory('sessionSvc',['$rootScope','$resource','$log','$location','appConfig','dialogsSvc', ($rootScope,$resource,$log,$location,appConfig,dialogsSvc) ->
-	new SessionSvc($rootScope,$resource,$log,$location,appConfig,dialogsSvc) 
+	new SessionSvc($rootScope,$resource,$log,$location,appConfig,dialogsSvc)
 ])
 
 class SessionSvc
@@ -46,10 +46,10 @@ class SessionSvc
       if @currentUser.role == 'admin'
         return true
       else
-        # @$log.log('Checking permissions for rule: ' + rule)
-        allowed_to = [] 
+        @$log.log('Checking permissions for rule: ' + rule)
+        allowed_to = []
         allowed_to.push permission.rule for permission in @currentUser.permissions when permission.status is true
-        #@$log.log('User is allowed to: ' + allowed_to)
+        @$log.log('User is allowed to: ' + allowed_to)
         authorized = (rule in allowed_to)
         if !authorized
           @checkCanOptions(opts)
@@ -59,7 +59,7 @@ class SessionSvc
 
   authenticated_user: ->
     @sessions.authenticated_user(
-      (response) => 
+      (response) =>
         if response.user != ''
           @currentUser = response.user
           @$rootScope.currentUser = @currentUser
@@ -86,7 +86,7 @@ class SessionSvc
       @notify('Login:Success',@currentUser)
     else
       @sessions.create({email: user.email, password: user.password},
-         (response) => @loginSuccessful(response) 
+         (response) => @loginSuccessful(response)
       )
 
   loginSuccessful : (response) ->

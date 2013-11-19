@@ -5,7 +5,7 @@ class @UsersCtrl
     @$scope.$on('UsersSvc:Index:Failure',@indexFailed)
     @$scope.$on('UsersSvc:Index:Success',@indexSuccess)
     @$scope.$on('UsersSvc:Save:Success',@saveSuccess)
-    @$scope.$on('UsersSvc:Save:Failure',@reqFailed)
+    @$scope.$on('UsersSvc:Save:Failure',@saveFailed)
     @$scope.$on('UsersSvc:Destroy:Success', @deleteSuccess)
     @$scope.$on('UsersSvc:Destroy:Failure', @deleteFailed)
 
@@ -101,6 +101,10 @@ class @UsersCtrl
     @$scope.originalUser = angular.copy(@$selectedUser)
     @hideForm()
     @dialogsSvc.alert('Dati salvati con successo!')
+
+  saveFailed: (evt, response) =>
+    @dialogsSvc.messageBox('Creazione utente',response.data.error_msg,[@dialogsSvc.OkBtn])
+    @showValidationErrors(response)
 
   reqSuccess: =>
     @$scope.errors = []

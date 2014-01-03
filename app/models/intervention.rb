@@ -32,6 +32,9 @@ class Intervention < ActiveRecord::Base
 
   has_and_belongs_to_many :activities
 
+  has_many :collaborations
+  has_many :collaborators, through: :collaborations, source: :user
+
   def totale_ore_lavorate
     ore_lavorate_cliente + ore_lavorate_laboratorio + ore_lavorate_remoto
   end

@@ -13,6 +13,9 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :permissions
   has_many :interventions
 
+  has_many :collaborations
+  has_many :partecipations, through: :collaborations, source: :intervention
+
   def admin?
     self.role == 'admin'
   end

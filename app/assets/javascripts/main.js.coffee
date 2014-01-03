@@ -37,7 +37,8 @@
       .otherwise(redirectTo: '/')
   ])
   .value('appConfig',{
-    serverAddr: '94.138.187.17'
+    #serverAddr: '94.138.187.17'
+    serverAddr: '192.168.1.101'
     serverPort: ':80'
     api_ver: 'v1'
   })

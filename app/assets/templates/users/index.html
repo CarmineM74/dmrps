@@ -8,6 +8,7 @@
     <table class='table table-striped table-bordered table-hover'>
       <thead>
         <tr>
+	        <th>Nome</th>
 	        <th>E-Mail</th>
 	        <th>Ruolo</th>
 	        <th>Azioni</th>
@@ -15,6 +16,7 @@
       </thead>
       <tbody>
 	      <tr ng-repeat='user in users'>
+          <td>{{user.name}}</td>
           <td>{{user.email}}</td>
           <td>{{user.role}}</td>
           <td class='span1'>
@@ -38,6 +40,10 @@
             <div class='alert alert-info' ng-show='selectedUser.id'>
               La modifica dei dati utente avverra' previo inserimento della password e relativa conferma
             </div>
+            <div class='control-group name'>
+              <label>Nome</label>
+              <input id='name' class='span5' type='text' ng-model='selectedUser.name' required>
+    	      </div>
             <div class='control-group email'>
               <label>E-Mail</label>
               <input id='email' class='span5' type='text' ng-model='selectedUser.email' required>

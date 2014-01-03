@@ -3,10 +3,12 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  attr_accessible :email, :role
+  attr_accessible :email, :role, :name
 
   validates_presence_of :email
   validates_uniqueness_of :email
+  validates_presence_of :name
+  validates_uniqueness_of :name
   validates :role, inclusion: { in: ROLES }
   validates :password, :password_confirmation, presence: true, if: :validate_password?
 

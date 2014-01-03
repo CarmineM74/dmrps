@@ -125,8 +125,11 @@ class RpsPdf < Prawn::Document
       stroke do
         horizontal_line bounds.left,bounds.right, at: bounds.top-18
       end
-      personale = @intervention.collaborators.inject([]) { |a,v| a << v.email; a }.join("\n")
-      text_box "#{personale}", at: [0,bounds.top-20]
+      collaboratori = @intervention.collaborators.map { |c| c.name }
+      collaboratori = collaboratori.in_groups_of(3)
+      collaboratori = collaboratori.map { |cs| cs.compact.join(',') }
+      collaboratori = collaboratori.join("\n")
+      text_box "#{collaboratori}", at: [0,bounds.top-20]
     end
     grid([22,0],[22,4]).bounding_box do
       draw_bounded_rectangle(0)

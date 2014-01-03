@@ -126,7 +126,8 @@ class RpsPdf < Prawn::Document
         horizontal_line bounds.left,bounds.right, at: bounds.top-18
       end
       collaboratori = @intervention.collaborators.map { |c| c.name }
-      collaboratori = collaboratori.in_groups_of(3)
+      collaboratori << @intervention.user.name
+      collaboratori = collaboratori.in_groups_of(4)
       collaboratori = collaboratori.map { |cs| cs.compact.join(',') }
       collaboratori = collaboratori.join("\n")
       text_box "#{collaboratori}", at: [0,bounds.top-20]

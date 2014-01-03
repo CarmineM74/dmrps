@@ -140,3 +140,43 @@ angular.module('directivesService',[])
     }
     return d
   )
+  .directive('elencoCollaboratori', ->
+    d = {
+      restrict: 'E'
+      templateUrl: '/assets/interventions/collaborators.html'
+      scope: {
+        collaboratori: '='
+        showDelete: '='
+        showPick: '='
+        selectCollaborator: '&'
+        pickCollaborator: '&'
+        deleteCollaborator: '&'
+      }
+      controller: ($scope, $element, $attrs) ->
+        $scope.nrOfPages = 0
+        $scope.currentPage = 1
+        $scope.itemsPerPage = 10
+        $scope.collaborators = []
+
+        $scope.pageChanged = (page) ->
+          $scope.nrOfPages = Math.floor($scope.collaboratori.length / $scope.itemsPerPage)
+          if ($scope.collaboratori.length % $scope.itemsPerPage) != 0
+            $scope.nrOfPages += 1
+          $scope.currentPage = page
+          start = ($scope.currentPage - 1) * $scope.itemsPerPage
+          stop = start + ($scope.itemsPerPage) - 1
+          if stop > $scope.collaboratori.length
+            stop = $scope.collaboratori.length - 1
+          $scope.collaborators = $scope.collaboratori[start..stop]
+
+
+        $scope.$watch('collaboratori',(value) ->
+          $scope.collaboratori = value
+          unless value?
+            return false
+          $scope.pageChanged(1)
+        )
+
+    }
+    return d
+  )

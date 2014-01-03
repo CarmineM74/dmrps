@@ -23,3 +23,7 @@ node :activities_ids do |i|
   i.activities.map { |a| a.id }
 end
 
+node :collaborators_ids do |i|
+  i.collaborators.map { |c| c.id }
+end
+

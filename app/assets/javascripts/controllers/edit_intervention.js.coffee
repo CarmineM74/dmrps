@@ -1,6 +1,6 @@
 class @EditInterventionCtrl
-  @inject: ['$scope','$log','dialogsSvc','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc', 'dmActivitiesSvc','sessionSvc']
-  constructor: (@$scope, @$log, @dialogsSvc, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc, @dmActivitiesSvc, @sessionSvc) ->
+  @inject: ['$scope','$log','dialogsSvc','dmInterventionsSvc','dmClientsSvc','dmLocationsSvc','$routeParams','$location', 'dmContactsSvc', 'dmActivitiesSvc','sessionSvc','usersSvc']
+  constructor: (@$scope, @$log, @dialogsSvc, @dmInterventionsSvc,@dmClientsSvc,@dmLocationsSvc,@$routeParams,@$location, @dmContactsSvc, @dmActivitiesSvc, @sessionSvc, @usersSvc) ->
     @$scope.errors = []
 
     @$scope.dateTimePickerOpts = {
@@ -29,6 +29,9 @@ class @EditInterventionCtrl
     @$scope.$on('dmActivitiesSvc:Index:Success', @activitiesRetrieved)
     @$scope.$on('dmActivitiesSvc:Index:Failure', @activitiesRetrieveFailed)
 
+    @$scope.$on('UsersSvc:Index:Success', @collaboratorsRetrieved)
+    @$scope.$on('UsersSvc:Index:Failure', @collaboratorsRetrieveFailed)
+
     @$scope.saveIntervention = angular.bind(this, @saveIntervention)
     @$scope.cancel = angular.bind(this,@cancel)
 
@@ -39,6 +42,9 @@ class @EditInterventionCtrl
 
     @$scope.pickActivity = angular.bind(this, @pickActivity)
     @$scope.unpickActivity = angular.bind(this, @unpickActivity)
+
+    @$scope.pickCollaborator = angular.bind(this, @pickCollaborator)
+    @$scope.unpickCollaborator = angular.bind(this, @unpickCollaborator)
 
     @$scope.getContacts = angular.bind(this, @getContacts)
     @$scope.contactSelected = angular.bind(this, @contactSelected)
@@ -53,6 +59,8 @@ class @EditInterventionCtrl
     @$scope.editMode = @$routeParams.intervention_id?
     @$scope.attivita_disponibili = []
     @$scope.attivita_selezionate = []
+    @$scope.collaboratori_disponibili = []
+    @$scope.collaboratori_selezionati = []
 
     @$scope.$on('SessionSvc:CurrentUser:Authenticated', @authenticated)
     @sessionSvc.authenticated_user()
@@ -92,14 +100,33 @@ class @EditInterventionCtrl
 				          note: ""
 				          diritto_di_chiamata: true
 				          location_ids: []
+                  ,collaborators_ids: []
                   ,activities_ids: []
                 }
       @$scope.attivita_selezionate = []
       @$scope.originalIntervention = undefined
       @recuperaAttivita()
+      @recuperaCollaboratori()
 
   recuperaAttivita: () ->
     @dmActivitiesSvc.index()
+
+  recuperaCollaboratori: () ->
+    @usersSvc.index()
+
+  collaboratorsRetrieved: (evt,args) =>
+    @$scope.allCollaborators = (a for a in args when a.id != @sessionSvc.currentUser.id)
+    @aggiornaCollaboratoriDisponibili()
+
+  collaboratorsRetrieveFailed: (evt,args) =>
+    @$log.log('[collaboratorsRetrieveFailed]: ' + JSON.stringify(args))
+    @dialogsSvc.alert("Si e' verificato un errore durante il recupero dei collaboratori!")
+
+  aggiornaCollaboratoriDisponibili: () ->
+    @$scope.collaboratori_disponibili = []
+    @$scope.collaboratori_disponibili.push(a) for a in @$scope.allCollaborators when @$scope.intervention.collaborators_ids.indexOf(a.id) == -1
+    @$scope.collaboratori_selezionati = []
+    @$scope.collaboratori_selezionati.push(a) for a in @$scope.allCollaborators when @$scope.intervention.collaborators_ids.indexOf(a.id) != -1
 
   activitiesRetrieved: (evt, args) =>
     @$scope.allActivities = args
@@ -120,6 +147,7 @@ class @EditInterventionCtrl
     @$scope.selectedClient = (c for c in @$scope.clients when c.id is @$scope.intervention.client.id)[0]
     @clientChanged()
     @recuperaAttivita()
+    @recuperaCollaboratori()
 
   pickActivity: (a) ->
     @$scope.intervention.activities_ids.push(a.id)
@@ -128,6 +156,14 @@ class @EditInterventionCtrl
   unpickActivity: (a) ->
     @$scope.intervention.activities_ids = @$scope.intervention.activities_ids.filter((id) => id isnt a.id)
     @aggiornaAttivitaDisponibili()
+
+  pickCollaborator: (c) ->
+    @$scope.intervention.collaborators_ids.push(c.id)
+    @aggiornaCollaboratoriDisponibili()
+
+  unpickCollaborator: (c) ->
+    @$scope.intervention.collaborators_ids = @$scope.intervention.collaborators_ids.filter((id) => id isnt c.id)
+    @aggiornaCollaboratoriDisponibili()
 
   interventionRetrievalFailed: (evt,response) =>
     @$log.log('Error retrieving intervention: ' + JSON.stringify(response))

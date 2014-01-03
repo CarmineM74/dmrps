@@ -38,6 +38,22 @@
                 </div>
                 <div class='new-row well span11'>
                   <div class='span5'>
+                    <span>Collaboratori disponibili</span>
+                    <elenco-collaboratori collaboratori='collaboratori_disponibili' 
+                                      pick-collaborator='pickCollaborator(collaborator)'
+                                      show-pick='true'>
+                    </elenco-collaboratori>
+                  </div>
+                  <div class='span5'>
+                    <span>Collaboratori selezionati</span>
+                    <elenco-collaboratori collaboratori='collaboratori_selezionati' 
+                                      delete-collaborator='unpickCollaborator(collaborator)'
+                                      show-delete='true'>
+                    </elenco-collaboratori>
+                  </div>
+                </div>
+                <div class='new-row well span11'>
+                  <div class='span5'>
                     <span>Attivita' disponibili</span>
                     <elenco-attivita attivita='attivita_disponibili' 
                                       pick-activity='pickActivity(activity)'

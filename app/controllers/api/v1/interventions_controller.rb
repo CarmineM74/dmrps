@@ -24,6 +24,10 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
       new_activities = params[:activities_ids]
       new_activities.each { |id| @intervention.activities << Activity.find(id) }
     end
+    unless params[:collaborators_ids].blank?
+      new_collaborators = params[:collaborators_ids]
+      new_collaborators.each { |id| @intervention.collaborators << User.find(id) }
+    end
     respond_with(@intervention)
   end
 
@@ -34,8 +38,12 @@ class Api::V1::InterventionsController < Api::V1::RestrictedController
     current_activities = @intervention.activities.map { |a| a.id }
     new_activities = params[:activities_ids]
     (current_activities - new_activities).each { |id| @intervention.activities.delete(Activity.find(id)) }
-
     (new_activities - current_activities).each { |id| @intervention.activities << Activity.find(id) }
+
+    current_collaborators = @intervention.collaborators.map { |c| c.id }
+    new_collaborators = params[:collaborators_ids]
+    (current_collaborators - new_collaborators).each { |id| @intervention.collaborators.delete(User.find(id)) }
+    (new_collaborators - current_collaborators).each { |id| @intervention.collaborators << User.find(id) }
     respond_with(@intervention)
   end
 

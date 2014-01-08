@@ -115,7 +115,12 @@ class @EditInterventionCtrl
     @usersSvc.index()
 
   collaboratorsRetrieved: (evt,args) =>
-    @$scope.allCollaborators = (a for a in args when a.id != @sessionSvc.currentUser.id)
+    if @$scope.editMode
+      @$log.log('[collaboratorsRetrieved][editMode] Intervention user: ' + @$scope.intervention.user.id)
+      @$scope.allCollaborators = (a for a in args when a.id != @$scope.intervention.user.id)
+    else
+      @$log.log('[collaboratorsRetrieved][NOT editMode] Intervention user: ' + @sessionSvc.currentUser.id)
+      @$scope.allCollaborators = (a for a in args when a.id != @sessionSvc.currentUser.id)
     @aggiornaCollaboratoriDisponibili()
 
   collaboratorsRetrieveFailed: (evt,args) =>

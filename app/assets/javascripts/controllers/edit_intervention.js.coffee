@@ -61,6 +61,7 @@ class @EditInterventionCtrl
     @$scope.attivita_selezionate = []
     @$scope.collaboratori_disponibili = []
     @$scope.collaboratori_selezionati = []
+    @$scope.canGeneratePDF = false
 
     @$scope.$on('SessionSvc:CurrentUser:Authenticated', @authenticated)
     @sessionSvc.authenticated_user()
@@ -79,7 +80,9 @@ class @EditInterventionCtrl
       @$scope.formCaption = "Modifica intervento"
       @$scope.formSubmitCaption = "Aggiorna"
       @$scope.intervention = @dmInterventionsSvc.get(@$routeParams.intervention_id)
+      @$scope.canGeneratePDF = true
     else
+      @$scope.canGeneratePDF = false
       @$scope.formCaption = "Nuovo intervento"
       @$scope.formSubmitCaption = "Crea"
       @$scope.intervention = {
@@ -239,6 +242,7 @@ class @EditInterventionCtrl
   saveSuccess: (events, args) =>
     @$scope.originalIntervention = angular.copy(@$scope.intervention)
     @$scope.errors = []
+    @$scope.canGeneratePDF = true
     #@dialogsSvc.alert('Dati salvati con successo!')
 
   reqFailed: (event, args) =>

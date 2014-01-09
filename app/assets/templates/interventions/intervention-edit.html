@@ -1,7 +1,7 @@
   <div id='new-intervention' class='span12'>
     <form name='interventionForm' class='custom-form' show-validation-errors errors='errors'>
       <fieldset>
-          <legend>{{formCaption}}</legend>
+          <legend>{{formCaption}} </legend>
         <div class='same-row id' ng-show='intervention.id'>
 		      <label>Progressivo intervento</label>
 		      <span class='span1 uneditable-input' type='text'>{{intervention.id}}</span>
@@ -119,6 +119,7 @@
             </div>
         </div>
         <div class='form-actions new-row'>
+          <a class='btn' ui-jq='tooltip' ui-options="{placement: 'bottom'}" title='PDF' ng-href="/api/v1/interventions/{{intervention.id}}/rps.pdf" ng-show='canGeneratePDF && !isDirty()'><img src='assets/report.png'></a>
           <button type='submit' class='btn' ng-click='saveIntervention(intervention)' ng-disabled='!isDirty() || !interventionForm.$valid'>{{formSubmitCaption}}</button>
           <button type='submit' class='btn' ng-click="cancel()">Annulla</button>
         </div>

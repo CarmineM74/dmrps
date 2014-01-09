@@ -90,27 +90,27 @@
                     <input id="fine" type='text' ng-model='intervention.fine' ui-date="{dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true}">
                     <div ng-model="intervention.fine"><timepicker show-meridian='false'></timepicker></div>
                 </div>
-                <div class='new-row same-row control-group ore_lavorate_cliente'>
+                <div class='new-row same-row control-group ore_lavorate_cliente' ng-class='{error: interventionForm.orelavcliente.$error.number}'>
                     <label>Ore lavorate presso il cliente</label>
-                    <input id="ore_lavorate_cliente" type='input' class='span2' ng-model='intervention.ore_lavorate_cliente' required>
+                    <input id="ore_lavorate_cliente" type='number' class='span2' ng-model='intervention.ore_lavorate_cliente' 
+                      name='orelavcliente'
+                      min='0'
+                      required >
                 </div>
-                <div class='same-row control-group ore_lavorate_remoto'>
+                <div class='same-row control-group ore_lavorate_remoto' ng-class='{error: interventionForm.orelavremoto.$error.number}'>
                     <label>Ore lavorate da remoto</label>
-                    <input id="ore_lavorate_remoto" type='input' class='span2' ng-model='intervention.ore_lavorate_remoto' required>
+                    <input id="ore_lavorate_remoto" type='number' name='orelavremoto' min='0' class='span2' ng-model='intervention.ore_lavorate_remoto' required>
                 </div>
-                <div class='same-row control-group ore_lavorate_laboratorio'>
+                <div class='same-row control-group ore_lavorate_laboratorio' ng-class='{error: interventionForm.orelavlab.$error.number}'>
                     <label>Ore lavorate in laboratorio</label>
-                    <input id="ore_lavorate_laboratorio" type='input' class='span2' ng-model='intervention.ore_lavorate_laboratorio' required>
+                    <input id="ore_lavorate_laboratorio" type='number' name='orelavlab' min='0' class='span2' ng-model='intervention.ore_lavorate_laboratorio' required>
                 </div>
-                <div class='same-row control-group km_supplementari'>
+                <div class='same-row control-group km_supplementari' ng-class='{error: interventionForm.kmsupplementari.$error.number}'>
                     <label>Km supplementari</label>
                     <input id="km_supplementari" type='number' class='span2' ng-model='intervention.km_supplementari' 
                       name='kmsupplementari'
                       min='0'
                       required >
-                      <span class='error' ng-show='interventionForm.kmsupplementari.$error.number'>
-                        Formato numero non valido: deve essere un numero intero!
-                      </span>
                 </div>
                 <div class='new-row control-group note'>
                     <label>Note</label>

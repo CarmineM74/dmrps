@@ -102,7 +102,8 @@ class @EditInterventionCtrl
 				          lavoro_completato: true
 				          note: ""
 				          diritto_di_chiamata: true
-				          location_ids: []
+                  ,km_supplementari: 0
+				          ,location_ids: []
                   ,collaborators_ids: []
                   ,activities_ids: []
                 }
@@ -151,6 +152,9 @@ class @EditInterventionCtrl
     @dialogsSvc.alert("Si e' verificato un errore durante il recupero delle attivita'!")
 
   interventionRetrieved: (evt, response) =>
+    @$scope.intervention.ore_lavorate_cliente = parseFloat(@$scope.intervention.ore_lavorate_cliente)
+    @$scope.intervention.ore_lavorate_remoto = parseFloat(@$scope.intervention.ore_lavorate_remoto)
+    @$scope.intervention.ore_lavorate_laboratorio = parseFloat(@$scope.intervention.ore_lavorate_laboratorio)
     @$scope.originalIntervention = angular.copy(@$scope.intervention)
     @$scope.selectedClient = (c for c in @$scope.clients when c.id is @$scope.intervention.client.id)[0]
     @clientChanged()
@@ -240,6 +244,7 @@ class @EditInterventionCtrl
     @dmInterventionsSvc.save(intervention,@$scope.intervention.contatto)
 
   saveSuccess: (events, args) =>
+    @$scope.intervention.id = args.id
     @$scope.originalIntervention = angular.copy(@$scope.intervention)
     @$scope.errors = []
     @$scope.canGeneratePDF = true
